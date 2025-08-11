@@ -1,0 +1,90 @@
+.userTitle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #333;
+}
+
+.buttons {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 12px;
+}
+
+.addButton {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.addButton:hover {
+    background-color: #218838;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.tableUsers {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: white;
+} 
+
+.tableUsers table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.tableUsers thead {
+    background-color: #f1f1f1;
+    text-align: left;
+}
+
+.tableUsers th, .tableUsers td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tableUsers th {
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+}
+
+.tableUsers tbody tr:hover {
+    background-color: #CCCCCC;
+}
+
+.tableUsers td {
+    color: #000000;
+}
+
+.tableUsers .actionButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.actionButton.edit {
+    background-color: #ffc107;
+    cursor: pointer;
+}
+
+.actionButton.delete {
+    background-color: #dc3534;
+    cursor: pointer;
+}
+
+.actionButton.edit:hover, .actionButton.delete:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}

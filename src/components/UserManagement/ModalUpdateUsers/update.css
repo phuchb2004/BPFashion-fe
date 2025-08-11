@@ -1,0 +1,87 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: #fff;
+    padding: 30px 25px;
+    border-radius: 4px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    width: 400px;
+    max-width: 90%;
+}
+
+.modal h3 {
+    margin-bottom: 20px;
+    margin-top: -7px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    text-align: start;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal input,
+.modal select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.modal input:focus,
+.modal select:focus {
+    border-color: #007bff;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: end;
+}
+
+.modalActions button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    background-color: #f9f9f9;
+    min-width: 60px;
+}
+
+.modalActions button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    margin-right: 10px;
+}
+
+.modalActions button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.modalActions button[type="cancel"] {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modalActions button[type="cancel"]:hover {
+    background-color: #5a6268;
+}
