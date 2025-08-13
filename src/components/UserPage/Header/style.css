@@ -5,7 +5,7 @@
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: auto;
     display: flex;
     align-items: center;
@@ -151,4 +151,12 @@
 }
 .login-btn:hover {
     background: #333;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    cursor: pointer;
 }

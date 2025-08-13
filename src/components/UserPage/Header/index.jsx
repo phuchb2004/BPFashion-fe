@@ -3,14 +3,16 @@ import "./style.css";
 import { ShoppingCart, Search, User } from "lucide-react";
 
 export default function Header() {
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
+    const [isLoggedIn, ] = useState(true);
     const [showMenu, setShowMenu] = useState(false);
 
     return (
         <>
             <header className="topbar">
                 <div className="container">
-                    <div className="logo">BP Fashion</div>
+                    <a className="logo-section" href="/">
+                        <img src="/logo.png" alt="Logo" className="logo"/>
+                    </a>
 
                     <nav className="menu">
                         <a href="/home">Trang chủ</a>
