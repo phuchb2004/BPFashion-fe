@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosSystem = axios.create({
-    baseURL: 'https://localhost:7134/Users',
+    baseURL: 'https://localhost:7134',
     timeout: 3000,
     headers: {
         'Content-Type': 'application/json'
@@ -29,7 +29,7 @@ axiosSystem.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = '/pages/login';
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }

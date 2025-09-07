@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './style.css';
-import ProductManagement from '../../components/ProductManagement';
-import OrderManagement from '../../components/OrderManagement';
-import UserManagement from '../../components/UserManagement';
+import ProductManagement from './ProductManagement';
+import OrderManagement from './OrderManagement';
+import UserManagement from './UserManagement';
 
 export default function Dashboard() {
     const [isDisplay, setIsDisplay] = useState('user');

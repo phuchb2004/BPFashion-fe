@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosSystem from '../../api/axiosSystem';
+import axiosSystem from '../../../api/axiosSystem';
 import ModalAddUsers from './ModalAddUsers';
 import ConfirmModal from './ConfirmModal';
 import './style.css';
@@ -15,7 +15,7 @@ export default function UserManagement() {
 
     const fetchUsers = async () => {
         try {
-            const res = await axiosSystem.get('/GetAllUser');
+            const res = await axiosSystem.get('/Users/GetAllUser');
             setUsers(res.user);
         }
         catch (error) {
@@ -30,7 +30,7 @@ export default function UserManagement() {
     //Handling Add Button
     const handleAdd = async (newUser) => {
         try {
-            const res = await axiosSystem.post('/CreateUser', newUser);
+            const res = await axiosSystem.post('/Users/CreateUser', newUser);
             if (res.status === 200 || res.status === 201) {
                 setUsers(prevUsers => [...prevUsers, res.user]);
                 setShowModalAdd(false);
@@ -49,11 +49,11 @@ export default function UserManagement() {
     //Handling Update Button
     const handleUpdate = async (updatedUser) => {
         try {
-            const res = await axiosSystem.put(`/UpdateUser/${selectedUserId}`, updatedUser);
+            const res = await axiosSystem.put(`/Users/UpdateUser/${selectedUserId}`, updatedUser);
             if (res.status === 200) {
                 setUsers(prevUsers =>
                     prevUsers.map(user =>
-                        user.id === selectedUserId ? res.data : user
+                        user.id === selectedUserId ? res : user
                     )
                 );
             }
@@ -68,10 +68,10 @@ export default function UserManagement() {
 
     const openModalUpdate = async (id) => {
         try {
-            const res = await axiosSystem.get(`/GetUserInfo/${id}`);
-            if (res.status === 200) {
+            const res = await axiosSystem.get(`/Users/GetUserInfo/${id}`);
+            if (res) {
                 setSelectedUserId(id);
-                setEditingUser(res.data);
+                setEditingUser(res);
                 setShowModalUpdate(true);
             }
         } catch (error) {
@@ -83,7 +83,7 @@ export default function UserManagement() {
     //Handling Delete Button
     const handleDelete = async () => {
         try {
-            const res = await axiosSystem.delete(`/DeleteUser/${selectedUserId}`);
+            const res = await axiosSystem.delete(`/Users/DeleteUser/${selectedUserId}`);
             if (res.status === 200) {
                 setUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUserId));
             }
@@ -127,14 +127,14 @@ export default function UserManagement() {
                     </thead>
                     <tbody>
                         {users.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
+                            <tr key={user.userId}>
+                                <td>{user.userId}</td>
                                 <td>{user.fullName}</td>
                                 <td>{user.email}</td>
                                 <td>{user.password}</td>
                                 <td>{new Date(user.dob).toLocaleDateString('vi-VN')}</td>
-                                <td>{user.gender === 1 ? 'Male' : 'Female'}</td>
-                                <td>{user.phoneNumber}</td>
+                                <td>{user.gender}</td>
+                                <td>{user.phone}</td>
                                 <td>{user.role}</td>
                                 <td className="actionButtons">
                                     <button className="actionButton edit" onClick={() => openModalUpdate(user.id)}>

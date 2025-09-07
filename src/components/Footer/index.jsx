@@ -1,8 +1,18 @@
 import React from 'react';
 import "./style.css";
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { 
+    Button,
+    Input
+} from 'antd';
+import { 
+    FacebookOutlined,
+    InstagramOutlined,
+    TwitterOutlined,
+    SearchOutlined
+} from '@ant-design/icons';
 
 export default function Footer() {
+
     return (
         <footer className="footer">
             <div className="footer-container">
@@ -21,13 +31,13 @@ export default function Footer() {
                     <h3>Liên hệ</h3>
                     <div className="social-icons">
                         <a href="https://www.facebook.com/react" target="_blank" rel="noreferrer">
-                            <Facebook/>
+                            <FacebookOutlined />
                         </a>
                         <a href="https://www.instagram.com/reactjsofficial/?hl=en" target="_blank" rel="noreferrer">
-                            <Instagram/>
+                            <InstagramOutlined />
                         </a>
                         <a href="https://x.com/reactjs" target="_blank" rel="noreferrer">
-                            <Twitter />
+                            <TwitterOutlined />
                         </a>
                     </div>
                 </div>
@@ -35,19 +45,19 @@ export default function Footer() {
                 <div className="footer-column">
                     <h3>Hỗ trợ</h3>
                     <ul className="support-section">
-                        <li><a href="#">Chính sách đổi trả</a></li>
-                        <li><a href="#">Chính sách bảo mật</a></li>
-                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                        <li><a href="/return-policy">Chính sách đổi trả</a></li>
+                        <li><a href="/privacy-policy">Chính sách bảo mật</a></li>
+                        <li><a href="/terms-of-service">Điều khoản dịch vụ</a></li>
                     </ul>
                 </div>
 
                 <div className="footer-column newsletter">
                     <h3>Đăng ký nhận tin</h3>
                     <form>
-                        <input type="email" placeholder="Nhập email của bạn"/>
-                        <button type="submit">Gửi</button>
+                        <Input placeholder="Nhập email của bạn"/>
+                        <Button type="primary">Gửi</Button>
                     </form>
-                </div>                
+                </div>
             </div>
             <div className="footer-bottom">
                 <p>© 2025 BP Fashion. All rights reserved.</p>

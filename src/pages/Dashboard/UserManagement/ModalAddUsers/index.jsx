@@ -9,7 +9,7 @@ const ModalAddUsers = ({onClose, onSubmit}) => {
         password: '',
         dob: '',
         gender: 1,
-        phoneNumber: '',
+        phone: '',
         role: 'user'
     });
 

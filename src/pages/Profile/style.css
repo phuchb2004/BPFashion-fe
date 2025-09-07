@@ -1,0 +1,19 @@
+.profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* gap: 40px; */
+    margin: 40px auto;
+}
+
+.profile-sidebar {
+    flex-shrink: 0;
+    width: 250px;
+    align-self: flex-start;
+}
+
+.profile-content {
+    flex: 1;
+    background: #fff;
+    padding: 24px;
+}
