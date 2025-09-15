@@ -1,146 +1,195 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './style.css'
+import { useNavigate, Link } from 'react-router-dom';
+import {
+  Form, Input, Button, Card, Row, Col, Divider,
+  notification, Typography, Space, Image, Layout
+} from 'antd';
+import {
+  UserOutlined,
+  LockOutlined,
+  GoogleOutlined
+} from '@ant-design/icons';
 import axiosSystem from '../../api/axiosSystem';
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { 
-    Input,
-    Button
-} from 'antd';
+import './style.css';
+
+const { Title, Text, Paragraph } = Typography;
+const { Content } = Layout;
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const email = localStorage.getItem("token");
-        if (email) {
-            navigate("/home-page");
-        }
-    }, [navigate]);
-
-    const handleValidate = () => {
-        if (!email.trim()) {
-            alert("Email không được để trống");
-            return false;
-        }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("Email không hợp lệ");
-            return false;
-        }
-        if (!password) {
-            alert("Password không được để trống");
-            return false;
-        }
-        return true;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/home-page");
     }
+  }, [navigate]);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        if (!handleValidate()) return;
+  const openNotification = (type, message, description) => {
+    api[type]({
+      message,
+      description,
+      placement: "topRight",
+      duration: 2
+    });
+  };
 
-        try {
-            const res = await axiosSystem.post('/Users/Login', {email, password});
+  const handleLogin = async (values) => {
+    setLoading(true);
+    try {
+      const res = await axiosSystem.post('/Users/Login', values);
 
-            if (res.user.userId) {
-                localStorage.setItem("token", res.token);
-                localStorage.setItem("userId", res.user.userId);
-                localStorage.setItem("email", res.user.email);
-                localStorage.setItem("password", res.user.password);
-                localStorage.setItem("role", res.user.role);
-                navigate("/home-page");
-            }
-            else {
-                alert("Khong tim thay thong tin user");
-            }
-        }
-        catch (error) {
-            console.log('Đăng nhập xảy ra lỗi',error);
-            alert("Sai email hoặc mật khẩu");
-        }
+      console.log('response: ', res);
+      
+      if (res) {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("userId", res.user.userId);
+        localStorage.setItem("fullName", res.user.fullName);
+        localStorage.setItem("email", res.user.email);
+        localStorage.setItem("password", res.user.password);
+        localStorage.setItem("dob", res.user.dob);
+        localStorage.setItem("gender", res.user.gender);
+        localStorage.setItem("role", res.user.role);
+        
+        openNotification("success", "Đăng nhập thành công!");
+        navigate("/home-page");
+      }
+    } catch (error) {
+      console.log('Đăng nhập xảy ra lỗi', error);
+      openNotification("error", "Đăng nhập thất bại", "Sai email hoặc mật khẩu");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const handleGoogleSuccess = async (credentialResponse) => {
-        try {
-            const decoded = jwtDecode(credentialResponse.credential);
-            console.log("GG user info", decoded);
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      console.log("Google user info", decoded);
 
-            const res = await axiosSystem.post("/LoginGoogle", {
-                credential: credentialResponse.credential,
-            });
+      const res = await axiosSystem.post("/LoginGoogle", {
+        credential: credentialResponse.credential,
+      });
+      
+      if (res) {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("email", res.user.email);
+        localStorage.setItem("role", res.user.role);
+        localStorage.setItem("fullName", res.user.fullName);
+      }
 
-            const { token, user } = res.data;
-            if (token) {
-                localStorage.setItem("token", token);
-                localStorage.setItem("email", user.email);
-                localStorage.setItem("role", user.role);
-            }
+      openNotification("success", "Đăng nhập Google thành công!");
+      navigate("/home-page");
+    } catch (error) {
+      console.log("Google login error", error);
+      openNotification("error", "Đăng nhập Google thất bại", "Vui lòng thử lại");
+    }
+  };
 
-            alert("Đăng nhập Google thành công!");
-            navigate("/home-page");
-        }
-        catch (error) {
-            console.log("gg login error", error);
-        }
-    };
+  const handleGoogleFailure = () => {
+    openNotification("error", "Đăng nhập Google thất bại", "Không thể đăng nhập bằng Google");
+  };
 
-    const handleGoogleFailure = () => {
-        alert("Đăng nhập Google thất bại");
-    };
+  return (
+    <Layout className="login-layout">
+      {contextHolder}
+      <Content className="login-content">
+        <Row justify="center" align="middle" className="login-row">
+          <Col xs={22} sm={18} md={14} lg={12} xl={10}>
+            <Card className="login-card">
+              <div className="login-card-header">
+                <Title level={2} className="login-title">
+                  Đăng nhập
+                </Title>
+                <Paragraph>
+                  Nếu chưa có tài khoản, <Link to="/register">đăng ký ngay</Link>
+                </Paragraph>
+              </div>
 
-    return (
-        <div className="login-container">
-            <div className="login-card">
-                <div className="login-left">
-                    <div className="overlay">
-                        <h1>BP Fashion</h1>
-                        <p>Thời trang nam phong cách</p>
-                    </div>
-                </div>
+              <Form
+                form={form}
+                name="login"
+                onFinish={handleLogin}
+                autoComplete="off"
+                layout="vertical"
+                size="large"
+              >
+                <Form.Item
+                  name="email"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập email!',
+                    },
+                    {
+                      type: 'email',
+                      message: 'Email không hợp lệ!',
+                    },
+                  ]}
+                >
+                  <Input
+                    prefix={<UserOutlined />}
+                    placeholder="Email"
+                  />
+                </Form.Item>
 
-                <div className="login-right">
-                    <h2>Đăng nhập</h2>
-                    <p>
-                        Nếu chưa có tài khoản, <a href="/register">đăng ký ngay</a>
-                    </p>
-                    <form onSubmit={handleLogin}>
-                        <div className="input-group">
-                            <Input
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
+                <Form.Item
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập mật khẩu!',
+                    },
+                  ]}
+                >
+                  <Input.Password
+                    prefix={<LockOutlined />}
+                    placeholder="Mật khẩu"
+                  />
+                </Form.Item>
 
-                        <div className="input-group">
-                            <Input
-                                placeholder="Mật khẩu"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="login-form-button"
+                    loading={loading}
+                    block
+                  >
+                    Đăng nhập
+                  </Button>
+                </Form.Item>
+              </Form>
 
-                        <Button type="primary" className="btn-login" onClick={handleLogin}>Đăng nhập</Button>
+              <Divider plain>Hoặc</Divider>
 
-                        <div className="forgot-password">
-
-                        </div>
-                    </form>
-
-                    <div className="social-login">
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={handleGoogleFailure}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+              <div className="social-login">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleFailure}
+                  render={(renderProps) => (
+                    <Button
+                      icon={<GoogleOutlined />}
+                      onClick={renderProps.onClick}
+                      disabled={renderProps.disabled}
+                      block
+                      size="large"
+                      className="google-login-button"
+                    >
+                      Đăng nhập với Google
+                    </Button>
+                  )}
+                />
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </Content>
+    </Layout>
+  );
 }

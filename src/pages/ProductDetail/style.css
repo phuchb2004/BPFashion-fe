@@ -1,0 +1,30 @@
+.product-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.loading-container, .error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    text-align: center;
+}
+
+.error-container h2 {
+    color: #f5222d;
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .product-detail-container {
+        padding: 10px;
+    }
+    
+    .ant-col {
+        margin-bottom: 16px;
+    }
+}

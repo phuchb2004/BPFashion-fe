@@ -1,0 +1,63 @@
+.policy-container {
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+  background-color: #f5f5f5;
+}
+
+.policy-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.policy-title {
+  text-align: center;
+  color: #1890ff;
+  margin-bottom: 0;
+}
+
+.policy-contact {
+  background-color: #f0f8ff;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #1890ff;
+  margin-top: 30px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .policy-container {
+    padding: 20px 10px;
+  }
+  
+  .policy-title {
+    font-size: 24px !important;
+  }
+  
+  .policy-card {
+    border-radius: 8px;
+  }
+}
+
+/* Custom styling for antd components */
+.ant-typography h2 {
+  color: #333;
+  margin-top: 24px !important;
+}
+
+.ant-typography h3 {
+  color: #666;
+}
+
+.ant-divider {
+  border-color: #e8e8e8;
+}
+
+.ant-card {
+  transition: box-shadow 0.3s ease;
+}
+
+.ant-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}

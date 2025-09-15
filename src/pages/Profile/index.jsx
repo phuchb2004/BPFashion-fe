@@ -20,8 +20,7 @@ import {
 const items = [
     { key: 'profile', icon: <UserOutlined/>, label: 'Tài khoản' },
     { key: 'address', icon: <HomeOutlined />, label: 'Địa chỉ'},
-    { key: 'orders', icon: <DropboxOutlined />, label: 'Quản lý đơn hàng' },
-    { key: 'fav-list', icon: <HeartOutlined />, label: 'Yêu thích'}
+    { key: 'orders', icon: <DropboxOutlined />, label: 'Quản lý đơn hàng' }
 ]
 
 export default function Profile() {

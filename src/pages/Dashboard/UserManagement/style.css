@@ -1,3 +1,4 @@
+/* Các style hiện tại giữ nguyên */
 .userTitle {
     font-size: 24px;
     font-weight: 600;
@@ -14,16 +15,12 @@
 .addButton {
     background-color: #28a745;
     color: white;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
     border: none;
     border-radius: 4px;
     padding: 8px 14px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.2s ease;
 }
 
 .addButton:hover {
@@ -42,7 +39,6 @@
 .tableUsers table {
     width: 100%;
     border-collapse: collapse;
-    font-family: monospace;
     font-size: 14px;
 }
 
@@ -59,15 +55,10 @@
 .tableUsers th {
     font-weight: 600;
     color: #333;
-    white-space: nowrap;
 }
 
 .tableUsers tbody tr:hover {
-    background-color: #CCCCCC;
-}
-
-.tableUsers td {
-    color: #000000;
+    background-color: #f9f9f9;
 }
 
 .tableUsers .actionButtons {
@@ -77,14 +68,42 @@
 
 .actionButton.edit {
     background-color: #ffc107;
-    cursor: pointer;
+    border-color: #ffc107;
+    color: #212529;
 }
 
 .actionButton.delete {
-    background-color: #dc3534;
-    cursor: pointer;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
 }
 
 .actionButton.edit:hover, .actionButton.delete:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+    .tableUsers {
+        overflow-x: auto;
+    }
+    
+    .tableUsers table {
+        min-width: 800px;
+    }
+    
+    .actionButtons {
+        flex-direction: column;
+    }
+    
+    .pagination-container {
+        justify-content: center;
+    }
 }

@@ -1,176 +1,250 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Button, Space, Modal, Form, Input, Select, DatePicker,
+  message, Tag, Card, Spin, Pagination
+} from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axiosSystem from '../../../api/axiosSystem';
-import ModalAddUsers from './ModalAddUsers';
-import ConfirmModal from './ConfirmModal';
+import moment from 'moment';
 import './style.css';
-import ModalUpdateUsers from './ModalUpdateUsers';
 
-export default function UserManagement() {
-    const [users, setUsers] = useState([]);
-    const [showModalAdd, setShowModalAdd] = useState(false);
-    const [showModalUpdate, setShowModalUpdate] = useState(false);
-    const [showConfirmMd, setShowConfirmMd] = useState(false);
-    const [selectedUserId, setSelectedUserId] = useState(null);
-    const [editingUser, setEditingUser] = useState(null);
+const { Option } = Select;
 
-    const fetchUsers = async () => {
-        try {
-            const res = await axiosSystem.get('/Users/GetAllUser');
-            setUsers(res.user);
-        }
-        catch (error) {
-            console.error(error);
-        }
-    };
+const UserManagement = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [form] = Form.useForm();
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+  // 👉 State phân trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10); // số bản ghi mỗi trang
 
-    //Handling Add Button
-    const handleAdd = async (newUser) => {
-        try {
-            const res = await axiosSystem.post('/Users/CreateUser', newUser);
-            if (res.status === 200 || res.status === 201) {
-                setUsers(prevUsers => [...prevUsers, res.user]);
-                setShowModalAdd(false);
-            }
-            fetchUsers();
-        }
-        catch (error) {
-            console.log(error); 
-        }
-    };
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosSystem.get('/Users/GetAllUser');
+      setUsers(response.user || []);
+    } catch (error) {
+      message.error('Lấy dữ liệu thất bại', error);
+      setUsers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const openModalAdd = () => {
-        setShowModalAdd(true);
-    };
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-    //Handling Update Button
-    const handleUpdate = async (updatedUser) => {
-        try {
-            const res = await axiosSystem.put(`/Users/UpdateUser/${selectedUserId}`, updatedUser);
-            if (res.status === 200) {
-                setUsers(prevUsers =>
-                    prevUsers.map(user =>
-                        user.id === selectedUserId ? res : user
-                    )
-                );
-            }
-            setShowModalUpdate(false);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setSelectedUserId(null);
-        }
-    };      
+  const handleAdd = () => {
+    setEditingUser(null);
+    form.resetFields();
+    setIsModalVisible(true);
+  };
 
+  const handleEdit = (record) => {
+    setEditingUser(record);
+    form.setFieldsValue({
+      ...record,
+      dob: record.dob ? moment(record.dob) : null
+    });
+    setIsModalVisible(true);
+  };
 
-    const openModalUpdate = async (id) => {
-        try {
-            const res = await axiosSystem.get(`/Users/GetUserInfo/${id}`);
-            if (res) {
-                setSelectedUserId(id);
-                setEditingUser(res);
-                setShowModalUpdate(true);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };  
+  const handleDelete = async (id) => {
+    try {
+      await axiosSystem.delete(`/Users/DeleteUser/${id}`);
+      message.success('Xóa thành công!');
+      fetchUsers();
+    } catch (error) {
+      message.error('Xóa thất bại', error);
+    }
+  };
 
+  const handleOk = async () => {
+    try {
+      const values = await form.validateFields();
+      const payload = {
+        ...values,
+        dob: values.dob ? values.dob.format('YYYY-MM-DD') : null
+      };
 
-    //Handling Delete Button
-    const handleDelete = async () => {
-        try {
-            const res = await axiosSystem.delete(`/Users/DeleteUser/${selectedUserId}`);
-            if (res.status === 200) {
-                setUsers(prevUsers => prevUsers.filter(user => user.id !== selectedUserId));
-            }
-            fetchUsers();
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setShowConfirmMd(false);
-            setSelectedUserId(null);
-        }
-    };
+      if (editingUser) {
+        await axiosSystem.put(`/Users/UpdateUser/${editingUser.userId}`, payload);
+        message.success('Cập nhật thành công');
+      } else {
+        await axiosSystem.post('/Users/CreateUser', payload);
+        message.success('Thêm thành công');
+      }
 
-    const openConfirmMd = (id) => {
-        setShowConfirmMd(true);
-        setSelectedUserId(id);
-    };
-    
-    return (
-        <>
-            <h2 className="userTitle"> User Management </h2>
-            <div className="buttons">
-                <button className="addButton" onClick={openModalAdd}>+ Add User</button>
+      setIsModalVisible(false);
+      fetchUsers();
+    } catch (error) {
+      message.error('Lưu thất bại', error);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  // 👉 Dữ liệu sau khi cắt phân trang
+  const paginatedUsers = users.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  return (
+    <div>
+      <div className="userTitle">
+        <h2>Danh sách nhân viên</h2>
+      </div>
+
+      <div className="buttons">
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={handleAdd}
+          className="addButton"
+        >
+          Thêm nhân viên
+        </Button>
+      </div>
+
+      <Card className="tableUsers">
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <Spin size="large" />
+          </div>
+        ) : users.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            Không tìm thấy nhân sự nào...
+          </div>
+        ) : (
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Họ và tên</th>
+                  <th>Email</th>
+                  <th>Ngày sinh</th>
+                  <th>Giới tính</th>
+                  <th>Số điện thoại</th>
+                  <th>Chức vụ</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedUsers.map(user => (
+                  <tr key={user.userId}>
+                    <td>{user.userId}</td>
+                    <td>{user.fullName}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      {user.dob
+                        ? new Date(user.dob).toLocaleDateString('vi-VN', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })
+                        : '-'}
+                    </td>
+                    <td>{user.gender}</td>
+                    <td>{user.phone}</td>
+                    <td>
+                      <Tag color={user.role === 'Admin' ? 'red' : 'blue'}>
+                        {user.role}
+                      </Tag>
+                    </td>
+                    <td>
+                      <Space size="middle" className="actionButtons">
+                        <Button
+                          type="primary"
+                          icon={<EditOutlined />}
+                          onClick={() => handleEdit(user)}
+                          className="actionButton edit"
+                        />
+                        <Button
+                          danger
+                          icon={<DeleteOutlined />}
+                          onClick={() => handleDelete(user.userId)}
+                          className="actionButton delete"
+                        />
+                      </Space>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ textAlign: 'center', marginTop: 20 }}>
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                total={users.length}
+                onChange={(page) => setCurrentPage(page)}
+              />
             </div>
+          </>
+        )}
+      </Card>
 
-            <div className="tableUsers">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Password</th>
-                            <th>DOB</th>
-                            <th>Gender</th>
-                            <th>Phone Number</th>
-                            <th>Role</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => (
-                            <tr key={user.userId}>
-                                <td>{user.userId}</td>
-                                <td>{user.fullName}</td>
-                                <td>{user.email}</td>
-                                <td>{user.password}</td>
-                                <td>{new Date(user.dob).toLocaleDateString('vi-VN')}</td>
-                                <td>{user.gender}</td>
-                                <td>{user.phone}</td>
-                                <td>{user.role}</td>
-                                <td className="actionButtons">
-                                    <button className="actionButton edit" onClick={() => openModalUpdate(user.id)}>
-                                        <i className="fas fa-edit"></i>
-                                    </button>
-                                    <button className="actionButton delete" onClick={() => openConfirmMd(user.id)}>
-                                        <i className="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+      <Modal
+        title={editingUser ? 'Edit User' : 'Add User'}
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width={600}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item name="userName" label="Username" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
 
-            {showModalAdd && (
-                <ModalAddUsers
-                    onClose={() => setShowModalAdd(false)}
-                    onSubmit={handleAdd}
-                />
-            )}
+          <Form.Item name="fullName" label="Full Name" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
 
-            {showModalUpdate && editingUser && (
-                <ModalUpdateUsers
-                    userData={editingUser}
-                    onClose={() => setShowModalUpdate(false)}
-                    onSubmit={handleUpdate}
-                />
-            )}
+          <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
+            <Input />
+          </Form.Item>
 
-            {showConfirmMd && (
-                <ConfirmModal
-                    onClose={() => setShowConfirmMd(false)}
-                    onConfirm={handleDelete}
-                />
-            )}
-        </>
-    );
-}
+          <Form.Item name="password" label="Password" rules={[{ required: !editingUser }]}>
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item name="dob" label="Date of Birth">
+            <DatePicker style={{ width: '100%' }} />
+          </Form.Item>
+
+          <Form.Item name="gender" label="Gender">
+            <Select placeholder="Select gender">
+              <Option value="Nam">Nam</Option>
+              <Option value="Nữ">Nữ</Option>
+              <Option value="Other">Other</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="phone" label="Phone Number">
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="address" label="Address">
+            <Input />
+          </Form.Item>
+
+          <Form.Item name="role" label="Role" rules={[{ required: true }]}>
+            <Select placeholder="Select role">
+              <Option value="Admin">Admin</Option>
+              <Option value="User">User</Option>
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
+  );
+};
+
+export default UserManagement;

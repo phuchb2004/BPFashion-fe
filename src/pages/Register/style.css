@@ -1,0 +1,74 @@
+.register-container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20px 0;
+}
+
+.register-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.register-title {
+  color: #1890ff;
+  margin-bottom: 8px !important;
+}
+
+.register-form {
+  margin-top: 20px;
+}
+
+.register-form .ant-form-item-label > label {
+  font-weight: 500;
+}
+
+.register-form-button {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  border-radius: 4px;
+  font-weight: 500;
+  height: 42px;
+}
+
+.register-form-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.register-footer {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.register-footer a {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+.site-form-item-icon {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.ant-input-affix-wrapper:hover, 
+.ant-input-affix-wrapper:focus, 
+.ant-input-affix-wrapper-focused {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner, 
+.ant-checkbox:hover .ant-checkbox-inner, 
+.ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: #1890ff;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}

@@ -1,105 +1,117 @@
-export const avatarDropdown = [
-    {
-        label: "Tài khoản của tôi",
-        key: 'profile',
-    },
-    {
-        label: "Đơn hàng",
-        key: 'orders',
-    },
-    {
-        label: "Đăng xuất",
-        key: 'logout',
-    }  
+import {
+  UserOutlined,
+  SolutionOutlined,
+  LogoutOutlined,
+  LoginOutlined,
+  UserAddOutlined,
+  EyeOutlined
+} from '@ant-design/icons';
+
+export const adminDropdown = [
+  {
+    label: "Tài khoản của tôi",
+    key: 'profile',
+    icon: <UserOutlined />
+  },
+  {
+    label: "Quản lý",
+    key: 'admin',
+    icon: <EyeOutlined />
+  },
+  {
+    label: "Đơn hàng",
+    key: 'orders',
+    icon: <SolutionOutlined />
+  },
+  {
+    type: 'divider'
+  },
+  {
+    label: "Đăng xuất",
+    key: 'logout',
+    icon: <LogoutOutlined />
+  } 
+];
+
+export const userDropdown = [
+  {
+    label: "Tài khoản của tôi",
+    key: 'profile',
+    icon: <UserOutlined />
+  },
+  {
+    label: "Đơn hàng",
+    key: 'orders',
+    icon: <SolutionOutlined />
+  },
+  {
+    type: 'divider'
+  },
+  {
+    label: "Đăng xuất",
+    key: 'logout',
+    icon: <LogoutOutlined />
+  }  
 ];
 
 export const notLoginDropdown = [
-    {
-        label: "Đăng nhập",
-        key: "login"
-    },
-    {
-        label: "Đăng ký",
-        key: "register"
-    }
+  {
+    label: "Đăng nhập",
+    key: "login",
+    icon: <LoginOutlined />
+  },
+  {
+    label: "Đăng ký",
+    key: "register",
+    icon: <UserAddOutlined />
+  }
 ]
 
 export const shirtDropdown = [
-    {
-        label: "Áo sơ mi",
-        key: 'ao-so-mi'
-    },
-    {
-        label: "Áo phông",
-        key: 'ao-phong'
-    },
-    {
-        label: "Áo khoác",
-        key: 'ao-khoac'
-    },
-    {
-        label: "Áo len",
-        key: 'ao-len'
-    }
+  {
+    label: "Áo sơ mi",
+    key: 'ao-so-mi'
+  },
+  {
+    label: "Áo phông",
+    key: 'ao-phong'
+  },
+  {
+    label: "Áo khoác",
+    key: 'ao-khoac'
+  }
 ]
 
 export const pantDropdown = [
-    {
-        label: "Quần tây",
-        key: 'quan-tay'
-    },
-    {
-        label: "Quần short",
-        key: 'quan-short'
-    },
-    {
-        label: "Quần jeans",
-        key: 'quan-jeans'
-    },
-    {
-        label: "Quần nỉ",
-        key: 'quan-ni'
-    }
+  {
+    label: "Quần tây",
+    key: 'quan-tay'
+  },
+  {
+    label: "Quần short",
+    key: 'quan-short'
+  },
+  {
+    label: "Quần jeans",
+    key: 'quan-jeans'
+  }
 ]
 
 export const accessoriesDropdown = [
-    {
-        label: "Đồ lót",
-        key: 'do-lot'
-    },
-    {
-        label: "Tất",
-        key: 'tat'
-    },
-    {
-        label: "Dây lưng",
-        key: 'day-lung'
-    },
-    {
-        label: "Ví da",
-        key: 'vi-da'
-    },
-    {
-        label: "Cà vạt",
-        key: 'ca-vat'
-    }
-]
-
-export const goodPriceDropdown = [
-    {
-        label: "Áo sơ mi",
-        key: 'so-mi-gp'
-    },
-    {
-        label: "Polo-Tshirt",
-        key: 'polo-tshirt-gp'
-    },
-    {
-        label: "Quần giá tốt",
-        key: 'pant-gp'
-    },
-    {
-        label: "Ưu đãi đặc biệt",
-        key: 'special-offers-gp'
-    }
+  {
+    label: "Đồ lót",
+    key: 'do-lot'
+  },
+  {
+    label: "Tất",
+    key: 'tat'
+  },
+  {
+    label: "Dây lưng",
+    key: 'day-lung'
+  },
+  {
+    label: "Ví da",
+    key: 'vi-da'
+  }
 ]

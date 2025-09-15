@@ -1,107 +1,78 @@
 .topbar {
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-bottom: 1px solid #eee;
     padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.container {
-    max-width: 1400px;
-    margin: auto;
+.topbar .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 15px;
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 20px;
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #e91e63;
+.logo-section .logo {
+    height: 50px;
     cursor: pointer;
 }
 
 .menu {
     display: flex;
     gap: 50px;
-    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    padding-right: 400px;
 }
 
 .menu a {
+    color: #333;
     text-decoration: none;
-    color: #555;
-    font-size: 15px;
-    font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
 }
 
 .menu a:hover {
-    color: #e91e63;
+    color: #d9232d;
 }
 
 .right-section {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .search-box {
-    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 5px 10px;
+    transition: border 0.2s;
 }
 
 .search-box input {
-    padding: 6px 10px 6px 30px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-left: 6px;
+    width: 160px;
 }
 
-.search-icon {
-    position: absolute;
-    left: 8px;
-    top: 6px;
-    width: 16px;
-    height: 16px;
-    color: #777;
+.search-box:focus-within {
+    border-color: #d9232d;
 }
 
-.cart {
-    position: relative;
+.profile .no-effect {
+    text-decoration: none;
     cursor: pointer;
-}
-
-.profile {
-    position: relative;
-    margin-left: 15px;
-}
-
-.profile-container {
-    position: relative;
-}
-
-.profile-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #f4f4f4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.logo {
-    height: 50px;
-    width: auto;
-    display: block;
-    object-fit: contain;
-    cursor: pointer;
-}
-
-.no-effect {
-    text-decoration: none !important;
     color: inherit;
 }
 
-.no-hover-effect:hover {
-    text-decoration: none !important;
-    color: inherit !important;
+.cart {
+    cursor: pointer;
 }
