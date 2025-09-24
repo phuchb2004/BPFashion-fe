@@ -1,35 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Form, Input,
-  Button,
-  Card,
-  Row,
-  Col,
-  List,
-  Divider,
-  Select,
-  Typography,
-  message,
-  Spin,
-  Steps,
-  Radio,
-  Space,
-  Image
+    Form, Input, Button, Card, Row, Col, List, Divider, Select, Typography,
+    message, Spin, Steps, Radio, Space, Image
 } from 'antd';
 import {
-  ShoppingCartOutlined,
-  UserOutlined,
-  CreditCardOutlined,
-  CheckCircleOutlined,
-  HomeOutlined,
-  PhoneOutlined,
-  MailOutlined,
-  ArrowLeftOutlined
+    ShoppingCartOutlined,
+    UserOutlined,
+    CreditCardOutlined,
+    CheckCircleOutlined,
+    HomeOutlined,
+    PhoneOutlined,
+    MailOutlined,
+    ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import './style.css'; // Tạo file CSS riêng
+import './style.css';
+import cities from '../../data/cities.json';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -55,7 +43,6 @@ export default function Checkout() {
     const fetchCartItems = async () => {
         try {
         setLoading(true);
-        // Giả lập dữ liệu giỏ hàng
         const mockCartItems = [
             { 
             cartitemid: 1, 
@@ -77,7 +64,6 @@ export default function Checkout() {
         
         setCartItems(mockCartItems);
         
-        // Tính tổng
         const subtotal = mockCartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const shipping = subtotal > 1000000 ? 0 : 30000;
         const tax = subtotal * 0.1;
@@ -99,14 +85,13 @@ export default function Checkout() {
     const onFinish = async (values) => {
         setLoading(true);
         try {
-        // Gọi API checkout
         const response = await fetch('/checkout/Checkout', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-            userId: 1, // Lấy từ authentication
+            userId: 1,
             shippingAddress: values.shippingAddress,
             paymentMethod: values.paymentMethod,
             CartItems: cartItems.map(item => ({
@@ -241,17 +226,17 @@ export default function Checkout() {
                             </Form.Item>
                             
                             <Form.Item
-                            name="city"
-                            label="Thành phố"
-                            rules={[{ required: true, message: 'Vui lòng chọn thành phố' }]}
+                                name="city"
+                                label="Thành phố"
+                                rules={[{ required: true, message: 'Vui lòng chọn thành phố' }]}
                             >
-                            <Select size="large" placeholder="Chọn thành phố">
-                                <Option value="hanoi">Hà Nội</Option>
-                                <Option value="hcm">TP. Hồ Chí Minh</Option>
-                                <Option value="danang">Đà Nẵng</Option>
-                                <Option value="cantho">Cần Thơ</Option>
-                                <Option value="haiphong">Hải Phòng</Option>
-                            </Select>
+                                <Select size="large" placeholder="Chọn thành phố">
+                                    {cities.map(city => (
+                                        <Option key={city.code} value={city.code}>
+                                            {city.name}
+                                        </Option>
+                                    ))}
+                                </Select>
                             </Form.Item>
                             
                             <Form.Item>

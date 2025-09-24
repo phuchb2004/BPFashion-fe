@@ -79,13 +79,11 @@
   height: 48px;
   font-weight: 600;
   margin-top: 10px;
-  background-color: #ff4d4f;
-  border-color: #ff4d4f;
+  background-color: #1877f2;
 }
 
 .checkout-next-btn:hover {
-  background-color: #ff7875;
-  border-color: #ff7875;
+  background-color: #145dbf;
 }
 
 .payment-options {
@@ -148,13 +146,11 @@
   flex: 1;
   height: 40px;
   font-weight: 600;
-  background-color: #52c41a;
-  border-color: #52c41a;
+  background-color: #1877f2;
 }
 
 .checkout-submit-btn:hover {
-  background-color: #73d13d;
-  border-color: #73d13d;
+  background-color: #145dbf;
 }
 
 .confirmation-section {
