@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axiosSystem from '../../api/axiosSystem';
 import './style.css';
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../layout/header";
+import Footer from "../layout/footer";
 import { 
     UserOutlined,
     HeartOutlined,

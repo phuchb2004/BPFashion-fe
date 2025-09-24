@@ -1,34 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Carousel, Button } from 'antd';
+import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import './style.css';
 import banner1 from "./images/banner1.png";
 import banner2 from "./images/banner2.png";
 import banner3 from "./images/banner3.png";
 
 export default function Banner() {
+    const carouselRef = React.useRef();
     const images = [banner1, banner2, banner3];
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const next = () => {
+        carouselRef.current.next();
+    };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % images.length);
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, [images.length]);
+    const prev = () => {
+        carouselRef.current.prev();
+    };
 
     return (
-        <div className="banner-slider">
-            <img src={images[currentIndex]} alt="Banner" />
-
-            <div className="dots">
-                {images.map((_, index) => (
-                    <span
-                        key={index}
-                        className={index === currentIndex ? "dot active" : "dot"}
-                        onClick={() => {setCurrentIndex(index)}}
-                    ></span>
+        <div className="banner-bottom-arrows">
+            <Carousel 
+                ref={carouselRef}
+                autoplay 
+                dots={false}
+                effect="fade"
+                autoplaySpeed={5000}
+            >
+                {images.map((image, index) => (
+                <div key={index} className="banner-slide">
+                    <img src={image} alt={`Banner ${index + 1}`} />
+                </div>
                 ))}
+            </Carousel>
+            <div className="bottom-arrows-container">
+                <Button 
+                className="bottom-arrow arrow-prev" 
+                type="text"
+                icon={<ArrowLeftOutlined />}
+                onClick={prev}
+                />
+                <Button 
+                className="bottom-arrow arrow-next" 
+                type="text"
+                icon={<ArrowRightOutlined />}
+                onClick={next}
+                />
             </div>
         </div>
     );

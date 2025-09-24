@@ -1,33 +1,75 @@
-.banner-slider {
+.banner-bottom-arrows {
     position: relative;
-    width: 100%;
-    height: 800px;
-    overflow: hidden;
+    width: calc(100% - 80px);
+    max-width: 1400px;
+    height: 600px;
+    margin: 0 auto;
 }
 
-.banner-slider img {
+.banner-slide {
+    height: 600px;
+}
+
+.banner-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.dots {
+.bottom-arrows-container {
     position: absolute;
-    bottom: 15px;
-    width: 100%;
-    text-align: center;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
 }
 
-.dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    cursor: pointer;
+.bottom-arrow {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white !important;
+    transition: all 0.3s ease;
 }
 
-.dot.active {
-    background: #3498db;
+.bottom-arrow:hover {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: white !important;
+    transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.banner-bottom-arrows {
+    width: calc(100% - 40px);
+    height: 400px;
+}
+
+.banner-slide {
+    height: 400px;
+}
+
+.bottom-arrows-container {
+    bottom: 20px;
+    right: 20px;
+}
+
+.bottom-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+}
+}
+
+@media (max-width: 480px) {
+    .banner-bottom-arrows {
+    width: calc(100% - 20px);
+}
 }

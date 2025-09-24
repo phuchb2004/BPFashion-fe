@@ -2,19 +2,20 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import Dashboard from './components/dashboard';
 import HomePage from './components/homepage';
-import ShirtsPage from './pages/ShirtsPage';
-import PantsPage from './pages/PantsPage';
-import AccessoriesPage from './pages/AccessoriesPage';
+import ShirtsPage from './components/shirt';
+import PantsPage from './components/pants';
+import AccessoriesPage from './components/accessories';
 import Login from './components/login';
 import Register from './components/register';
 import Profile from './components/profile';
-import ProductDetail from './pages/ProductDetail';
+import ProductDetail from './components/product-detail';
 import Checkout from './components/checkout';
-import ReturnPolicy from './pages/ReturnPolicy';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
+import ReturnPolicy from './components/return-policy';
+import PrivacyPolicy from './components/privacy-policy';
+import TermsOfService from './components/terms-of-service';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import './i18n';
 
 createRoot(document.getElementById('root')).render(
 <StrictMode>
@@ -22,7 +23,7 @@ createRoot(document.getElementById('root')).render(
       <Router>
         <Routes>
           <Route path="/" element={<HomePage/>}/>
-          <Route path="/home-page" element={<HomePage/>}/>
+          <Route path="/homepage" element={<HomePage/>}/>
           <Route path="/shirts" element={<ShirtsPage/>}/>
           <Route path="/pants" element={<PantsPage/>}/>
           <Route path="/accessories" element={<AccessoriesPage/>}/>

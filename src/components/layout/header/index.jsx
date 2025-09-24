@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./style.css";
-import axiosSystem from "../../api/axiosSystem";
-import Cart from "../Cart";
+import axiosSystem from "../../../api/axiosSystem";
+import Cart from "../../cart";
 import {
     UserOutlined,
     ShoppingCartOutlined,
-    SearchOutlined
+    SearchOutlined,
+    DownOutlined
 } from "@ant-design/icons";
 import {
     Dropdown,
@@ -22,13 +24,15 @@ import {
     pantDropdown,
     accessoriesDropdown,
     notLoginDropdown
-} from "./DropdownItems";
+} from "./dropdown-items";
+import logo from './../../../assets/logo-new.png';
 
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [open, setOpen] = useState(false);
     const [cartItems, setCartItems] = useState([]);
     const [userRole, setUserRole] = useState(null);
+    const { t } = useTranslation();
 
     const navigate = useNavigate();
     const [messageLogout, contextHolder] = notification.useNotification();
@@ -49,7 +53,7 @@ export default function Header() {
         const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
         
-        setIsLoggedIn(token);
+        setIsLoggedIn(!!token); // Sửa thành boolean
         setUserRole(role);
 
         if (token) {
@@ -131,7 +135,7 @@ export default function Header() {
         setIsLoggedIn(false);
         setUserRole(null);
         setCartItems([]);
-        navigate("/home-page");
+        navigate("/homepage");
     };
 
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -153,50 +157,69 @@ export default function Header() {
     const getUserDropdown = () => {
         if (isLoggedIn) {
             if (userRole === "Admin") {
-                return adminDropdown;
+                return adminDropdown(t);
             }
-            return userDropdown;
+            return userDropdown(t);
         }
-        return notLoginDropdown;
+        return notLoginDropdown(t);
     };
 
     return (
         <header className="topbar">
             {contextHolder}
             <div className="container">
-                <a className="logo-section" href="/home-page">
-                    <img src="/logo-new.png" alt="Logo" className="logo" />
-                </a>
-
-                <nav className="menu">
-                    <a href="/home-page">Trang chủ</a>
+                <nav className="menu left-menu">
+                    <a href="/homepage">
+                        {t("header.menu.home")}
+                    </a>
                     <Dropdown 
-                        menu={{ items: shirtDropdown, onClick: handleDropdown }} 
+                        menu={{ items: shirtDropdown(t), onClick: handleDropdown }} 
                         trigger={["hover"]}
                         overlayClassName="category-dropdown"
                     >
-                        <a onClick={(e) => { e.preventDefault(); navigate("/shirts"); }}>Áo</a>
+                        <a onClick={(e) => { e.preventDefault(); navigate("/shirts"); }}>
+                            <Space>
+                                {t("header.menu.shirts")}
+                                <DownOutlined/>
+                            </Space>
+                        </a>
                     </Dropdown>
+                    
                     <Dropdown 
-                        menu={{ items: pantDropdown, onClick: handleDropdown }} 
+                        menu={{ items: pantDropdown(t), onClick: handleDropdown }} 
                         trigger={["hover"]}
                         overlayClassName="category-dropdown"
                     >
-                        <a onClick={(e) => { e.preventDefault(); navigate("/pants"); }}>Quần</a>
+                        <a onClick={(e) => { e.preventDefault(); navigate("/pants"); }}>
+                            <Space>
+                                {t("header.menu.pants")}
+                                <DownOutlined/>
+                            </Space>
+                        </a>
                     </Dropdown>
+                    
                     <Dropdown 
-                        menu={{ items: accessoriesDropdown, onClick: handleDropdown }} 
+                        menu={{ items: accessoriesDropdown(t), onClick: handleDropdown }} 
                         trigger={["hover"]}
                         overlayClassName="category-dropdown"
                     >
-                        <a onClick={(e) => { e.preventDefault(); navigate("/accessories"); }}>Phụ kiện</a>
+                        <a onClick={(e) => { e.preventDefault(); navigate("/accessories"); }}>
+                            <Space>
+                                {t("header.menu.accessories")}
+                                <DownOutlined/>
+                            </Space>
+                        </a>
                     </Dropdown>
                 </nav>
-
+                
+                <a className="logo-section" href="/homepage">
+                    <img src={logo} alt="Logo" className="logo" />
+                </a>
+                
                 <div className="right-section">
                     <div className="search-box">
                         <SearchOutlined className="search-icon" />
-                        <input type="text" placeholder="Tìm kiếm..." />
+                        <input type="text" placeholder={t("header.search.placeholder")} />
                     </div>
 
                     <div className="profile">

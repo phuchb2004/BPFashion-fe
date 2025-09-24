@@ -19,8 +19,8 @@ import {
     StarFilled
     } from "@ant-design/icons";
 import axiosSystem from "../../api/axiosSystem";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../layout/header";
+import Footer from "../layout/footer";;
 import "./style.css";
 
 const { Title, Text, Paragraph } = Typography;
@@ -211,7 +211,7 @@ const fetchRelatedProducts = async () => {
                 <Card 
                 cover={
                     <Image
-                    src={product.imageUrl || "/placeholder-product.jpg"}
+                    src={product.imageUrl}
                     alt={product.productName}
                     style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                     placeholder={

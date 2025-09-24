@@ -1,8 +1,8 @@
 // src/pages/Pants/PantsPage.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../layout/header";
+import Footer from "../layout/footer";
 import {
   Row, Col, Card, Spin, Empty, Typography, Tabs,
   Button, Space, Rate, Tag, notification, Breadcrumb
@@ -84,8 +84,8 @@ export default function PantsPage() {
         <div className="container">
           <Breadcrumb
             items={[
-              { title: <HomeOutlined />, onClick: () => navigate("/home-page") },
-              { title: 'Trang chủ', onClick: () => navigate("/home-page") },
+              { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
+              { title: 'Trang chủ', onClick: () => navigate("/homepage") },
               { title: 'Quần' },
             ]}
           />

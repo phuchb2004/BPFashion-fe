@@ -14,8 +14,8 @@ import {
     ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from "../layout/header";
+import Footer from "../layout/footer";
 import './style.css';
 import cities from '../../data/cities.json';
 

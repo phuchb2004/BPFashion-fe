@@ -1,0 +1,107 @@
+{
+    "login": {
+        "overlay": {
+            "name": "BP Fashion",
+            "slogan": "Khám phá thế giới thời trang đẳng cấp"
+        },
+        "title": "Đăng nhập",
+        "text": {
+            "ifNoAccount": "Nếu chưa có tài khoản,",
+            "registerNow": "đăng ký ngay",
+            "orDivider": "Hoặc",
+            "forgotPass": "Quên mật khẩu"
+        },
+        "email": {
+            "placeholder": "Email"
+        },
+        "password": {
+            "placeholder": "Mật khẩu"
+        },
+        "button": {
+            "login": "Đăng nhập",
+            "google": "Đăng nhập với google"
+        }
+        
+    },
+    "register": {
+        "title": "Đăng Ký",
+            "button": {
+            "register": "Đăng Ký",
+            "google": "Đăng ký với Google"
+        },
+        "text": {
+            "ifHaveAccount": "Đã có tài khoản?",
+            "loginNow": "Đăng nhập ngay",
+            "orDivider": "Hoặc đăng ký với"
+        }
+    },
+    "logout": {
+
+    },
+    "dashboard": {
+
+    },
+    "homepage": {
+    
+    },
+    "cart": {
+        "title": "Giỏ hàng"
+    },
+    "header": {
+        "menu": {
+            "home": "Trang chủ",
+            "shirts": "Áo",
+            "pants": "Quần",
+            "accessories": "Phụ kiện",
+            "dropdown": {
+                "somi": "Áo sơ mi",
+                "tshirt": "Áo phông",
+                "jacket": "Áo khoác",
+                "dress-pant": "Quần tây",
+                "short": "Quần short",
+                "jeans": "Quần jeans",
+                "underwear": "Đồ lót",
+                "socks": "Tất",
+                "belt": "Dây lưng",
+                "wallet": "Ví"
+            }
+        },
+        "search": {
+            "placeholder": "Tìm kiếm..."
+        },
+        "dropdown": {
+            "profile": "Tài khoản",
+            "admin": "Quản trị",
+            "order": "Đơn hàng",
+            "login": "Đăng nhập",
+            "logout": "Đăng xuất",
+            "register": "Đăng ký"
+        }
+    },
+    "footer": {
+        "hotline": "Hotline: 1900 1069",
+        "open-time": "8:30 - 19:00 tất cả các ngày trong tuần",
+        "address": {
+            "north": "Tầng 12 tòa nhà The Nine, số 9 Phạm Văn Đồng, Mai Dịch, Phú Diễn, Hà Nội",
+            "south": "Tầng 6 tòa nhà Landmark 81, Tân Cảng, Bình Thạnh, TP.HCM"
+        },
+        "contact": {
+            "title": "Thông tin liên hệ"
+        },
+        "news": {
+            "title": "Đăng ký nhận tin",
+            "placeholder": "Email của bạn",
+            "button": "Đăng ký"
+        },
+        "support": {
+            "title": "Hỗ trợ",
+            "return": "Chính sách đổi trả",
+            "private": "Chính sách bảo mật",
+            "term": "Điều khoản dịch vụ"
+        },
+        "payment": {
+            "title": "Phương thức thanh toán"
+        },
+        "copyright": "© 2025 BP Fashion. All rights reserved."
+    }
+}

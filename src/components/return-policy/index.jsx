@@ -1,8 +1,8 @@
 import React from "react";
 import { Typography, Divider, Card } from "antd";
 import "./style.css";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../layout/header";
+import Footer from "../layout/footer";
 
 const { Title, Paragraph } = Typography;
 

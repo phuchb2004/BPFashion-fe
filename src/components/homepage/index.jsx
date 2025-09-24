@@ -1,13 +1,13 @@
 import "./style.css";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../layout/header";
+import Footer from "../layout/footer";
 import Banner from "../Banner";
 import Chatbot from "../Chatbot";
 import {
-  Row, Col, Card, Spin, Empty, Typography, Tabs,
-  Button, Space, Rate, Tag, notification, Pagination
+  Row, Col, Card, Spin, Empty, Typography,
+  Button, Space, Rate, Tag, notification
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -21,87 +21,96 @@ const { Meta } = Card;
 const { Title, Text } = Typography;
 
 export default function HomePage() {
-  const [products, setProducts] = useState([]);
+  const [newProducts, setNewProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categoryFilter, setCategoryFilter] = useState("Tất cả");
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 0,
-    totalPages: 0
-  });
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const navigate = useNavigate();
 
-  // FIX: Sử dụng useCallback với dependencies đúng
-  const fetchProducts = useCallback(async (page, category) => {
+  const fetchNewProducts = useCallback(async () => {
     setLoading(true);
-    
-    const apiCategory = category === "Tất cả" ? "all" : category;
-    
     try {
       const res = await axiosSystem.get(
-        `/Products/GetProductsPaged?page=${page}&pageSize=10&category=${apiCategory}`
+        `/Products/GetProductsPaged?page=1&pageSize=8&category=all`
       );
       
-      const productsWithCategory = res.products.map(product => ({
+      const newProductsWithDetails = res.products.slice(0, 8).map(product => ({
         ...product,
         categoryName: product.categoryId === 1 ? "Áo sơ mi" : 
-                     product.categoryId === 2 ? "Quần âu" : "Phụ kiện",
-        brandName: product.brandId === 1 ? "Torano" : "High Fashion",
-        isNew: product.productId % 3 === 0,
+        product.categoryId === 2 ? "Quần âu" : "Phụ kiện",
+        brandName: "D2 SHOP",
+        isNew: true,
         discount: product.productId % 4 === 0 ? 15 : 0,
         rating: 4 + (product.productId % 5) / 10
       }));
       
-      setProducts(productsWithCategory);
-      setPagination(prev => ({
-        ...prev,
-        current: res.pagination.currentPage,
-        total: res.pagination.totalCount,
-        totalPages: res.pagination.totalPages
-      }));
+      setNewProducts(newProductsWithDetails);
     } catch (error) {
-      console.error("Lỗi khi lấy sản phẩm", error);
+      console.error("Lỗi khi lấy sản phẩm mới", error);
       notification.error({
         message: 'Lỗi',
-        description: 'Không thể tải danh sách sản phẩm. Vui lòng thử lại sau.'
+        description: 'Không thể tải sản phẩm mới. Vui lòng thử lại sau.'
       });
     } finally {
       setLoading(false);
     }
-  }, []); // Empty dependencies - hàm không bao giờ thay đổi
-
-  // FIX: useEffect chỉ phụ thuộc vào categoryFilter
-  useEffect(() => {
-    fetchProducts(1, categoryFilter);
-  }, [categoryFilter]); // Loại bỏ fetchProducts khỏi dependencies
-
-  // FIX: Hàm xử lý phân trang
-  const handlePageChange = useCallback((page) => {
-    setPagination(prev => ({ ...prev, current: page }));
-    fetchProducts(page, categoryFilter);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [categoryFilter, fetchProducts]);
-
-  // FIX: Hàm xử lý category
-  const handleCategoryChange = useCallback((key) => {
-    setCategoryFilter(key);
   }, []);
 
-  // FIX: Memoize categories
-  const categories = useMemo(() => [
-    { key: "Tất cả", label: "Tất cả" },
-    { key: "Áo sơ mi", label: "Áo sơ mi" },
-    { key: "Quần âu", label: "Quần âu" },
-    { key: "Phụ kiện", label: "Phụ kiện" },
-  ], []);
+  const fetchCategories = useCallback(async () => {
+    setCategoriesLoading(true);
+    try {
+      const mockCategories = [
+        {
+          id: 1,
+          name: "ÁO SƠ MI",
+          image: "../assets/products/shirts/ao-somi/image.png",
+          description: "Áo sơ mi công sở, dự tiệc",
+          productCount: 99
+        },
+        {
+          id: 2,
+          name: "ÁO POLO",
+          image: "../assets/products/shirts/ao-polo/image.png",
+          description: "Áo polo thể thao, casual",
+          productCount: 18
+        },
+        {
+          id: 3,
+          name: "ÁO THUN",
+          image: "../assets/products/shirts/ao-thun/image.png",
+          description: "Áo thun basic, thoải mái",
+          productCount: 32
+        },
+        {
+          id: 4,
+          name: "ÁO NỈ",
+          image: "../assets/products/shirts/ao-ni/image.png",
+          description: "Áo nỉ ấm áp mùa đông",
+          productCount: 15
+        }
+      ];
+      
+      setCategories(mockCategories);
+    } catch (error) {
+      console.error("Lỗi khi lấy danh mục", error);
+      notification.error({
+        message: 'Lỗi',
+        description: 'Không thể tải danh mục sản phẩm. Vui lòng thử lại sau.'
+      });
+    } finally {
+      setCategoriesLoading(false);
+    }
+  }, []);
 
-  // FIX: Memoize formatPrice
+  useEffect(() => {
+    fetchNewProducts();
+    fetchCategories();
+  }, [fetchNewProducts, fetchCategories]);
+
   const formatPrice = useCallback((price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   }, []);
 
-  // FIX: Hàm thêm vào giỏ hàng
   const handleAddToCart = useCallback((product, e) => {
     e?.stopPropagation();
     notification.success({
@@ -110,13 +119,15 @@ export default function HomePage() {
     });
   }, []);
 
-  // FIX: Hàm xem chi tiết sản phẩm
   const handleViewProduct = useCallback((productId) => {
     navigate(`/product/${productId}`);
   }, [navigate]);
 
-  // FIX: Tối ưu hiển thị sản phẩm
-  const renderProducts = useMemo(() => {
+  const handleCategoryClick = useCallback((categoryName) => {
+    navigate(`/products?category=${encodeURIComponent(categoryName)}`);
+  }, [navigate]);
+
+  const renderNewProducts = useMemo(() => {
     if (loading) {
       return (
         <div className="loading-container">
@@ -125,82 +136,85 @@ export default function HomePage() {
       );
     }
 
-    if (products.length === 0) {
-      return <Empty description="Không có sản phẩm nào" />;
+    if (newProducts.length === 0) {
+      return <Empty description="Không có sản phẩm mới" />;
     }
 
     return (
-      <>
-        <Row gutter={[24, 32]} className="products-grid">
-          {products.map((product) => (
+      <Row gutter={[24, 32]} className="new-products-grid">
+        {newProducts.map((product) => (
+          <Col key={product.productId} xs={12} sm={8} md={6} lg={6}>
             <ProductCard
-              key={product.productId}
               product={product}
               onAddToCart={handleAddToCart}
               onViewProduct={handleViewProduct}
               formatPrice={formatPrice}
             />
-          ))}
-        </Row>
-
-        <div className="pagination-container">
-          <Pagination
-            current={pagination.current}
-            pageSize={pagination.pageSize}
-            total={pagination.total}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-            showQuickJumper
-            className="products-pagination"
-          />
-        </div>
-      </>
+          </Col>
+        ))}
+      </Row>
     );
-  }, [loading, products, pagination, handleAddToCart, handleViewProduct, formatPrice, handlePageChange]);
+  }, [loading, newProducts, handleAddToCart, handleViewProduct, formatPrice]);
+
+  const renderCategories = useMemo(() => {
+    if (categoriesLoading) {
+      return (
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>
+      );
+    }
+
+    return (
+      <Row gutter={[24, 24]} className="categories-grid">
+        {categories.map((category) => (
+          <Col key={category.id} xs={12} md={6} lg={6}>
+            <CategoryCard
+              category={category}
+              onClick={handleCategoryClick}
+            />
+          </Col>
+        ))}
+      </Row>
+    );
+  }, [categoriesLoading, categories, handleCategoryClick]);
 
   return (
     <div className="homePageContainer">
       <Header />
       <Banner />
       
-      <div className="product-section">
+      {/* Phần SẢN PHẨM MỚI */}
+      <div className="new-products-section">
         <div className="section-header">
           <Title level={1} className="section-title">
-            SẢN PHẨM NỔI BẬT
+            SẢN PHẨM MỚI
           </Title>
-          <Text className="section-subtitle">
-            Khám phá các sản phẩm thời trang nam với thiết kế hiện đại và chất lượng cao cấp
-          </Text>
         </div>
         
-        <Tabs
-          defaultActiveKey="Tất cả"
-          centered
-          items={categories}
-          onChange={handleCategoryChange}
-          className="category-tabs"
-        />
+        {renderNewProducts}
+      </div>
+      <div className="categories-section">
+        <div className="section-header">
+          <Title level={2} className="section-title">
+            DANH MỤC SẢN PHẨM
+          </Title>
+          <Text className="section-subtitle">
+            Lựa chọn theo danh mục yêu thích của bạn
+          </Text>
+        </div>
 
-        {renderProducts}
+        {renderCategories}
       </div>
 
-      <FeaturedCategories onCategoryChange={handleCategoryChange} />
       <Chatbot/>
       <Footer />
     </div>
   );
 }
 
-// FIX: Tách ProductCard thành Pure Component
 const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPrice }) => {
-  // FIX: Memoize image source để tránh request liên tục
-  const imageSrc = useMemo(() => 
-    product.imageUrl || "/default-product.jpg"
-  , [product.imageUrl]);
-
-  const handleImageError = useCallback((e) => {
-    e.target.src = "/default-product.jpg";
-  }, []);
+  const imageSrc = useMemo(() => product.imageUrl, [product.imageUrl]);
 
   const handleCardClick = useCallback(() => {
     onViewProduct(product.productId);
@@ -226,18 +240,9 @@ const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPri
             alt={product.productName}
             src={imageSrc}
             className="product-image"
-            onError={handleImageError}
-            loading="lazy" // FIX: Thêm lazy loading
+            loading="lazy"
           />
           <div className="product-overlay">
-            <Button 
-              type="primary" 
-              icon={<ShoppingCartOutlined />}
-              className="action-button"
-              onClick={handleAddToCartClick}
-            >
-              Thêm vào giỏ
-            </Button>
             <Space>
               <Button 
                 shape="circle" 
@@ -261,25 +266,15 @@ const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPri
           )}
         </div>
       }
-      actions={[
-        <div className="product-card-footer">
-          <Rate 
-            disabled 
-            defaultValue={product.rating} 
-            character={<StarFilled />}
-            className="product-rating"
-          />
-          <Text type="secondary" className="product-brand">
-            {product.brandName}
-          </Text>
-        </div>
-      ]}
     >
       <Meta
         title={
-          <Text className="product-name" ellipsis={{ tooltip: product.productName }}>
-            {product.productName}
-          </Text>
+          <div className="product-header">
+            <Text className="product-brand">{product.brandName}</Text>
+            <Text className="product-name" ellipsis={{ tooltip: product.productName }}>
+              {product.productName}
+            </Text>
+          </div>
         }
         description={
           <div className="product-info">
@@ -299,14 +294,12 @@ const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPri
                 </Text>
               )}
             </div>
-            <div className="product-details">
-              <Text type="secondary" className="product-material">
-                Chất liệu: {product.material}
-              </Text>
-              <Text type="secondary" className="product-size">
-                Size: {product.size}
-              </Text>
-            </div>
+            <Rate 
+              disabled 
+              defaultValue={product.rating} 
+              character={<StarFilled />}
+              className="product-rating"
+            />
             <Button 
               type="primary" 
               block 
@@ -323,41 +316,36 @@ const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPri
   );
 });
 
-// FIX: Tách FeaturedCategories thành Pure Component
-const FeaturedCategories = React.memo(({ onCategoryChange }) => {
-  const categories = useMemo(() => [
-    { key: "Áo sơ mi", label: "ÁO SƠ MI", image: "/products/shirts/ao-somi/image.png" },
-    { key: "Quần âu", label: "QUẦN ÂU", image: "/products/pants/quan-tay/image.png" },
-    { key: "Phụ kiện", label: "PHỤ KIỆN", image: "/products/accessories/image.jpg" },
-  ], []);
-
-  const handleCategoryClick = useCallback((categoryKey) => {
-    onCategoryChange(categoryKey);
-  }, [onCategoryChange]);
+const CategoryCard = React.memo(({ category, onClick }) => {
+  const handleClick = useCallback(() => {
+    onClick(category.name);
+  }, [onClick, category.name]);
 
   return (
-    <div className="featured-categories">
-      <Title level={2} className="section-title">DANH MỤC NỔI BẬT</Title>
-      <Row gutter={[24, 24]} className="categories-grid">
-        {categories.map((category) => (
-          <Col key={category.key} xs={12} md={8}>
-            <Card 
-              hoverable 
-              className="category-card"
-              onClick={() => handleCategoryClick(category.key)}
-              cover={
-                <img 
-                  alt={category.label} 
-                  src={category.image}
-                  loading="lazy"
-                />
-              }
-            >
-              <Meta title={category.label} />
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </div>
+    <Card
+      hoverable
+      className="category-card"
+      onClick={handleClick}
+      cover={
+        <div className="category-image-container">
+          <img
+            alt={category.name}
+            src={category.image}
+            className="category-image"
+            loading="lazy"
+          />
+        </div>
+      }
+    >
+      <Meta
+        title={category.name}
+        description={
+          <div className="category-info">
+            <Text className="category-description">{category.description}</Text>
+            <Text className="product-count">{category.productCount} sản phẩm</Text>
+          </div>
+        }
+      />
+    </Card>
   );
 });

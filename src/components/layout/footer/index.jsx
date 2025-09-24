@@ -18,14 +18,18 @@ import {
     ClockCircleOutlined
 } from "@ant-design/icons";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import logo from './../../../assets/logo-new.png';
+import { useTranslation } from "react-i18next";
 
 const { Title, Paragraph, Text } = Typography;
 
 export default function Footer() {
+    const { t } = useTranslation();
+
     const supportLinks = [
-        { text: "Chính sách đổi trả", href: "/return-policy" },
-        { text: "Chính sách bảo mật", href: "/privacy-policy" },
-        { text: "Điều khoản dịch vụ", href: "/terms-of-service" }
+        { text: t("footer.support.return"), href: "/return-policy" },
+        { text: t("footer.support.private"), href: "/privacy-policy" },
+        { text: t("footer.support.term"), href: "/terms-of-service" }
     ];
 
     const paymentMethods = [
@@ -42,30 +46,30 @@ export default function Footer() {
                     <Row gutter={[32, 32]} justify="space-between">
                         <Col xs={24} md={8} lg={7}>
                             <Space direction="vertical" className="footer-column" size="middle">
-                                <Image src="/logo-new.png" alt="Logo" preview={false} width={150} />
+                                <Image src={logo} alt="Logo" preview={false} width={150} />
                                 <Space direction="vertical" size="small">
                                     <Space>
                                         <PhoneOutlined />
-                                        <Text>Hotline: 1900 1000</Text>
+                                        <Text>{t("footer.hotline")}</Text>
                                     </Space>
                                     <Space>
                                         <ClockCircleOutlined />
-                                        <Text>8:30 - 19:00 tất cả các ngày trong tuần</Text>
+                                        <Text>{t("footer.open-time")}</Text>
                                     </Space>
                                 </Space>
                                 <Space direction="vertical" size="small" className="address">
                                     <Paragraph>
-                                        <EnvironmentOutlined /> <b>VP Phía Bắc:</b> Tầng 5 tòa nhà The Nine, số 9 Phạm Văn Đồng, Mai Dịch, Phú Diễn, Hà Nội
+                                        <EnvironmentOutlined /> <b>VP Phía Bắc:</b> {t("footer.address.north")}
                                     </Paragraph>
                                     <Paragraph>
-                                        <EnvironmentOutlined /> <b>VP Phía Nam:</b> Tầng 6 tòa nhà Landmark 81, Tân Cảng, Bình Thạnh, TP.HCM
+                                        <EnvironmentOutlined /> <b>VP Phía Nam:</b> {t("footer.address.south")}
                                     </Paragraph>
                                 </Space>
                             </Space>
                         </Col>
                         <Col xs={24} md={8} lg={7}>
                             <div className="footer-column">
-                                <Title level={4}>Thông tin liên hệ</Title>
+                                <Title level={4}>{t("footer.contact.title")}</Title>
                                 <Space className="social-icons">
                                     <Button
                                         type="primary"
@@ -96,21 +100,21 @@ export default function Footer() {
                                     />
                                 </Space>
                                 <Divider />
-                                <Title level={4}>Đăng ký nhận tin</Title>
+                                <Title level={4}>{t("footer.news.title")}</Title>
                                 <Space direction="vertical" className="newsletter" style={{ width: "100%" }}>
                                     <Input
-                                        placeholder="Email của bạn"
+                                        placeholder={t("footer.news.placeholder")}
                                         suffix={<SearchOutlined />}
                                     />
                                     <Button type="primary" block>
-                                        Đăng ký
+                                        {t("footer.news.button")}
                                     </Button>
                                 </Space>
                             </div>
                         </Col>
                         <Col xs={24} md={8} lg={7}>
                             <div className="footer-column">
-                                <Title level={4}>Hỗ trợ</Title>
+                                <Title level={4}>{t("footer.support.title")}</Title>
                                 <List
                                     size="small"
                                     dataSource={supportLinks}
@@ -121,7 +125,7 @@ export default function Footer() {
                                     )}
                                 />
                                 <Divider />
-                                <Title level={4}>Phương thức thanh toán</Title>
+                                <Title level={4}>{t("footer.payment.title")}</Title>
                                 <Space wrap className="payment-methods">
                                     {paymentMethods.map((method, idx) => (
                                         <Image
@@ -144,7 +148,7 @@ export default function Footer() {
                 <Paragraph
                     style={{ color: 'white' }}
                 >
-                    © 2025 BP Fashion. All rights reserved.
+                    {t("footer.copyright")}
                 </Paragraph>
             </div>
         </footer>

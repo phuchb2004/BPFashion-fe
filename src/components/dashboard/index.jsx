@@ -17,9 +17,9 @@ import {
   ShoppingCartOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import ProductManagement from './ProductManagement';
-import OrderManagement from './OrderManagement';
-import UserManagement from './UserManagement';
+import ProductManagement from './product';
+import OrderManagement from './order';
+import UserManagement from './user';
 import './style.css';
 
 const { Header, Sider, Content } = Layout;
