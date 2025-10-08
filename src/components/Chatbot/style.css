@@ -202,6 +202,15 @@
   cursor: not-allowed;
 }
 
+:root {
+  --primary-color: #376B7E;
+  --primary-color-dark: #2a5566;
+  --user-message-bg: var(--primary-color);
+  --bot-message-bg: #f0f2f5;
+  --text-light: #ffffff;
+  --text-dark: #333333;
+}
+
 /* Responsive design */
 @media (max-width: 480px) {
   .chatbot-window {
@@ -231,4 +240,47 @@
 .fas {
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
+}
+
+.quick-replies-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: flex-start; /* Căn lề trái cho gợi ý */
+  padding-left: 40px; /* Thẳng hàng với bubble chat của bot */
+}
+
+.quick-reply-btn {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-reply-btn:hover {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+}
+
+/* --- Tinh chỉnh nhỏ cho input --- */
+.chatbot-input input {
+  font-size: 15px;
+}
+
+.chatbot-input input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(55, 107, 126, 0.2);
+}
+
+.message-bubble p {
+  white-space: pre-wrap; /* Giúp hiển thị các ký tự xuống dòng nếu có */
+}
+
+.chatbot-header h3 {
+  font-weight: 600;
 }

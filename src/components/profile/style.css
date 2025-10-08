@@ -1,19 +1,63 @@
+.profile-container {
+    background-color: #f5f5f5;
+}
+
 .profile-page {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    gap: 24px; /* Tạo khoảng cách giữa sidebar và content */
+    max-width: 1200px;
     margin: 40px auto;
     margin-top: 100px;
+    align-items: flex-start;
 }
 
 .profile-sidebar {
     flex-shrink: 0;
-    width: 250px;
-    align-self: flex-start;
+    width: 256px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+}
+
+/* Tùy chỉnh menu */
+.profile-sidebar .ant-menu {
+    border-inline-end: none !important; /* Bỏ đường viền mặc định */
 }
 
 .profile-content {
     flex: 1;
     background: #fff;
-    padding: 24px;
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    min-height: 400px;
+    position: relative; /* Cần cho spinner */
+}
+
+/* Spinner khi tải nội dung */
+.content-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .profile-page {
+        flex-direction: column;
+        margin-top: 80px;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+    }
 }

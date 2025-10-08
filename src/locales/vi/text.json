@@ -24,22 +24,40 @@
         
     },
     "register": {
-        "title": "Đăng Ký",
-            "button": {
-            "register": "Đăng Ký",
+        "title": "Đăng ký",
+        "button": {
+            "register": "Đăng ký",
             "google": "Đăng ký với Google"
         },
         "text": {
             "ifHaveAccount": "Đã có tài khoản?",
             "loginNow": "Đăng nhập ngay",
-            "orDivider": "Hoặc đăng ký với"
+            "orDivider": "Hoặc đăng nhập với"
         }
     },
     "logout": {
 
     },
     "dashboard": {
-
+        "user": {
+            "title": "Danh sách người dùng",
+            "button": {
+                "add": "Thêm người dùng"
+            },
+            "notFound": "Không tìm thấy người dùng nào...",
+            "table": {
+                "id": "ID",
+                "fullName": "Họ và tên",
+                "email": "Email",
+                "dob": "Ngày sinh",
+                "gender": "Giới tính",
+                "phone": "Số điện thoại",
+                "address": "Địa chỉ",
+                "role": "Chức vụ",
+                "createAt": "Ngày tạo",
+                "action": "Hành động"
+            }
+        }
     },
     "homepage": {
     

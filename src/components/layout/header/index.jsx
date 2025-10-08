@@ -7,22 +7,18 @@ import Cart from "../../cart";
 import {
     UserOutlined,
     ShoppingCartOutlined,
-    SearchOutlined,
-    DownOutlined
+    SearchOutlined
 } from "@ant-design/icons";
 import {
     Dropdown,
-    Space,
     Badge,
     Avatar,
-    notification
+    notification,
+    Space
 } from "antd";
 import {
     adminDropdown,
     userDropdown,
-    shirtDropdown,
-    pantDropdown,
-    accessoriesDropdown,
     notLoginDropdown
 } from "./dropdown-items";
 import logo from './../../../assets/logo-new.png';
@@ -53,7 +49,7 @@ export default function Header() {
         const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
         
-        setIsLoggedIn(!!token); // Sửa thành boolean
+        setIsLoggedIn(!!token);
         setUserRole(role);
 
         if (token) {
@@ -67,7 +63,7 @@ export default function Header() {
     const fetchCart = async (userId) => {
         try {
             const res = await axiosSystem.get(`/Cart/${userId}`);
-            setCartItems(res.data || []);
+            setCartItems(res);
         } catch (error) {
             console.log("Lỗi khi lấy giỏ hàng: ", error);
             setCartItems([]);
@@ -105,6 +101,10 @@ export default function Header() {
         }
     };
 
+    const handleMenuClick = (path) => {
+        navigate(path);
+    };
+
     const handleDropdown = ({ key }) => {
         const paths = {
             login: () => navigate("/login"),
@@ -112,17 +112,7 @@ export default function Header() {
             logout: () => handleLogout(),
             profile: () => navigate("/profile"),
             orders: () => navigate("/profile?tab=orders"),
-            admin: () => navigate("/dashboard"),
-            "ao-so-mi": () => navigate("/shirts/so-mi"),
-            "ao-phong": () => navigate("/shirts/ao-phong"),
-            "ao-khoac": () => navigate("/shirts/ao-khoac"),
-            "quan-tay": () => navigate("/pants/quan-tay"),
-            "quan-short": () => navigate("/pants/quan-short"),
-            "quan-jeans": () => navigate("/pants/quan-jeans"),
-            "do-lot": () => navigate("/accessories/do-lot"),
-            tat: () => navigate("/accessories/tat"),
-            "day-lung": () => navigate("/accessories/day-lung"),
-            "vi-da": () => navigate("/accessories/vi-da")
+            admin: () => navigate("/dashboard")
         };
         if (paths[key]) {
             paths[key]();
@@ -140,7 +130,7 @@ export default function Header() {
 
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = cartItems.reduce(
-        (sum, item) => sum + item.quantity * (item.Product?.price || 0),
+        (sum, item) => sum + item.quantity * (item.product.price),
         0
     );
 
@@ -169,47 +159,39 @@ export default function Header() {
             {contextHolder}
             <div className="container">
                 <nav className="menu left-menu">
-                    <a href="/homepage">
+                    <a href="/homepage" className="menu-link">
                         {t("header.menu.home")}
                     </a>
-                    <Dropdown 
-                        menu={{ items: shirtDropdown(t), onClick: handleDropdown }} 
-                        trigger={["hover"]}
-                        overlayClassName="category-dropdown"
+                    <a 
+                        href="/shirts" 
+                        className="menu-link"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleMenuClick("/shirts");
+                        }}
                     >
-                        <a onClick={(e) => { e.preventDefault(); navigate("/shirts"); }}>
-                            <Space>
-                                {t("header.menu.shirts")}
-                                <DownOutlined/>
-                            </Space>
-                        </a>
-                    </Dropdown>
-                    
-                    <Dropdown 
-                        menu={{ items: pantDropdown(t), onClick: handleDropdown }} 
-                        trigger={["hover"]}
-                        overlayClassName="category-dropdown"
+                        {t("header.menu.shirts")}
+                    </a>
+                    <a 
+                        href="/pants" 
+                        className="menu-link"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleMenuClick("/pants");
+                        }}
                     >
-                        <a onClick={(e) => { e.preventDefault(); navigate("/pants"); }}>
-                            <Space>
-                                {t("header.menu.pants")}
-                                <DownOutlined/>
-                            </Space>
-                        </a>
-                    </Dropdown>
-                    
-                    <Dropdown 
-                        menu={{ items: accessoriesDropdown(t), onClick: handleDropdown }} 
-                        trigger={["hover"]}
-                        overlayClassName="category-dropdown"
+                        {t("header.menu.pants")}
+                    </a>
+                    <a 
+                        href="/accessories" 
+                        className="menu-link"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleMenuClick("/accessories");
+                        }}
                     >
-                        <a onClick={(e) => { e.preventDefault(); navigate("/accessories"); }}>
-                            <Space>
-                                {t("header.menu.accessories")}
-                                <DownOutlined/>
-                            </Space>
-                        </a>
-                    </Dropdown>
+                        {t("header.menu.accessories")}
+                    </a>
                 </nav>
                 
                 <a className="logo-section" href="/homepage">

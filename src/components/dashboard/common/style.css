@@ -1,0 +1,24 @@
+.dashboard-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dashboard-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dashboard-page-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #262626;
+}
+
+.ant-table-cell .ant-space {
+  justify-content: center;
+}

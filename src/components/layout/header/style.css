@@ -65,6 +65,7 @@
     border-radius: 20px;
     padding: 5px 10px;
     transition: border 0.2s;
+    cursor: pointer;
 }
 
 .search-box input {

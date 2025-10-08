@@ -30,14 +30,10 @@ export default function AccessoriesPage() {
       .then((res) => {
         const accessories = res.filter(product => 
           product.categoryName?.includes("Phụ kiện") || 
-          product.categoryId === 3 // Giả sử categoryId 3 là phụ kiện
+          product.categoryId === 3
         ).map(product => ({
           ...product,
-          categoryName: product.categoryName || "Phụ kiện",
-          brandName: product.brandName || "Accessory Brand",
-          isNew: product.productId % 3 === 0,
-          discount: product.productId % 4 === 0 ? 15 : 0,
-          rating: 4 + (product.productId % 5) / 10
+          categoryName: product.categoryName,
         }));
         setProducts(accessories);
       })
@@ -82,19 +78,13 @@ export default function AccessoriesPage() {
       <Header />
       
       <div className="page-header">
-        <div className="container">
-          <Breadcrumb
-            items={[
-              { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
-              { title: 'Trang chủ', onClick: () => navigate("/homepage") },
-              { title: 'Phụ kiện' },
-            ]}
-          />
-          <Title level={1} className="page-title">PHỤ KIỆN NAM</Title>
-          <Text className="page-subtitle">
-            Hoàn thiện phong cách với các phụ kiện nam tinh tế và chất lượng
-          </Text>
-        </div>
+        <Breadcrumb
+          items={[
+            { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
+            { title: 'Phụ kiện' },
+          ]}
+          style={{ cursor: "pointer"}}
+        />
       </div>
 
       <div className="page-content">
@@ -136,12 +126,6 @@ export default function AccessoriesPage() {
                             Thêm vào giỏ
                           </Button>
                         </div>
-                        {product.isNew && <Tag color="red" className="new-tag">MỚI</Tag>}
-                        {product.discount > 0 && (
-                          <Tag color="#d0021b" className="discount-tag">
-                            -{product.discount}%
-                          </Tag>
-                        )}
                       </div>
                     }
                   >

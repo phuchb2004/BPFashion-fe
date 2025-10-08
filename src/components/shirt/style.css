@@ -1,20 +1,12 @@
-/* src/pages/Shirts/style.css */
 .category-page {
   min-height: 100vh;
   background-color: #f8f9fa;
 }
 
 .page-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 40px 0;
-  color: white;
-  text-align: center;
-}
-
-.page-header .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding-top: 10px;
 }
 
 .page-title {
@@ -24,10 +16,6 @@
 }
 
 .page-content {
-  padding: 40px 0;
-}
-
-.container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -158,10 +146,6 @@
   text-align: center;
 }
 
-.product-brand {
-  margin-bottom: 8px;
-}
-
 .product-price {
   margin: 12px 0;
 }
@@ -181,5 +165,3 @@
 .add-to-cart-btn {
   margin-top: 12px;
 }
-
-.loading-container {

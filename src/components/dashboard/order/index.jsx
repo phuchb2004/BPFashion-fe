@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space, Tag, Modal, Descriptions, Select, message } from 'antd';
+import { Table, Button, Space, Tag, Modal, Descriptions, Select, message, Card } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import axiosSystem from '../../../api/axiosSystem';
+import '../common/style.css'; // Sử dụng CSS chung
 
 const { Option } = Select;
 
@@ -11,74 +12,22 @@ const OrderManagement = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Dữ liệu mẫu
-  const sampleOrders = [
-    {
-      orderId: 1001,
-      userName: 'Nguyễn Văn A',
-      orderDate: '2023-10-15T14:30:00',
-      totalAmount: 750000,
-      status: 'Completed',
-      paymentMethod: 'Credit Card',
-      shippingAddress: '123 Đường ABC, Quận 1, TP.HCM'
-    },
-    {
-      orderId: 1002,
-      userName: 'Trần Thị B',
-      orderDate: '2023-10-16T09:15:00',
-      totalAmount: 1130000,
-      status: 'Processing',
-      paymentMethod: 'COD',
-      shippingAddress: '456 Đường XYZ, Quận 3, TP.HCM'
-    },
-    {
-      orderId: 1003,
-      userName: 'Lê Văn C',
-      orderDate: '2023-10-17T16:45:00',
-      totalAmount: 680000,
-      status: 'Pending',
-      paymentMethod: 'Momo',
-      shippingAddress: '789 Đường DEF, Quận 5, TP.HCM'
-    },
-    {
-      orderId: 1004,
-      userName: 'Phạm Thị D',
-      orderDate: '2023-10-18T11:20:00',
-      totalAmount: 1250000,
-      status: 'Completed',
-      paymentMethod: 'Bank Transfer',
-      shippingAddress: '321 Đường GHI, Quận 10, TP.HCM'
-    },
-    {
-      orderId: 1005,
-      userName: 'Hoàng Văn E',
-      orderDate: '2023-10-19T15:40:00',
-      totalAmount: 890000,
-      status: 'Cancelled',
-      paymentMethod: 'Credit Card',
-      shippingAddress: '654 Đường JKL, Quận Tân Bình, TP.HCM'
-    }
-  ];
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      // Sử dụng dữ liệu mẫu thay vì gọi API
-      // const response = await axiosSystem.get('/Orders/GetAllOrders');
-      // setOrders(response.data);
-      setOrders(sampleOrders);
+      const response = await axiosSystem.get('/Orders/GetAllOrders');
+      setOrders(response || []);
     } catch (error) {
-      console.error('Failed to fetch orders:', error);
-      // Nếu có lỗi, vẫn sử dụng dữ liệu mẫu
-      setOrders(sampleOrders);
+      message.error('Lấy dữ liệu đơn hàng thất bại!', error);
+      setOrders([]);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const showOrderDetails = (order) => {
     setSelectedOrder(order);
@@ -104,63 +53,44 @@ const OrderManagement = () => {
   };
 
   const columns = [
+    { title: 'Mã ĐH', dataIndex: 'orderId', key: 'orderId' },
+    { title: 'Khách hàng', dataIndex: 'userName', key: 'userName' },
     {
-      title: 'Order ID',
-      dataIndex: 'orderId',
-      key: 'orderId',
-    },
-    {
-      title: 'Customer',
-      dataIndex: 'userName',
-      key: 'userName',
-    },
-    {
-      title: 'Order Date',
+      title: 'Ngày đặt',
       dataIndex: 'orderDate',
       key: 'orderDate',
-      render: (date) => new Date(date).toLocaleDateString()
+      render: (date) => new Date(date).toLocaleDateString('vi-VN'),
     },
     {
-      title: 'Total Amount',
+      title: 'Tổng tiền',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (amount) => `$${parseFloat(amount).toFixed(2)}`
+      render: (amount) => `₫${parseFloat(amount).toLocaleString('vi-VN')}`,
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
       render: (status) => {
         let color = 'default';
-        switch (status) {
-          case 'Completed': color = 'green'; break;
-          case 'Pending': color = 'orange'; break;
-          case 'Cancelled': color = 'red'; break;
-          case 'Processing': color = 'blue'; break;
-          default: color = 'default';
-        }
+        if (status === 'Completed') color = 'success';
+        else if (status === 'Pending') color = 'warning';
+        else if (status === 'Cancelled') color = 'error';
+        else if (status === 'Processing') color = 'processing';
         return <Tag color={color}>{status}</Tag>;
-      }
+      },
     },
     {
-      title: 'Payment Method',
-      dataIndex: 'paymentMethod',
-      key: 'paymentMethod',
-    },
-    {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button 
-            icon={<EyeOutlined />} 
-            onClick={() => showOrderDetails(record)}
-          >
-            View
+          <Button icon={<EyeOutlined />} onClick={() => showOrderDetails(record)}>
+            Xem
           </Button>
           <Select
             defaultValue={record.status}
-            style={{ width: 120 }}
+            style={{ width: 130 }}
             onChange={(value) => handleStatusChange(record.orderId, value)}
           >
             <Option value="Pending">Pending</Option>
@@ -174,15 +104,18 @@ const OrderManagement = () => {
   ];
 
   return (
-    <div>
-      <h2>Order Management</h2>
-      <Table 
-        columns={columns} 
-        dataSource={orders} 
-        loading={loading}
-        rowKey="orderId"
-      />
-
+    <div className='dashboard-page-container'>
+      <div className="dashboard-page-header">
+          <h2>Quản lý Đơn hàng</h2>
+      </div>
+      <Card bordered={false}>
+        <Table
+          columns={columns}
+          dataSource={orders}
+          loading={loading}
+          rowKey="orderId"
+        />
+      </Card>
       <Modal
         title={`Order Details - #${selectedOrder?.orderId}`}
         open={isModalVisible}

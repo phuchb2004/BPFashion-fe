@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
   Button, Space, Modal, Form, Input,
-  Select, DatePicker, message, Tag, Card, Spin, Image, InputNumber
+  Select, message, Card, Image, InputNumber, Table, Popconfirm
 } from 'antd';
-import {
-  PlusOutlined, EditOutlined, DeleteOutlined
-} from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axiosSystem from '../../../api/axiosSystem';
-import moment from 'moment';
-import './style.css';
+import '../common/style.css'; // Sử dụng CSS chung
 
-const { Option } = Select;
 const { TextArea } = Input;
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -28,8 +22,7 @@ const ProductManagement = () => {
       const response = await axiosSystem.get('/Products/GetAllProducts');
       setProducts(response || []);
     } catch (error) {
-      message.error('Lấy dữ liệu thất bại', error);
-      setProducts([]);
+      message.error('Lấy dữ liệu sản phẩm thất bại!', error);
     } finally {
       setLoading(false);
     }
@@ -85,80 +78,58 @@ const ProductManagement = () => {
     setIsModalVisible(false);
   };
 
+  const columns = [
+    { title: 'ID', dataIndex: 'productId', key: 'productId' },
+    {
+      title: 'Ảnh',
+      dataIndex: 'imageUrl',
+      key: 'imageUrl',
+      render: (url, record) => <Image width={60} src={url} alt={record.productName} />,
+    },
+    { title: 'Tên sản phẩm', dataIndex: 'productName', key: 'productName' },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price) => `₫${parseFloat(price).toLocaleString('vi-VN')}`,
+    },
+    { title: 'Tồn kho', dataIndex: 'stockQuantity', key: 'stockQuantity' },
+    { title: 'Danh mục', dataIndex: 'categoryName', key: 'categoryName' },
+    {
+      title: 'Hành động',
+      key: 'action',
+      align: 'center',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button type="primary" icon={<EditOutlined />} onClick={() => handleEdit(record)} />
+          <Popconfirm
+            title="Xóa sản phẩm"
+            description="Bạn có chắc chắn muốn xóa sản phẩm này?"
+            onConfirm={() => handleDelete(record.productId)}
+            okText="Có" cancelText="Không" okType="danger"
+          >
+            <Button danger icon={<DeleteOutlined />} />
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
   return (
-    <div>
-      <div className="userTitle">
-        <h2>Product Management</h2>
-      </div>
-      
-      <div className="buttons">
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd} className="addButton">
-          Add Product
+    <div className='dashboard-page-container'>
+      <div className="dashboard-page-header">
+        <h2>Quản lý Sản phẩm</h2>
+        <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+          Thêm sản phẩm
         </Button>
       </div>
-
-      <Card className="tableUsers">
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px' }}>
-            <Spin size="large" />
-          </div>
-        ) : products.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px' }}>No products found</div>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Category</th>
-                <th>Brand</th>
-                <th>Image</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(product => (
-                <tr key={product.productId}>
-                  <td>{product.productId}</td>
-                  <td>{product.productName}</td>
-                  <td>₫{parseFloat(product.price).toLocaleString()}</td>
-                  <td>{product.stockQuantity}</td>
-                  <td>{product.CategoryName || product.categoryName}</td>
-                  <td>{product.BrandName || product.brandName}</td>
-                  <td>
-                    {product.imageUrl ? (
-                      <Image width={50} src={product.imageUrl} alt={product.productName} />
-                    ) : (
-                      'No image'
-                    )}
-                  </td>
-                  <td>
-                    <Space size="middle" className="actionButtons">
-                      <Button 
-                        type="primary" 
-                        icon={<EditOutlined />} 
-                        onClick={() => handleEdit(product)} 
-                        className="actionButton edit"
-                      >
-                        
-                      </Button>
-                      <Button 
-                        danger 
-                        icon={<DeleteOutlined />} 
-                        onClick={() => handleDelete(product.productId)} 
-                        className="actionButton delete"
-                      >
-                        
-                      </Button>
-                    </Space>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+      <Card bordered={false}>
+        <Table
+          columns={columns}
+          dataSource={products}
+          loading={loading}
+          rowKey="productId"
+        />
       </Card>
 
       <Modal
@@ -203,10 +174,6 @@ const ProductManagement = () => {
           </Form.Item>
 
           <Form.Item name="categoryId" label="Category ID">
-            <InputNumber min={1} style={{ width: '100%' }} />
-          </Form.Item>
-
-          <Form.Item name="brandId" label="Brand ID">
             <InputNumber min={1} style={{ width: '100%' }} />
           </Form.Item>
         </Form>

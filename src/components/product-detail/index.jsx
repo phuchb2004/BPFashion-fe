@@ -372,7 +372,6 @@ const fetchRelatedProducts = async () => {
                     size="small"
                     dataSource={[
                     { label: 'Mã sản phẩm', value: product.productId },
-                    { label: 'Thương hiệu', value: product.BrandName },
                     { label: 'Danh mục', value: product.CategoryName },
                     { label: 'Chất liệu', value: product.material },
                     { label: 'Kích thước', value: product.size },

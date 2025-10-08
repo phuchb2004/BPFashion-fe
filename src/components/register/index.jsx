@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Form, Input, Button, Card, Row, Col, Divider,
-  notification, Typography, Space, Layout, Image, Select, DatePicker
+  notification, Typography, Space, Layout, Image, Select
 } from 'antd';
 import {
-  UserOutlined,
   LockOutlined,
   MailOutlined,
   GoogleOutlined
@@ -47,16 +46,12 @@ export default function Register() {
   const handleRegister = async (values) => {
     setLoading(true);
     try {
-      // Format date to YYYY-MM-DD
       const formattedValues = {
         ...values,
         dob: values.dob ? values.dob.format('YYYY-MM-DD') : null
       };
 
       const res = await axiosSystem.post('/Users/Register', formattedValues);
-
-      console.log('response: ', res);
-      
       if (res && res.success) {
         openNotification("success", "Đăng ký thành công!", "Vui lòng đăng nhập để tiếp tục");
         setTimeout(() => {
@@ -67,8 +62,8 @@ export default function Register() {
       console.log('Đăng ký xảy ra lỗi', error);
       let errorMessage = "Đăng ký thất bại";
       
-      if (error.response && error.response.data) {
-        errorMessage = error.response.data.message || errorMessage;
+      if (error.response) {
+        errorMessage = error.response.message || errorMessage;
       }
       
       openNotification("error", "Đăng ký thất bại", errorMessage);
@@ -82,7 +77,6 @@ export default function Register() {
       const decoded = jwtDecode(credentialResponse.credential);
       console.log("Google user info", decoded);
 
-      // Auto-register with Google
       const res = await axiosSystem.post("/RegisterGoogle", {
         credential: credentialResponse.credential,
       });
@@ -165,7 +159,6 @@ export default function Register() {
                     {t("register.text.ifHaveAccount", "Đã có tài khoản?")} <Link to="/login">{t("register.text.loginNow", "Đăng nhập ngay")}</Link>
                   </Paragraph>
                 </div>
-                
                 <Form
                   form={form}
                   name="register"
@@ -176,27 +169,6 @@ export default function Register() {
                   className="login-form"
                   scrollToFirstError
                 >
-                  <Form.Item
-                    name="fullName"
-                    label="Họ và tên"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Vui lòng nhập họ và tên!',
-                      },
-                      {
-                        min: 2,
-                        message: 'Họ và tên phải có ít nhất 2 ký tự!',
-                      },
-                    ]}
-                  >
-                    <Input
-                      prefix={<UserOutlined className="input-icon" />}
-                      placeholder="Nhập họ và tên đầy đủ"
-                      className="login-input"
-                    />
-                  </Form.Item>
-
                   <Form.Item
                     name="email"
                     label="Email"
@@ -217,7 +189,6 @@ export default function Register() {
                       className="login-input"
                     />
                   </Form.Item>
-
                   <Form.Item
                     name="password"
                     label="Mật khẩu"
@@ -233,7 +204,6 @@ export default function Register() {
                       className="login-input"
                     />
                   </Form.Item>
-
                   <Form.Item
                     name="confirmPassword"
                     label="Xác nhận mật khẩu"
@@ -252,30 +222,6 @@ export default function Register() {
                       className="login-input"
                     />
                   </Form.Item>
-
-                  <Form.Item
-                    name="dob"
-                    label="Ngày sinh"
-                  >
-                    <DatePicker
-                      format="DD/MM/YYYY"
-                      placeholder="Chọn ngày sinh"
-                      className="login-input"
-                      style={{ width: '100%' }}
-                    />
-                  </Form.Item>
-
-                  <Form.Item
-                    name="gender"
-                    label="Giới tính"
-                  >
-                    <Select placeholder="Chọn giới tính" className="login-input">
-                      <Option value="male">Nam</Option>
-                      <Option value="female">Nữ</Option>
-                      <Option value="other">Khác</Option>
-                    </Select>
-                  </Form.Item>
-
                   <Form.Item className="login-button-item">
                     <Button
                       type="primary"
@@ -288,11 +234,9 @@ export default function Register() {
                     </Button>
                   </Form.Item>
                 </Form>
-
                 <Divider plain className="login-divider">
-                  {t("register.text.orDivider", "Hoặc đăng ký với")}
+                  {t("register.text.orDivider")}
                 </Divider>
-
                 <div className="social-login">
                   <GoogleLogin
                     onSuccess={handleGoogleSuccess}
@@ -306,12 +250,11 @@ export default function Register() {
                         size="large"
                         className="google-login-button"
                       >
-                        {t("register.button.google", "Đăng ký với Google")}
+                        {t("register.button.google")}
                       </Button>
                     )}
                   />
                 </div>
-
                 <div className="login-footer">
                   <Space direction="vertical" size="small" className="footer-links">
                     <Text type="secondary" className="footer-text">

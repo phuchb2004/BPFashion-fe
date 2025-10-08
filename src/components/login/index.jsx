@@ -46,9 +46,6 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await axiosSystem.post('/Users/Login', values);
-
-      console.log('response: ', res);
-      
       if (res) {
         localStorage.setItem("token", res.token);
         localStorage.setItem("userId", res.user.userId);
