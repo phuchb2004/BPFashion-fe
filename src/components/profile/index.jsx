@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axiosSystem from '../../api/axiosSystem';
+import baseApi from '../../api/baseApi';
 import './style.css';
 import Header from "../layout/header";
 import Footer from "../layout/footer";
@@ -32,7 +32,7 @@ export default function Profile() {
     const fetchUsers = useCallback(async (id) => {
         try {
             setLoading(true);
-            const res = await axiosSystem.get(`/Users/GetUserInfo/${id}`);
+            const res = await baseApi.get(`/Users/GetUserInfo/${id}`);
             if (res) {
                 setUser(res);
             }

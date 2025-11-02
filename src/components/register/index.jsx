@@ -9,12 +9,13 @@ import {
   MailOutlined,
   GoogleOutlined
 } from '@ant-design/icons';
-import axiosSystem from '../../api/axiosSystem';
+import baseApi from '../../api/baseApi';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import './style.css';
-import imgOverlay from '../../assets/img-overlay2.jpg';
+
+const imgOverlay = '/assets/img-overlay2.jpg';
 
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
@@ -39,7 +40,7 @@ export default function Register() {
       message,
       description,
       placement: "topRight",
-      duration: 3
+      duration: type === 'success' ? 3 : 4
     });
   };
 
@@ -51,12 +52,12 @@ export default function Register() {
         dob: values.dob ? values.dob.format('YYYY-MM-DD') : null
       };
 
-      const res = await axiosSystem.post('/Users/Register', formattedValues);
+      const res = await baseApi.post('/Users/Register', formattedValues);
       if (res && res.success) {
         openNotification("success", "Đăng ký thành công!", "Vui lòng đăng nhập để tiếp tục");
         setTimeout(() => {
           navigate("/login");
-        }, 2000);
+        }, 1500);
       }
     } catch (error) {
       console.log('Đăng ký xảy ra lỗi', error);
@@ -77,7 +78,7 @@ export default function Register() {
       const decoded = jwtDecode(credentialResponse.credential);
       console.log("Google user info", decoded);
 
-      const res = await axiosSystem.post("/RegisterGoogle", {
+      const res = await baseApi.post("/RegisterGoogle", {
         credential: credentialResponse.credential,
       });
       
@@ -87,8 +88,11 @@ export default function Register() {
         localStorage.setItem("role", res.user.role);
         localStorage.setItem("fullName", res.user.fullName);
         
-        openNotification("success", "Đăng ký Google thành công!");
-        navigate("/homepage");
+        openNotification("success", "Đăng ký Google thành công!", "Chào mừng bạn đến với BP Fashion!");
+        
+        setTimeout(() => {
+          navigate("/homepage");
+        }, 500);
       }
     } catch (error) {
       console.log("Google register error", error);
@@ -171,7 +175,7 @@ export default function Register() {
                 >
                   <Form.Item
                     name="email"
-                    label="Email"
+                    label={t("register.email.label")}
                     rules={[
                       {
                         required: true,
@@ -185,13 +189,13 @@ export default function Register() {
                   >
                     <Input
                       prefix={<MailOutlined className="input-icon" />}
-                      placeholder="Nhập địa chỉ email"
+                      placeholder={t("register.email.placeholder")}
                       className="login-input"
                     />
                   </Form.Item>
                   <Form.Item
                     name="password"
-                    label="Mật khẩu"
+                    label={t("register.password.label")}
                     rules={[
                       {
                         validator: validatePassword,
@@ -200,13 +204,13 @@ export default function Register() {
                   >
                     <Input.Password
                       prefix={<LockOutlined className="input-icon" />}
-                      placeholder="Nhập mật khẩu (ít nhất 6 ký tự)"
+                      placeholder={t("register.password.placeholder")}
                       className="login-input"
                     />
                   </Form.Item>
                   <Form.Item
                     name="confirmPassword"
-                    label="Xác nhận mật khẩu"
+                    label={t("register.confirmPassword.label")}
                     dependencies={['password']}
                     rules={[
                       {
@@ -218,7 +222,7 @@ export default function Register() {
                   >
                     <Input.Password
                       prefix={<LockOutlined className="input-icon" />}
-                      placeholder="Nhập lại mật khẩu"
+                      placeholder={t("register.confirmPassword.placeholder")}
                       className="login-input"
                     />
                   </Form.Item>
@@ -230,7 +234,7 @@ export default function Register() {
                       loading={loading}
                       block
                     >
-                      {t("register.button.register", "Đăng Ký")}
+                      {t("register.button.register")}
                     </Button>
                   </Form.Item>
                 </Form>

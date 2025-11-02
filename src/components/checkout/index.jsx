@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     Form, Input, Button, Card, Row, Col, List, Divider, Select, Typography,
-    message, Spin, Steps, Radio, Space, Image
+    Spin, Steps, Radio, Space, Image
 } from 'antd';
 import {
     UserOutlined,
@@ -15,6 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Header from "../layout/header";
 import Footer from "../layout/footer";
+import { showSuccess, showError, showFormNotification } from '../../utils/notification';
 import './style.css';
 import cities from '../../data/cities.json';
 
@@ -58,7 +59,7 @@ export default function Checkout() {
                 name: item.product.productName, // Đổi từ 'name'
                 price: item.product.price,
                 quantity: item.quantity,
-                image: item.product.imageUrl || 'https://via.placeholder.com/80x80'
+                image: item.product.imageUrl
             }));
 
             setCartItems(formattedItems);
@@ -71,7 +72,8 @@ export default function Checkout() {
             setOrderSummary({ subtotal, shipping, tax, total });
 
         } catch (error) {
-            message.error('Lỗi khi tải giỏ hàng: ' + error.message);
+            const errorMsg = error.response?.data?.message || error.message || 'Lỗi khi tải giỏ hàng';
+            showError('Lỗi khi tải giỏ hàng', errorMsg);
         } finally {
             setLoading(false);
         }
@@ -99,14 +101,18 @@ export default function Checkout() {
 
             if (response.ok) {
                 const orderData = await response.json();
-                message.success('Đặt hàng thành công!');
-                navigate(`/order-confirmation/${orderData.orderId}`);
+                showFormNotification('success', 'Đặt hàng thành công!');
+                setTimeout(() => {
+                    navigate(`/order-confirmation/${orderData.orderId}`);
+                }, 1000);
             } else {
                 const errorData = await response.json();
-                message.error(`Có lỗi xảy ra khi đặt hàng: ${errorData.message}`);
+                const errorMsg = errorData.message || 'Có lỗi xảy ra khi đặt hàng';
+                showFormNotification('error', 'Đặt hàng thất bại!', errorMsg);
             }
         } catch (error) {
-            message.error('Lỗi kết nối: ' + error.message);
+            const errorMsg = error.response?.data?.message || error.message || 'Lỗi kết nối';
+            showFormNotification('error', 'Lỗi kết nối', errorMsg);
         } finally {
             setLoading(false);
         }

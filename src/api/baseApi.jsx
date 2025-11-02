@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const axiosSystem = axios.create({
-    baseURL: 'https://localhost:7134',
-    timeout: 3000,
+const baseApi = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5234',
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json'
     }
 });
 
-axiosSystem.interceptors.request.use(
+baseApi.interceptors.request.use(
     (config) => {
         config.headers = config.headers || {};
         const token = localStorage.getItem('token');
@@ -22,7 +22,7 @@ axiosSystem.interceptors.request.use(
     }
 );
 
-axiosSystem.interceptors.response.use(
+baseApi.interceptors.response.use(
     (response) => {
         return Promise.resolve(response.data);
     },
@@ -35,4 +35,4 @@ axiosSystem.interceptors.response.use(
     }
 );
 
-export default axiosSystem;
+export default baseApi;

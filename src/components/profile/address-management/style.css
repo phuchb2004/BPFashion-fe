@@ -1,0 +1,100 @@
+@import '../style.css';
+
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-dark, #2c3e50);
+}
+
+.add-button {
+    background: var(--primary-gradient, linear-gradient(135deg, #376B7E 0%, #4a8fa8 100%));
+    border: none;
+    box-shadow: 0 4px 12px rgba(55, 107, 126, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.add-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(55, 107, 126, 0.3);
+}
+
+.address-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.address-card {
+    border: 2px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.address-card:hover {
+    border-color: var(--primary-color, #376B7E);
+    box-shadow: 0 4px 16px rgba(55, 107, 126, 0.1);
+    transform: translateY(-2px);
+}
+
+.default-address {
+    border-color: var(--primary-color, #376B7E);
+    background: linear-gradient(to right, rgba(55, 107, 126, 0.05), transparent);
+}
+
+.address-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.receiver-name {
+    font-weight: 600;
+    color: var(--text-dark, #2c3e50);
+}
+
+.address-details {
+    color: var(--text-light, #6b7280);
+}
+
+.address-details p {
+    margin: 4px 0;
+    line-height: 1.6;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Đảm bảo các nút trong Popconfirm có cùng chiều cao */
+.ant-popconfirm-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ant-popconfirm-buttons button {
+    height: 32px !important;
+    line-height: 32px !important;
+    padding: 4px 15px !important;
+    font-size: 14px;
+}
+

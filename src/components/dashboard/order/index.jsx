@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Space, Tag, Modal, Descriptions, Select, message, Card } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
-import axiosSystem from '../../../api/axiosSystem';
+import baseApi from '../../../api/baseApi';
 import '../common/style.css'; // Sử dụng CSS chung
 
 const { Option } = Select;
@@ -15,7 +15,7 @@ const OrderManagement = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await axiosSystem.get('/Orders/GetAllOrders');
+      const response = await baseApi.get('/Orders/GetAllOrders');
       setOrders(response || []);
     } catch (error) {
       message.error('Lấy dữ liệu đơn hàng thất bại!', error);
@@ -45,7 +45,7 @@ const OrderManagement = () => {
       message.success('Order status updated successfully');
       
       // Nếu muốn gọi API thật, bỏ comment dòng dưới
-      // await axiosSystem.put(`/Orders/UpdateOrderStatus/${orderId}`, { status: newStatus });
+      // await baseApi.put(`/Orders/UpdateOrderStatus/${orderId}`, { status: newStatus });
     } catch (error) {
       message.error('Failed to update order status');
       console.error(error);

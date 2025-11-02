@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axiosSystem from "../../api/axiosSystem";
+import baseApi from "../../api/baseApi";
 import './style.css';
 
 const Chatbot = () => {
@@ -34,7 +34,7 @@ const Chatbot = () => {
     setMessages(prev => prev.map(msg => ({ ...msg, quickReplies: [] })));
 
     try {
-      const response = await axiosSystem.post('/Chatbot/process', {
+      const response = await baseApi.post('/Chatbot/process', {
         text: textToSend,
       });
 
@@ -76,15 +76,22 @@ const Chatbot = () => {
 
   return (
     <div className="chatbot-container">
-      <button className="chatbot-toggle-btn" onClick={() => setIsOpen(!isOpen)}>
-        <i className="fas fa-comment-dots"></i>
-      </button>
+      {!isOpen && (
+        <button 
+          className="chatbot-toggle-btn" 
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Mở chatbot"
+          aria-expanded={isOpen}
+        >
+          <i className="fas fa-comment-dots"></i>
+        </button>
+      )}
 
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
             <h3>Trợ lý BP Fashion</h3>
-            <button className="close-btn" onClick={() => setIsOpen(false)}>
+            <button className="close-btn" onClick={() => setIsOpen(false)} aria-label="Đóng chatbot">
               <i className="fas fa-times"></i>
             </button>
           </div>
@@ -134,7 +141,11 @@ const Chatbot = () => {
               placeholder="Nhập tin nhắn..."
               disabled={isLoading}
             />
-            <button onClick={() => handleSendMessage(input)} disabled={isLoading || !input.trim()}>
+            <button 
+              onClick={() => handleSendMessage(input)} 
+              disabled={isLoading || !input.trim()}
+              aria-label="Gửi tin nhắn"
+            >
               <i className="fas fa-paper-plane"></i>
             </button>
           </div>

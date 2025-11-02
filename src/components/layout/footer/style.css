@@ -1,35 +1,113 @@
+:root {
+    --primary-color: #376B7E;
+    --primary-gradient: linear-gradient(135deg, #376B7E 0%, #4a8fa8 100%);
+    --text-dark: #2c3e50;
+    --text-light: #6b7280;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .footer {
-    background: linear-gradient(135deg, #f4f4f4 0%, #e9e9e9 100%);
-    padding: 50px 0 0 0;
-    color: #2c3e50;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+    padding: 60px 0 0 0;
+    color: var(--text-dark);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--primary-gradient);
+    opacity: 0.3;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .footer-main {
-    padding-bottom: 30px;
+    padding-bottom: 40px;
 }
 
 .footer-container {
-    max-width: 1200px;
+    max-width: 1320px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 24px;
 }
 
 .footer-column {
     display: flex;
     flex-direction: column;
     height: 100%;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .footer-column .ant-image {
     margin-bottom: 20px;
+    transition: all var(--transition);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.footer-column .ant-image:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 8px rgba(55, 107, 126, 0.2));
+}
+
+.footer-column .ant-typography {
+    transition: all var(--transition);
+}
+
+.footer-column .ant-space-item {
+    transition: all var(--transition);
+}
+
+.social-icons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.facebook-btn,
+.instagram-btn,
+.x-btn {
+    transition: all var(--transition);
+    box-shadow: var(--shadow-sm);
 }
 
 .facebook-btn {
     background: #1877f2 !important;
+    border: none !important;
 }
+
 .facebook-btn:hover {
     background: #145dbf !important;
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: var(--shadow-md);
 }
 
 .instagram-btn {
@@ -37,60 +115,164 @@
     border: none !important;
     color: white !important;
 }
+
 .instagram-btn:hover {
-    opacity: 0.85;
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.1);
 }
 
 .x-btn {
-    background: black !important;
-    border: black !important;
+    background: #000000 !important;
+    border: #000000 !important;
 }
+
 .x-btn:hover {
-    opacity: 0.85;
+    background: #333333 !important;
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: var(--shadow-md);
 }
 
 /* Support list */
-.ant-list-item a {
-    color: #2c3e50;
-    transition: 0.3s;
-    font-size: 15px;
+.ant-list-item {
+    transition: all var(--transition);
+    border-radius: 4px;
+    margin-bottom: 4px;
 }
+
+.ant-list-item:hover {
+    background: rgba(55, 107, 126, 0.05);
+    padding-left: 8px;
+}
+
+.ant-list-item a {
+    color: var(--text-dark);
+    transition: all var(--transition);
+    font-size: 15px;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+}
+
+.ant-list-item a::before {
+    content: '→';
+    position: absolute;
+    left: -15px;
+    opacity: 0;
+    transition: all var(--transition);
+    color: var(--primary-color);
+}
+
+.ant-list-item:hover a::before {
+    opacity: 1;
+    left: -12px;
+}
+
 .ant-list-item a:hover {
-    color: #3498db;
-    padding-left: 5px;
+    color: var(--primary-color);
+    padding-left: 0;
+    font-weight: 500;
 }
 
 /* Payment icons */
+.payment-methods {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .payment-methods .ant-image {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 3px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px;
     background: white;
+    transition: all var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.payment-methods .ant-image:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: var(--shadow-md);
 }
 
 /* Divider */
 .ant-divider {
-    margin: 20px 0;
-    border-top-color: #ddd;
+    margin: 24px 0;
+    border-top-color: var(--border-color);
+}
+
+.ant-divider-horizontal {
+    background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+    height: 1px;
 }
 
 .footer-bottom {
-    background-color: #2c3e50;
+    background: linear-gradient(135deg, #1f2937 0%, #2c3e50 100%);
     color: white;
     text-align: center;
-    padding: 15px 0;
+    padding: 20px 0;
     font-size: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-bottom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--primary-gradient);
+    opacity: 0.5;
+}
+
+.footer-bottom .ant-typography {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    transition: all var(--transition);
+}
+
+.footer-bottom:hover .ant-typography {
+    color: white;
+}
+
+@media (max-width: 992px) {
+    .footer {
+        padding: 50px 0 0 0;
+    }
+    
+    .footer-container {
+        padding: 0 20px;
+    }
 }
 
 @media (max-width: 768px) {
+    .footer {
+        padding: 40px 0 0 0;
+    }
+    
+    .footer-container {
+        padding: 0 16px;
+    }
+    
     .footer-container .ant-row {
         flex-direction: column;
     }
+    
     .footer-column {
         margin-bottom: 30px;
+        text-align: center;
     }
+    
     .social-icons,
     .payment-methods {
         justify-content: center;
+    }
+    
+    .footer-bottom {
+        padding: 16px 0;
+        font-size: 13px;
     }
 }

@@ -1,0 +1,227 @@
+{
+    "login": {
+        "overlay": {
+            "name": "BP Fashion",
+            "slogan": "Discover the world of premium fashion"
+        },
+        "title": "Login",
+        "text": {
+            "ifNoAccount": "Don't have an account?",
+            "registerNow": "Register now",
+            "orDivider": "Or",
+            "forgotPass": "Forgot password"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Email"
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Password"
+        },
+        "button": {
+            "login": "Login",
+            "google": "Login with Google"
+        }
+    },
+    "register": {
+        "title": "Register",
+        "button": {
+            "register": "Register",
+            "google": "Register with Google"
+        },
+        "text": {
+            "ifHaveAccount": "Already have an account?",
+            "loginNow": "Login now",
+            "orDivider": "Or login with"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Email",
+            "required": "Please enter your email",
+            "invalid": "Invalid email"
+        },
+        "password": {
+            "label": "Password",
+            "placeholder": "Password",
+            "required": "Please enter your password",
+            "invalid": "Invalid password"
+        },
+        "confirmPassword": {
+            "label": "Confirm password",
+            "placeholder": "Confirm password",
+            "required": "Please confirm your password",
+            "invalid": "Invalid password confirmation"
+        }
+    },
+    "logout": {
+    },
+    "dashboard": {
+        "user": {
+            "title": "User list",
+            "button": {
+                "add": "Add user"
+            },
+            "notFound": "No users found...",
+            "table": {
+                "id": "ID",
+                "fullName": "Full name",
+                "email": "Email",
+                "dob": "Date of birth",
+                "gender": "Gender",
+                "phone": "Phone number",
+                "address": "Address",
+                "role": "Role",
+                "createAt": "Created at",
+                "action": "Action"
+            }
+        }
+    },
+    "homepage": {
+        "newProducts": {
+            "title": "Newest products",
+            "subtitle": "Discover the latest fashion designs",
+            "error": {
+                "title": "Error loading products",
+                "description": "Unable to load new products list. Please try again later."
+            },
+            "empty": "No new products available"
+        },
+        "addToCart": {
+            "success": {
+                "title": "Added successfully!",
+                "description": "Product \"{productName}\" has been added to cart."
+            }
+        }
+    },
+    "cart": {
+        "title": "Shopping cart"
+    },
+    "header": {
+        "menu": {
+            "home": "Home",
+            "shirts": "Shirts",
+            "pants": "Pants",
+            "accessories": "Accessories",
+            "dropdown": {
+                "somi": "Dress shirt",
+                "tshirt": "T-shirt",
+                "jacket": "Jacket",
+                "dress-pant": "Dress pants",
+                "short": "Shorts",
+                "jeans": "Jeans",
+                "underwear": "Underwear",
+                "socks": "Socks",
+                "belt": "Belt",
+                "wallet": "Wallet"
+            }
+        },
+        "search": {
+            "placeholder": "Search..."
+        },
+        "dropdown": {
+            "profile": "Account",
+            "admin": "Administration",
+            "order": "Orders",
+            "login": "Login",
+            "logout": "Logout",
+            "register": "Register"
+        }
+    },
+    "profile": {
+        "update": {
+            "success": "Profile updated successfully!",
+            "error": "Update failed!",
+            "button": "Update profile"
+        },
+        "form": {
+            "userName": {
+                "label": "Username",
+                "placeholder": "Enter username",
+                "required": "Username cannot be empty!"
+            },
+            "fullName": {
+                "label": "Full name",
+                "placeholder": "Enter full name"
+            },
+            "email": {
+                "label": "E-mail",
+                "required": "Email cannot be empty",
+                "invalid": "Please enter a valid email address"
+            },
+            "phone": {
+                "label": "Phone number"
+            },
+            "address": {
+                "label": "Address",
+                "placeholder": "Enter address"
+            },
+            "dob": {
+                "label": "Date of birth",
+                "placeholder": "Select date of birth"
+            },
+            "gender": {
+                "label": "Gender",
+                "placeholder": "Select gender",
+                "male": "Male",
+                "female": "Female",
+                "other": "Other"
+            }
+        },
+        "password": {
+            "update": {
+                "title": "Change password",
+                "button": "Change password",
+                "success": "Password updated successfully!",
+                "error": "Password update failed!",
+                "cancel": "Cancel",
+                "submit": "Update password"
+            },
+            "form": {
+                "currentPassword": {
+                    "label": "Current password",
+                    "placeholder": "Enter current password",
+                    "required": "Please enter current password"
+                },
+                "newPassword": {
+                    "label": "New password",
+                    "placeholder": "Enter new password",
+                    "required": "Please enter new password",
+                    "minLength": "Password must be at least 6 characters!"
+                },
+                "confirmPassword": {
+                    "label": "Confirm new password",
+                    "placeholder": "Re-enter new password",
+                    "required": "Please confirm new password",
+                    "notMatch": "Password confirmation does not match!"
+                }
+            }
+        }
+    },
+    "footer": {
+        "hotline": "Hotline: 1900 1069",
+        "open-time": "8:30 AM - 7:00 PM, all days of the week",
+        "address": {
+            "north": "12th floor, The Nine Building, No. 9 Pham Van Dong, Mai Dich, Phu Dien, Hanoi",
+            "south": "6th floor, Landmark 81 Building, Tan Cang, Binh Thanh, Ho Chi Minh City"
+        },
+        "contact": {
+            "title": "Contact information"
+        },
+        "news": {
+            "title": "Subscribe to newsletter",
+            "placeholder": "Your email",
+            "button": "Subscribe"
+        },
+        "support": {
+            "title": "Support",
+            "return": "Return policy",
+            "private": "Privacy policy",
+            "term": "Terms of service"
+        },
+        "payment": {
+            "title": "Payment methods"
+        },
+        "copyright": "© 2025 BP Fashion. All rights reserved."
+    }
+}

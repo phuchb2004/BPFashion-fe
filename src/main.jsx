@@ -7,7 +7,9 @@ import PantsPage from './components/pants';
 import AccessoriesPage from './components/accessories';
 import Login from './components/login';
 import Register from './components/register';
-import Profile from './components/profile';
+import ProfileInfo from './components/profile/profile-info';
+import AddressManagement from './components/profile/address-management';
+import OrderHistory from './components/profile/order-history';
 import ProductDetail from './components/product-detail';
 import Checkout from './components/checkout';
 import ReturnPolicy from './components/return-policy';
@@ -29,8 +31,10 @@ createRoot(document.getElementById('root')).render(
           <Route path="/accessories" element={<AccessoriesPage/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/login" element={<Login/>}/>
-          <Route path="register" element={<Register/>}/>
-          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/profile" element={<ProfileInfo/>}/>
+          <Route path="/profile/address" element={<AddressManagement/>}/>
+          <Route path="/profile/orders" element={<OrderHistory/>}/>
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/return-policy" element={<ReturnPolicy/>} />

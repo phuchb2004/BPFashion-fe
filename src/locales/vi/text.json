@@ -12,9 +12,11 @@
             "forgotPass": "Quên mật khẩu"
         },
         "email": {
+            "label": "Email",
             "placeholder": "Email"
         },
         "password": {
+            "label": "Mật khẩu",
             "placeholder": "Mật khẩu"
         },
         "button": {
@@ -33,6 +35,24 @@
             "ifHaveAccount": "Đã có tài khoản?",
             "loginNow": "Đăng nhập ngay",
             "orDivider": "Hoặc đăng nhập với"
+        },
+        "email": {
+            "label": "Email",
+            "placeholder": "Email",
+            "required": "Vui lòng nhập email",
+            "invalid": "Email không hợp lệ"
+        },
+        "password": {
+            "label": "Mật khẩu",
+            "placeholder": "Mật khẩu",
+            "required": "Vui lòng nhập mật khẩu",
+            "invalid": "Mật khẩu không hợp lệ"
+        },
+        "confirmPassword": {
+            "label": "Xác nhận mật khẩu",
+            "placeholder": "Xác nhận mật khẩu",
+            "required": "Vui lòng xác nhận mật khẩu",
+            "invalid": "Xác nhận mật khẩu không hợp lệ"
         }
     },
     "logout": {
@@ -60,7 +80,21 @@
         }
     },
     "homepage": {
-    
+        "newProducts": {
+            "title": "Sản phẩm mới nhất",
+            "subtitle": "Khám phá những thiết kế thời trang vừa ra mắt",
+            "error": {
+                "title": "Lỗi tải sản phẩm",
+                "description": "Không thể tải danh sách sản phẩm mới. Vui lòng thử lại sau."
+            },
+            "empty": "Hiện chưa có sản phẩm mới"
+        },
+        "addToCart": {
+            "success": {
+                "title": "Thêm thàng công!",
+                "description": "Đã thêm sản phẩm \"{productName}\" vào giỏ hàng."
+            }
+        }
     },
     "cart": {
         "title": "Giỏ hàng"
@@ -94,6 +128,76 @@
             "login": "Đăng nhập",
             "logout": "Đăng xuất",
             "register": "Đăng ký"
+        }
+    },
+    "profile": {
+        "update": {
+            "success": "Cập nhật thông tin thành công!",
+            "error": "Cập nhật thất bại!",
+            "button": "Cập nhật thông tin"
+        },
+        "form": {
+            "userName": {
+                "label": "Tên người dùng",
+                "placeholder": "Nhập tên người dùng",
+                "required": "Tên người dùng không được để trống!"
+            },
+            "fullName": {
+                "label": "Họ và tên",
+                "placeholder": "Nhập họ và tên"
+            },
+            "email": {
+                "label": "E-mail",
+                "required": "Email không được để trống",
+                "invalid": "Vui lòng nhập email đúng định dạng"
+            },
+            "phone": {
+                "label": "Số điện thoại"
+            },
+            "address": {
+                "label": "Địa chỉ",
+                "placeholder": "Nhập địa chỉ"
+            },
+            "dob": {
+                "label": "Ngày sinh",
+                "placeholder": "Chọn ngày sinh"
+            },
+            "gender": {
+                "label": "Giới tính",
+                "placeholder": "Chọn giới tính",
+                "male": "Nam",
+                "female": "Nữ",
+                "other": "Khác"
+            }
+        },
+        "password": {
+            "update": {
+                "title": "Cập nhật mật khẩu",
+                "button": "Đổi mật khẩu",
+                "success": "Cập nhật mật khẩu thành công!",
+                "error": "Cập nhật mật khẩu thất bại!",
+                "cancel": "Hủy",
+                "submit": "Cập nhật mật khẩu"
+            },
+            "form": {
+                "currentPassword": {
+                    "label": "Mật khẩu hiện tại",
+                    "placeholder": "Nhập mật khẩu hiện tại",
+                    "required": "Vui lòng nhập mật khẩu hiện tại"
+                },
+                "newPassword": {
+                    "label": "Mật khẩu mới",
+                    "placeholder": "Nhập mật khẩu mới",
+                    "required": "Vui lòng nhập mật khẩu mới",
+                    "minLength": "Mật khẩu phải có ít nhất 6 ký tự!"
+                },
+                "confirmPassword": {
+                    "label": "Xác nhận mật khẩu mới",
+                    "placeholder": "Nhập lại mật khẩu mới",
+                    "required": "Vui lòng xác nhận mật khẩu mới",
+                    "notMatch": "Mật khẩu xác nhận không khớp!"
+                }
+            }
         }
     },
     "footer": {

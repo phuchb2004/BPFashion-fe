@@ -18,8 +18,9 @@ import {
     ClockCircleOutlined
 } from "@ant-design/icons";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
-import logo from './../../../assets/logo-new.png';
 import { useTranslation } from "react-i18next";
+
+const logo = '/assets/logo-new.png';
 
 const { Title, Paragraph, Text } = Typography;
 

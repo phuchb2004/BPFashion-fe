@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
-    Button, notification, Spin, Select, Breadcrumb, Divider, Tabs, Card, Row, Col,
+    Button, Spin, Select, Breadcrumb, Divider, Tabs, Card, Row, Col,
     InputNumber, Space, Rate, Tag, Image, List, Avatar, Typography, Statistic,
     Progress, Badge, Alert
     } from "antd";
@@ -18,9 +18,11 @@ import {
     CheckCircleOutlined,
     StarFilled
     } from "@ant-design/icons";
-import axiosSystem from "../../api/axiosSystem";
+import baseApi from "../../api/baseApi";
 import Header from "../layout/header";
-import Footer from "../layout/footer";;
+import Footer from "../layout/footer";
+import { showSuccess, showError, showCartNotification } from "../../utils/notification";
+import getProductImageUrl from "../../utils/productImageHelper";
 import "./style.css";
 
 const { Title, Text, Paragraph } = Typography;
@@ -37,56 +39,77 @@ export default function ProductDetail() {
     const [selectedSize, setSelectedSize] = useState("");
     const [loading, setLoading] = useState(true);
     const [addingToCart, setAddingToCart] = useState(false);
-    const [api, contextHolder] = notification.useNotification();
 
     useEffect(() => {
         fetchProductDetails();
         fetchRelatedProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const fetchProductDetails = async () => {
-    try {
-        setLoading(true);
-        const response = await axiosSystem.get(`/Products/GetProductById/${id}`);
+        try {
+            setLoading(true);
+            const response = await baseApi.get(`/Products/GetProductById/${id}`);
 
-        if (response) {
-            setProduct(response);
+            // Handle new API response format from GetProductById
+            // Response includes: productId, productName, description, imageUrl, material, CategoryName, Variants
+            const productData = response?.data || response?.product || response;
+            
+            if (productData) {
+                // Process Variants to get available sizes and prices
+                if (productData.Variants && productData.Variants.length > 0) {
+                    const availableSizes = [...new Set(productData.Variants.map(v => v.SizeName || v.sizeName).filter(Boolean))];
+                    const minPrice = Math.min(...productData.Variants.map(v => v.price || 0));
+                    const totalStock = productData.Variants.reduce((sum, v) => sum + (v.stockQuantity || 0), 0);
 
-            if (response.productId.size) {
-                const sizes = response.data.size.split(',').map(s => s.trim());
-                if (sizes.length > 0) {
-                    setSelectedSize(sizes[0]);
+                    // Update product data with processed information
+                    productData.price = minPrice;
+                    productData.stockQuantity = totalStock;
+                    productData.sizes = availableSizes;
+                    productData.size = availableSizes.join(', ');
+                    
+                    // Set default size if available
+                    if (availableSizes.length > 0) {
+                        setSelectedSize(availableSizes[0]);
+                    }
                 }
+
+                setProduct(productData);
+            } else {
+                setProduct(null);
             }
-        } else {
+        } catch (err) {
+            console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
+            const errorMsg = err.response?.data?.message || "Không thể tải thông tin sản phẩm";
+            showError("Lỗi", errorMsg);
             setProduct(null);
+        } finally {
+            setLoading(false);
         }
-    } catch (err) {
-        console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
-        api.error({
-            message: "Lỗi",
-            description: "Không thể tải thông tin sản phẩm"
-        });
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
-const fetchRelatedProducts = async () => {
-    try {
-        const response = await axiosSystem.get("/Products/GetAllProducts");
+    const fetchRelatedProducts = async () => {
+        try {
+            const response = await baseApi.get("/Products/GetAllProducts");
 
-        const allProducts = Array.isArray(response) ? response : [];
+            // Handle different response formats
+            const allProducts = Array.isArray(response) 
+                ? response 
+                : Array.isArray(response?.data) 
+                    ? response.data 
+                    : Array.isArray(response?.products)
+                        ? response.products
+                        : [];
 
-        const filteredProducts = allProducts
-            .filter(p => p.productId !== parseInt(id))
-            .slice(0, 4);
+            const filteredProducts = allProducts
+                .filter(p => p.productId !== parseInt(id))
+                .slice(0, 4);
 
-        setRelatedProducts(filteredProducts);
-    } catch (err) {
-        console.error("Lỗi khi lấy sản phẩm liên quan:", err);
-    }
-};
+            setRelatedProducts(filteredProducts);
+        } catch (err) {
+            console.error("Lỗi khi lấy sản phẩm liên quan:", err);
+        }
+    };
 
 
     const handleAddToCart = async () => {
@@ -94,30 +117,48 @@ const fetchRelatedProducts = async () => {
         setAddingToCart(true);
         const userId = localStorage.getItem("userId");
         if (!userId) {
-            api.error({ 
-            message: "Lỗi", 
-            description: "Vui lòng đăng nhập trước khi mua hàng" 
-            });
-            navigate("/login");
+            showError("Vui lòng đăng nhập", "Vui lòng đăng nhập trước khi mua hàng");
+            setTimeout(() => navigate("/login"), 1500);
             return;
         }
 
-        await axiosSystem.post("/Cart/AddToCart", {
+        // Find variant based on selected size
+        let variantId = null;
+        if (product.Variants && product.Variants.length > 0) {
+            if (selectedSize) {
+                // Find variant matching selected size
+                const variant = product.Variants.find(v => 
+                    (v.SizeName || v.sizeName) === selectedSize
+                );
+                variantId = variant?.variantId;
+            }
+            
+            // If no variant found or no size selected, use first available variant
+            if (!variantId && product.Variants.length > 0) {
+                variantId = product.Variants[0].variantId;
+            }
+        }
+
+        if (!variantId) {
+            showError("Lỗi", "Không tìm thấy biến thể sản phẩm. Vui lòng chọn kích thước.");
+            return;
+        }
+
+        await baseApi.post("/Cart/AddToCart", {
             userId: parseInt(userId),
-            productId: product.productId,
+            variantId: variantId,
             quantity: quantity
         });
 
-        api.success({ 
-            message: "Thành công", 
-            description: "Đã thêm sản phẩm vào giỏ hàng" 
-        });
+        showCartNotification("Thành công", "Đã thêm sản phẩm vào giỏ hàng");
+        
+        // Refresh cart in header
+        window.dispatchEvent(new Event('cartUpdated'));
+        
         } catch (error) {
         console.error("Lỗi khi thêm vào giỏ hàng", error);
-        api.error({ 
-            message: "Lỗi", 
-            description: "Thêm sản phẩm vào giỏ hàng thất bại" 
-        });
+        const errorMsg = error.response?.data?.message || "Thêm sản phẩm vào giỏ hàng thất bại";
+        showError("Lỗi", errorMsg);
         } finally {
         setAddingToCart(false);
         }
@@ -127,27 +168,42 @@ const fetchRelatedProducts = async () => {
         try {
         const userId = localStorage.getItem("userId");
         if (!userId) {
-            api.error({ 
-            message: "Lỗi", 
-            description: "Vui lòng đăng nhập trước khi mua hàng" 
-            });
-            navigate("/login");
+            showError("Vui lòng đăng nhập", "Vui lòng đăng nhập trước khi mua hàng");
+            setTimeout(() => navigate("/login"), 1500);
             return;
         }
 
-        await axiosSystem.post("/Cart/AddToCart", {
+        // Find variant based on selected size
+        let variantId = null;
+        if (product.Variants && product.Variants.length > 0) {
+            if (selectedSize) {
+                const variant = product.Variants.find(v => 
+                    (v.SizeName || v.sizeName) === selectedSize
+                );
+                variantId = variant?.variantId;
+            }
+            
+            if (!variantId && product.Variants.length > 0) {
+                variantId = product.Variants[0].variantId;
+            }
+        }
+
+        if (!variantId) {
+            showError("Lỗi", "Không tìm thấy biến thể sản phẩm. Vui lòng chọn kích thước.");
+            return;
+        }
+
+        await baseApi.post("/Cart/AddToCart", {
             userId: parseInt(userId),
-            productId: product.productId,
+            variantId: variantId,
             quantity: quantity
         });
 
         navigate("/checkout");
         } catch (error) {
         console.error("Lỗi khi mua hàng", error);
-        api.error({ 
-            message: "Lỗi", 
-            description: "Không thể thực hiện mua hàng" 
-        });
+        const errorMsg = error.response?.data?.message || "Không thể thực hiện mua hàng";
+        showError("Lỗi", errorMsg);
         }
     };
 
@@ -161,10 +217,7 @@ const fetchRelatedProducts = async () => {
         .catch(error => console.log('Lỗi chia sẻ:', error));
         } else {
         navigator.clipboard.writeText(window.location.href);
-        api.success({ 
-            message: "Thành công", 
-            description: "Đã sao chép liên kết vào clipboard" 
-        });
+        showSuccess("Thành công", "Đã sao chép liên kết vào clipboard");
         }
     };
 
@@ -188,11 +241,16 @@ const fetchRelatedProducts = async () => {
         );
     }
 
-    const availableSizes = product.size ? product.size.split(',').map(s => s.trim()) : [];
+    const availableSizes = product.size 
+        ? (typeof product.size === 'string' 
+            ? product.size.split(',').map(s => s.trim()).filter(s => s)
+            : Array.isArray(product.size) 
+                ? product.size 
+                : [])
+        : [];
 
     return (
         <>
-        {contextHolder}
         <Header />
         
         <div className="product-detail-container">
@@ -211,7 +269,7 @@ const fetchRelatedProducts = async () => {
                 <Card 
                 cover={
                     <Image
-                    src={product.imageUrl}
+                    src={getProductImageUrl(product)}
                     alt={product.productName}
                     style={{ width: '100%', height: '400px', objectFit: 'cover' }}
                     placeholder={
@@ -219,6 +277,7 @@ const fetchRelatedProducts = async () => {
                         <Spin size="large" />
                         </div>
                     }
+                    fallback="/assets/placeholder-product.jpg"
                     />
                 }
                 actions={[
@@ -228,11 +287,14 @@ const fetchRelatedProducts = async () => {
                 ]}
                 >
                 <Meta
-                    title={product.productName}
+                    title={product.productName || 'Tên sản phẩm'}
                     description={
                     <Space direction="vertical" style={{ width: '100%' }}>
-                        <Text type="secondary">Mã: {product.productId}</Text>
+                        <Text type="secondary">Mã sản phẩm: {product.productId}</Text>
                         <Rate disabled defaultValue={4.5} allowHalf character={<StarFilled />} />
+                        {product.CategoryName && (
+                            <Tag color="blue">{product.CategoryName}</Tag>
+                        )}
                     </Space>
                     }
                 />
@@ -241,20 +303,33 @@ const fetchRelatedProducts = async () => {
 
             <Col xs={24} md={12}>
                 <Space direction="vertical" style={{ width: '100%' }} size="large">
-                <Title level={2}>{product.productName}</Title>
+                <Title level={2}>{product.productName || 'Tên sản phẩm'}</Title>
                 
-                <Space>
-                    <Statistic
-                    title="Giá"
-                    value={product.price}
-                    precision={0}
-                    prefix="₫"
-                    valueStyle={{ color: '#cf1322' }}
-                    />
-                    {product.price > 100000 && (
-                    <Text delete type="secondary" style={{ fontSize: '16px' }}>
-                        ₫{(product.price * 1.2).toLocaleString()}
-                    </Text>
+                <Space align="baseline" size="large">
+                    {product.discount && product.discount > 0 ? (
+                        <>
+                            <Statistic
+                                title="Giá khuyến mãi"
+                                value={product.price * (100 - product.discount) / 100}
+                                precision={0}
+                                prefix="₫"
+                                valueStyle={{ color: '#cf1322', fontSize: '24px', fontWeight: 'bold' }}
+                            />
+                            <Text delete type="secondary" style={{ fontSize: '18px' }}>
+                                ₫{Number(product.price).toLocaleString('vi-VN')}
+                            </Text>
+                            <Tag color="red" style={{ fontSize: '14px', padding: '4px 12px' }}>
+                                -{product.discount}%
+                            </Tag>
+                        </>
+                    ) : (
+                        <Statistic
+                            title="Giá"
+                            value={product.price}
+                            precision={0}
+                            prefix="₫"
+                            valueStyle={{ color: '#cf1322', fontSize: '24px', fontWeight: 'bold' }}
+                        />
                     )}
                 </Space>
 
@@ -408,21 +483,33 @@ const fetchRelatedProducts = async () => {
                         cover={
                         <Image
                             alt={item.productName}
-                            src={item.imageUrl || "/placeholder-product.jpg"}
+                            src={getProductImageUrl(item)}
                             height={200}
                             style={{ objectFit: 'cover' }}
                             preview={false}
+                            fallback="/assets/placeholder-product.jpg"
                         />
                         }
                         onClick={() => navigate(`/product/${item.productId}`)}
                     >
                         <Meta
-                        title={item.productName}
+                        title={item.productName || 'Tên sản phẩm'}
                         description={
                             <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                            <Text strong style={{ color: '#cf1322' }}>
-                                ₫{item.price.toLocaleString()}
-                            </Text>
+                            {item.discount && item.discount > 0 ? (
+                                <>
+                                    <Text strong style={{ color: '#cf1322', fontSize: '16px' }}>
+                                        ₫{Number(item.price * (100 - item.discount) / 100).toLocaleString('vi-VN')}
+                                    </Text>
+                                    <Text delete type="secondary" style={{ fontSize: '12px' }}>
+                                        ₫{Number(item.price).toLocaleString('vi-VN')}
+                                    </Text>
+                                </>
+                            ) : (
+                                <Text strong style={{ color: '#cf1322', fontSize: '16px' }}>
+                                    ₫{Number(item.price || 0).toLocaleString('vi-VN')}
+                                </Text>
+                            )}
                             {item.stockQuantity > 0 ? (
                                 <Badge status="success" text="Còn hàng" />
                             ) : (

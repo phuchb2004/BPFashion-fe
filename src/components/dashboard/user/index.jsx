@@ -4,7 +4,7 @@ import {
   message, Tag, Card, Spin, Popconfirm, Table
 } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import axiosSystem from '../../../api/axiosSystem';
+import baseApi from '../../../api/baseApi';
 import moment from 'moment';
 import cities from '../../../data/cities.json';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await axiosSystem.get('/Users/GetAllUser');
+      const res = await baseApi.get('/Users/GetAllUser');
       setUsers(res.users);
     } catch (error) {
       message.error('Lấy dữ liệu nhân viên thất bại!', error);
@@ -53,7 +53,7 @@ const UserManagement = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axiosSystem.delete(`/Users/DeleteUser/${id}`);
+      await baseApi.delete(`/Users/DeleteUser/${id}`);
       message.success('Xóa thành công!');
       fetchUsers();
     } catch (error) {
@@ -74,10 +74,10 @@ const UserManagement = () => {
       };
 
       if (editingUser) {
-        await axiosSystem.put(`/Users/UpdateUser/${editingUser.userId}`, payload);
+        await baseApi.put(`/Users/UpdateUser/${editingUser.userId}`, payload);
         message.success('Cập nhật thành công');
       } else {
-        await axiosSystem.post('/Users/CreateUser', payload);
+        await baseApi.post('/Users/CreateUser', payload);
         message.success('Thêm thành công');
       }
 

@@ -9,12 +9,13 @@ import {
   LockOutlined,
   GoogleOutlined
 } from '@ant-design/icons';
-import axiosSystem from '../../api/axiosSystem';
+import baseApi from '../../api/baseApi';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import './style.css';
-import imgOverlay from '../../assets/img-overlay2.jpg';
+
+const imgOverlay = '/assets/img-overlay2.jpg';
 
 const { Title, Text, Paragraph } = Typography;
 const { Content } = Layout;
@@ -38,31 +39,37 @@ export default function Login() {
       message,
       description,
       placement: "topRight",
-      duration: 2
+      duration: type === 'success' ? 3 : 4
     });
   };
 
   const handleLogin = async (values) => {
     setLoading(true);
     try {
-      const res = await axiosSystem.post('/Users/Login', values);
+      const res = await baseApi.post('/Users/Login', values);
       if (res) {
         localStorage.setItem("token", res.token);
         localStorage.setItem("userId", res.user.userId);
         localStorage.setItem("fullName", res.user.fullName);
         localStorage.setItem("email", res.user.email);
-        localStorage.setItem("password", res.user.password);
         localStorage.setItem("dob", res.user.dob);
         localStorage.setItem("gender", res.user.gender);
         localStorage.setItem("role", res.user.role);
+
+        openNotification("success", "Đăng nhập thành công!", "Chào mừng bạn quay trở lại!");
         
-        openNotification("success", "Đăng nhập thành công!");
-        navigate("/homepage");
+        setTimeout(() => {
+          if (res.user.role === "Admin") {
+            navigate("/dashboard");
+          } else {
+            navigate("/homepage");
+          }
+        }, 2000);
       }
     } catch (error) {
       console.log('Đăng nhập xảy ra lỗi', error);
-      openNotification("error", "Đăng nhập thất bại", "Sai email hoặc mật khẩu");
-    } finally {
+      const errorMsg = error.response?.data?.message || "Sai email hoặc mật khẩu";
+      openNotification("error", "Đăng nhập thất bại", errorMsg);
       setLoading(false);
     }
   };
@@ -72,7 +79,7 @@ export default function Login() {
       const decoded = jwtDecode(credentialResponse.credential);
       console.log("Google user info", decoded);
 
-      const res = await axiosSystem.post("/LoginGoogle", {
+      const res = await baseApi.post("/LoginGoogle", {
         credential: credentialResponse.credential,
       });
       
@@ -81,10 +88,14 @@ export default function Login() {
         localStorage.setItem("email", res.user.email);
         localStorage.setItem("role", res.user.role);
         localStorage.setItem("fullName", res.user.fullName);
+        
+        openNotification("success", "Đăng nhập Google thành công!", "Chào mừng bạn quay trở lại!");
+        
+        setTimeout(() => {
+          navigate("/homepage");
+        }, 500);
       }
 
-      openNotification("success", "Đăng nhập Google thành công!");
-      navigate("/homepage");
     } catch (error) {
       console.log("Google login error", error);
       openNotification("error", "Đăng nhập Google thất bại", "Vui lòng thử lại");
@@ -145,14 +156,15 @@ export default function Login() {
                 >
                   <Form.Item
                     name="email"
+                    label={t("login.email.label")}
                     rules={[
                       {
                         required: true,
-                        message: 'Vui lòng nhập email!',
+                        message: t("login.email.required"),
                       },
                       {
                         type: 'email',
-                        message: 'Email không hợp lệ!',
+                        message: t("login.email.invalid"),
                       },
                     ]}
                   >
@@ -165,10 +177,11 @@ export default function Login() {
 
                   <Form.Item
                     name="password"
+                    label={t("login.password.label")}
                     rules={[
                       {
                         required: true,
-                        message: 'Vui lòng nhập mật khẩu!',
+                        message: t("login.password.required"),
                       },
                     ]}
                   >

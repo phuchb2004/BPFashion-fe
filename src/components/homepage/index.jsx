@@ -1,30 +1,32 @@
 import "./style.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Row, Col, Card, Spin, Empty, Typography,
-  Button, notification
+  Button
 } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import Header from "../layout/header";
 import Footer from "../layout/footer";
 import Banner from "../banner";
 import Chatbot from "../chatbot";
-import axiosSystem from "../../api/axiosSystem";
+import baseApi from "../../api/baseApi";
+import { useTranslation } from "react-i18next";
+import { showError, showCartNotification } from "../../utils/notification";
+import getProductImageUrl from "../../utils/productImageHelper";
 
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
-// ProductCard component không thay đổi
-const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPrice }) => {
-  const handleCardClick = useCallback(() => {
+const ProductCard = React.memo(({ product, imageUrl, formattedPrice, onAddToCart, onViewProduct }) => {
+  const handleCardClick = () => {
     onViewProduct(product.productId);
-  }, [onViewProduct, product.productId]);
+  };
 
-  const handleAddToCartClick = useCallback((e) => {
+  const handleAddToCart = (e) => {
     e.stopPropagation();
     onAddToCart(product);
-  }, [onAddToCart, product]);
+  };
 
   return (
     <Card
@@ -35,22 +37,19 @@ const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPri
         <div className="product-image-container">
           <img
             alt={product.productName}
-            src={product.imageUrl}
+            src={imageUrl}
             className="product-image"
             loading="lazy"
+            decoding="async"
           />
         </div>
       }
     >
       <Meta
-        title={
-          <Text className="product-name">
-            {product.productName}
-          </Text>
-        }
+        title={<Text className="product-name">{product.productName}</Text>}
         description={
           <div className="product-info">
-            <Text className="current-price">{formatPrice(product.price)}</Text>
+            <Text className="current-price">{formattedPrice}</Text>
           </div>
         }
       />
@@ -59,56 +58,101 @@ const ProductCard = React.memo(({ product, onAddToCart, onViewProduct, formatPri
         block
         className="add-to-cart-btn"
         icon={<ShoppingCartOutlined />}
-        onClick={handleAddToCartClick}
+        onClick={handleAddToCart}
       >
         Thêm vào giỏ
       </Button>
     </Card>
   );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.product.productId === nextProps.product.productId &&
+    prevProps.imageUrl === nextProps.imageUrl &&
+    prevProps.formattedPrice === nextProps.formattedPrice
+  );
 });
-
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState({ products: true });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  const fetchNewProducts = useCallback(async () => {
-    setLoading(prev => ({ ...prev, products: true }));
-    try {
-      const response = await axiosSystem.get(`/Products/GetProductsPaged?page=1&pageSize=8`);
-      setProducts(response.products || []);
-    } catch (error) {
-      console.error("Lỗi khi lấy sản phẩm mới:", error);
-      notification.error({
-        message: 'Lỗi Tải Sản Phẩm',
-        description: 'Không thể tải danh sách sản phẩm mới. Vui lòng thử lại sau.'
-      });
-    } finally {
-      setLoading(prev => ({ ...prev, products: false }));
-    }
-  }, []);
+  const { t } = useTranslation();
 
   useEffect(() => {
+    const fetchNewProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await baseApi.get(`/Products/GetProductsPaged?page=1&pageSize=8`);
+        
+        const productsList = response?.products;
+        setProducts(Array.isArray(productsList) ? productsList : []);
+      } catch (error) {
+        console.error("Lỗi khi lấy sản phẩm mới:", error);
+        const errorMsg = error.response.message || t("homepage.newProducts.error.description");
+        showError(
+          t("homepage.newProducts.error.title"),
+          errorMsg
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchNewProducts();
-  }, [fetchNewProducts]);
+  }, [t]);
 
-  const formatPrice = useCallback((price) => {
-    if (typeof price !== 'number') return price;
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
-  }, []);
+  const processedProducts = useMemo(() => {
+    return products.map(product => ({
+      ...product,
+      imageUrl: getProductImageUrl(product),
+      formattedPrice: product.price 
+        ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)
+        : 'Liên hệ'
+    }));
+  }, [products]);
 
-  const handleAddToCart = useCallback((product) => {
-    notification.success({
-      message: 'Thêm thành công!',
-      description: `Đã thêm sản phẩm "${product.productName}" vào giỏ hàng.`,
-      placement: 'bottomRight',
-    });
-  }, []);
+  const handleAddToCart = async (product) => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      showError("Vui lòng đăng nhập", "Vui lòng đăng nhập trước khi mua hàng");
+      setTimeout(() => navigate("/login"), 1500);
+      return;
+    }
 
-  const handleViewProduct = useCallback((productId) => {
+    try {
+      // Find first available variant (since we don't have size selection on listing pages)
+      let variantId = null;
+      if (product.Variants && product.Variants.length > 0) {
+        variantId = product.Variants[0].variantId;
+      } else {
+        // If no variants, navigate to product detail page to select size
+        navigate(`/product/${product.productId}`);
+        return;
+      }
+
+      await baseApi.post("/Cart/AddToCart", {
+        userId: parseInt(userId),
+        variantId: variantId,
+        quantity: 1
+      });
+
+      showCartNotification(
+        t("homepage.addToCart.success.title"),
+        t("homepage.addToCart.success.description", { productName: product.productName })
+      );
+
+      // Refresh cart in header
+      window.dispatchEvent(new Event('cartUpdated'));
+    } catch (error) {
+      console.error("Lỗi khi thêm vào giỏ hàng:", error);
+      const errorMsg = error.response?.data?.message || "Thêm sản phẩm vào giỏ hàng thất bại";
+      showError("Lỗi", errorMsg);
+    }
+  };
+
+  const handleViewProduct = (productId) => {
     navigate(`/product/${productId}`);
-  }, [navigate]);
+  };
 
   return (
     <div className="homepage-container">
@@ -118,27 +162,28 @@ export default function HomePage() {
       <main className="main-content">
         <section className="section">
           <div className="section-header">
-            <Title level={2} className="section-title">Sản Phẩm Mới Nhất</Title>
-            <Text className="section-subtitle">Khám phá những thiết kế thời trang vừa ra mắt</Text>
+            <Title level={2} className="section-title">{t("homepage.newProducts.title")}</Title>
+            <Text className="section-subtitle">{t("homepage.newProducts.subtitle")}</Text>
           </div>
           <div className="section-content">
-            {loading.products ? (
+            {loading ? (
               <div className="loading-container"><Spin size="large" /></div>
-            ) : products.length > 0 ? (
+            ) : processedProducts.length > 0 ? (
               <Row gutter={[32, 40]} className="five-products-row">
-                {products.map((product) => (
+                {processedProducts.map((product) => (
                   <Col key={product.productId} xs={12} sm={12} md={8} lg={6}>
                     <ProductCard
                       product={product}
+                      imageUrl={product.imageUrl}
+                      formattedPrice={product.formattedPrice}
                       onAddToCart={handleAddToCart}
                       onViewProduct={handleViewProduct}
-                      formatPrice={formatPrice}
                     />
                   </Col>
                 ))}
               </Row>
             ) : (
-              <Empty description="Hiện chưa có sản phẩm mới" />
+              <Empty description={t("homepage.newProducts.empty")} />
             )}
           </div>
         </section>

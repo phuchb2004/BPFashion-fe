@@ -1,172 +1,21 @@
-// src/pages/Pants/PantsPage.js
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "../layout/header";
-import Footer from "../layout/footer";
-import {
-  Row, Col, Card, Spin, Empty, Typography, Tabs,
-  Button, Space, Rate, Tag, notification, Breadcrumb
-} from "antd";
-import { HomeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import axiosSystem from "../../api/axiosSystem";
-import "./style.css";
+import React from "react";
+import CategoryProductsPage from "../category-products/CategoryProductsPage";
+import { filterPants } from "../category-products/filterHelpers";
 
-const { Title, Text } = Typography;
-const { Meta } = Card;
+const pantTabs = [
+  { key: "all", label: "Tất cả quần" },
+  { key: "quan-tay", label: "Quần tây" },
+  { key: "quan-short", label: "Quần short" },
+  { key: "quan-jeans", label: "Quần jeans" },
+];
 
 export default function PantsPage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("all");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchPants();
-  }, []);
-
-  const fetchPants = () => {
-    axiosSystem
-      .get("/Products/GetAllProducts")
-      .then((res) => {
-        const pants = res.filter(product => 
-          product.categoryName?.includes("Quần") || 
-          product.categoryId === 2
-        ).map(product => ({
-          ...product,
-          categoryName: product.categoryName,
-        }));
-        setProducts(pants);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy danh sách quần", error);
-        notification.error({
-          message: 'Lỗi',
-          description: 'Không thể tải danh sách quần. Vui lòng thử lại sau.'
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const pantTypes = [
-    { key: "all", label: "Tất cả quần" },
-    { key: "quan-tay", label: "Quần tây" },
-    { key: "quan-short", label: "Quần short" },
-    { key: "quan-jeans", label: "Quần jeans" },
-  ];
-
-  const filteredProducts = activeTab === "all" 
-    ? products 
-    : products.filter(product => product.productName?.toLowerCase().includes(activeTab));
-
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
-  };
-
-  const handleAddToCart = (product, e) => {
-    e.stopPropagation();
-    notification.success({
-      message: 'Thành công',
-      description: `Đã thêm ${product.productName} vào giỏ hàng`
-    });
-  };
-
   return (
-    <div className="category-page">
-      <Header />
-      <div className="page-header">
-        <Breadcrumb
-          items={[
-            { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
-            { title: 'Quần' },
-          ]}
-          style={{ cursor: "pointer"}}
-        />
-      </div>
-
-      <div className="page-content">
-        <Tabs
-          activeKey={activeTab}
-          items={pantTypes}
-          onChange={setActiveTab}
-          className="category-tabs"
-        />
-
-        {loading ? (
-          <div className="loading-container">
-            <Spin size="large" />
-          </div>
-        ) : filteredProducts.length === 0 ? (
-          <Empty description="Không có sản phẩm nào" />
-        ) : (
-          <Row gutter={[24, 32]} className="products-grid">
-            {filteredProducts.map((product) => (
-              <Col key={product.productId} xs={12} sm={8} md={6} lg={6}>
-                <Card
-                  hoverable
-                  className="product-card"
-                  onClick={() => navigate(`/product/${product.productId}`)}
-                  cover={
-                    <div className="product-image-container">
-                      <img
-                        alt={product.productName}
-                        src={product.imageUrl || "/default-product.jpg"}
-                        className="product-image"
-                      />
-                      <div className="product-overlay">
-                        <Button 
-                          type="primary" 
-                          icon={<ShoppingCartOutlined />}
-                          onClick={(e) => handleAddToCart(product, e)}
-                        >
-                          Thêm vào giỏ
-                        </Button>
-                      </div>
-                    </div>
-                  }
-                >
-                  <Meta
-                    title={product.productName}
-                    description={
-                      <div className="product-info">
-                        <div className="product-price">
-                          {product.discount > 0 ? (
-                            <>
-                              <Text className="current-price">
-                                {formatPrice(product.price * (100 - product.discount) / 100)}
-                              </Text>
-                              <Text className="original-price" delete>
-                                {formatPrice(product.price)}
-                              </Text>
-                            </>
-                          ) : (
-                            <Text className="current-price">
-                              {formatPrice(product.price)}
-                            </Text>
-                          )}
-                        </div>
-                        <Text type="secondary">Chất liệu: {product.material}</Text>
-                        <Text type="secondary">Size: {product.size}</Text>
-                        <Button 
-                          type="primary" 
-                          block 
-                          icon={<ShoppingCartOutlined />}
-                          onClick={(e) => handleAddToCart(product, e)}
-                        >
-                          Thêm vào giỏ
-                        </Button>
-                      </div>
-                    }
-                  />
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        )}
-      </div>
-      
-      <Footer />
-    </div>
+    <CategoryProductsPage
+      categoryId={2}
+      categoryName="Quần"
+      tabs={pantTabs}
+      filterProducts={filterPants}
+    />
   );
 }
