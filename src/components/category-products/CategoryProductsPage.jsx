@@ -10,6 +10,7 @@ import { HomeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import baseApi from "../../api/baseApi";
 import getProductImageUrl from "../../utils/productImageHelper";
 import { showError, showCartNotification } from "../../utils/notification";
+import { useTranslation } from "react-i18next";
 import "../category-products/style.css";
 
 const { Text } = Typography;
@@ -32,6 +33,7 @@ export default function CategoryProductsPage({
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchProducts();
@@ -64,14 +66,14 @@ export default function CategoryProductsPage({
       setProducts(mappedProducts);
     } catch (error) {
       console.error(`Lỗi khi lấy danh sách ${categoryName}`, error);
-      showError("Lỗi", `Không thể tải danh sách ${categoryName}. Vui lòng thử lại sau.`);
+      showError(t("category.error.title"), t("category.error.description", { categoryName }));
     } finally {
       setLoading(false);
     }
   };
 
   const formatPrice = (price) => {
-    if (!price || price === 0) return "Liên hệ";
+    if (!price || price === 0) return t("common.contact");
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
@@ -80,7 +82,7 @@ export default function CategoryProductsPage({
     
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      showError("Vui lòng đăng nhập", "Vui lòng đăng nhập trước khi mua hàng");
+      showError(t("common.loginRequired.title"), t("common.loginRequired.description"));
       setTimeout(() => navigate("/login"), 1500);
       return;
     }
@@ -102,14 +104,14 @@ export default function CategoryProductsPage({
         quantity: 1
       });
 
-      showCartNotification("Thành công", `Đã thêm ${product.productName} vào giỏ hàng`);
+      showCartNotification(t("category.addToCart.success"), t("category.addToCart.successDesc", { productName: product.productName }));
       
       // Refresh cart in header
       window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error("Lỗi khi thêm vào giỏ hàng:", error);
-      const errorMsg = error.response?.data?.message || "Thêm sản phẩm vào giỏ hàng thất bại";
-      showError("Lỗi", errorMsg);
+      const errorMsg = error.response?.data?.message || t("category.addToCart.errorDesc");
+      showError(t("category.addToCart.error"), errorMsg);
     }
   };
 
@@ -156,7 +158,7 @@ export default function CategoryProductsPage({
             <Spin size="large" />
           </div>
         ) : filteredProducts.length === 0 ? (
-          <Empty description="Không có sản phẩm nào" />
+          <Empty description={t("category.empty")} />
         ) : (
           <Row gutter={[24, 32]} className="products-grid">
             {filteredProducts.map((product) => (
@@ -169,11 +171,11 @@ export default function CategoryProductsPage({
                     <div className="product-image-container">
                       <img
                         alt={product.productName}
-                        src={getProductImageUrl(product.imageUrl)}
+                        src={getProductImageUrl(product)}
                         className="product-image"
                         onError={(e) => {
                           e.target.onerror = null;
-                          e.target.src = '/assets/placeholder-product.jpg';
+                          e.target.src = '/assets/logo2.png';
                         }}
                       />
                       <div className="product-overlay">
@@ -182,7 +184,7 @@ export default function CategoryProductsPage({
                           icon={<ShoppingCartOutlined />}
                           onClick={(e) => handleAddToCart(product, e)}
                         >
-                          Thêm vào giỏ
+                          {t("homepage.addToCart.button")}
                         </Button>
                       </div>
                     </div>
@@ -210,7 +212,7 @@ export default function CategoryProductsPage({
                         </div>
                         {product.material && (
                           <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginTop: '4px' }}>
-                            Chất liệu: {product.material}
+                            {t("category.material")}: {product.material}
                           </Text>
                         )}
                         <Button 
@@ -221,7 +223,7 @@ export default function CategoryProductsPage({
                           className="add-to-cart-btn"
                           style={{ marginTop: '8px' }}
                         >
-                          Thêm vào giỏ
+                          {t("homepage.addToCart.button")}
                         </Button>
                       </div>
                     }

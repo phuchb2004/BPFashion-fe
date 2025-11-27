@@ -13,6 +13,7 @@
 
 .topbar {
     background: rgba(255, 255, 255, 0.98);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     padding: 12px 0;
@@ -178,27 +179,6 @@
     box-shadow: 0 0 0 4px rgba(55, 107, 126, 0.1);
 }
 
-.profile .no-effect {
-    text-decoration: none;
-    cursor: pointer;
-    color: inherit;
-    transition: all var(--transition);
-    display: inline-block;
-}
-
-.profile .no-effect:hover {
-    transform: scale(1.1);
-}
-
-.profile .ant-avatar {
-    transition: all var(--transition);
-    box-shadow: var(--shadow-sm);
-}
-
-.profile .no-effect:hover .ant-avatar {
-    box-shadow: var(--shadow-md);
-}
-
 .cart {
     cursor: pointer;
     position: relative;
@@ -226,21 +206,6 @@
     }
     50% {
         transform: scale(1.1);
-    }
-}
-
-.user-dropdown {
-    animation: fadeInDown 0.3s ease-out;
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
 

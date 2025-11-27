@@ -5,15 +5,12 @@ import "./style.css";
 import CartContainer from "../../cart/CartContainer";
 import {
     UserOutlined,
-    ShoppingCartOutlined,
     SearchOutlined
 } from "@ant-design/icons";
 import {
     Dropdown,
-    Badge,
     Avatar,
     notification,
-    Space
 } from "antd";
 import {
     adminDropdown,
@@ -25,7 +22,8 @@ const logo = '/assets/logo-new.png';
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userRole, setUserRole] = useState(null);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const [dropdownVisible, setDropdownVisible] = useState(false);
 
     const navigate = useNavigate();
     const [messageLogout, contextHolder] = notification.useNotification();
@@ -47,11 +45,27 @@ export default function Header() {
         setUserRole(role);
     }, []);
 
+    useEffect(() => {
+        try {
+            document.documentElement.lang = i18n.language || 'vi';
+        } catch { void 0; }
+    }, [i18n.language]);
+
     const handleMenuClick = (path) => {
         navigate(path);
     };
 
     const handleDropdown = ({ key }) => {
+        if (key && key.startsWith('lang:')) {
+            const lng = key.split(':')[1];
+            i18n.changeLanguage(lng);
+            try {
+                localStorage.setItem('i18nextLng', lng);
+                document.documentElement.lang = lng;
+            } catch { void 0; }
+            return;
+        }
+        
         const paths = {
             login: () => navigate("/login"),
             register: () => navigate("/register"),
@@ -60,9 +74,9 @@ export default function Header() {
             orders: () => navigate("/profile/orders"),
             admin: () => navigate("/dashboard")
         };
-        if (paths[key]) {
-            paths[key]();
-        }
+
+        if (paths[key]) paths[key]();
+        setDropdownVisible(false);
     };
 
     const handleLogout = () => {
@@ -70,20 +84,17 @@ export default function Header() {
         openNotification("success", "Đăng xuất thành công!");
         setIsLoggedIn(false);
         setUserRole(null);
-        // Dispatch event to clear cart
         window.dispatchEvent(new Event('cartUpdated'));
         navigate("/homepage");
     };
 
-    const getUserDropdown = () => {
-        if (isLoggedIn) {
-            if (userRole === "Admin") {
-                return adminDropdown(t);
-            }
-            return userDropdown(t);
+    const getDropdownItems = () => {
+        if (!isLoggedIn) {
+            return notLoginDropdown(t);
         }
-        return notLoginDropdown(t);
+        return userRole === "Admin" ? adminDropdown(t) : userDropdown(t);
     };
+    const userDropdownItems = getDropdownItems();
 
     return (
         <header className="topbar">
@@ -137,14 +148,19 @@ export default function Header() {
 
                     <div className="profile">
                         <Dropdown
-                            menu={{ items: getUserDropdown(), onClick: handleDropdown }}
+                            menu={{ items: userDropdownItems, onClick: handleDropdown, expandIcon: null, triggerSubMenuAction: 'click' }}
                             trigger={["click"]}
+                            open={dropdownVisible}
+                            onOpenChange={setDropdownVisible}
                             placement="bottomRight"
                             overlayClassName="user-dropdown"
-                            getPopupContainer={(triggerNode) => triggerNode.parentElement}
                         >
-                            <span className="no-effect" style={{ cursor: 'pointer' }}>
-                                <Avatar shape="circle" icon={<UserOutlined />} />
+                            <span style={{ cursor: 'pointer', display: 'inline-block' }}>
+                                <Avatar
+                                    className="profile"
+                                    shape="circle"
+                                    icon={<UserOutlined />}
+                                />
                             </span>
                         </Dropdown>
                     </div>

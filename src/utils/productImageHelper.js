@@ -1,5 +1,11 @@
 const getProductImageUrl = (product) => {
-  if (product.imageUrl && product.imageUrl.startsWith('http')) {
+  // Handle case where product.imageUrl is a string (incorrect usage)
+  if (typeof product === 'string') {
+    return product.startsWith('http') ? product : '/assets/logo2.png';
+  }
+
+  // If product has a valid http(s) imageUrl, use it
+  if (product.imageUrl && typeof product.imageUrl === 'string' && product.imageUrl.startsWith('http')) {
     return product.imageUrl;
   }
 
@@ -77,7 +83,8 @@ const getProductImageUrl = (product) => {
     }
     
   } else {
-    return '/assets/placeholder-product.jpg';
+    // Return logo as placeholder if category doesn't match
+    return '/assets/logo2.png';
   }
   
   return basePath;

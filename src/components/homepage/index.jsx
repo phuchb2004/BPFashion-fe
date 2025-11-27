@@ -18,7 +18,7 @@ import getProductImageUrl from "../../utils/productImageHelper";
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
-const ProductCard = React.memo(({ product, imageUrl, formattedPrice, onAddToCart, onViewProduct }) => {
+const ProductCard = React.memo(({ product, imageUrl, formattedPrice, onAddToCart, onViewProduct, addToCartText }) => {
   const handleCardClick = () => {
     onViewProduct(product.productId);
   };
@@ -41,6 +41,10 @@ const ProductCard = React.memo(({ product, imageUrl, formattedPrice, onAddToCart
             className="product-image"
             loading="lazy"
             decoding="async"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = '/assets/logo2.png';
+            }}
           />
         </div>
       }
@@ -60,7 +64,7 @@ const ProductCard = React.memo(({ product, imageUrl, formattedPrice, onAddToCart
         icon={<ShoppingCartOutlined />}
         onClick={handleAddToCart}
       >
-        Thêm vào giỏ
+        {addToCartText}
       </Button>
     </Card>
   );
@@ -68,7 +72,8 @@ const ProductCard = React.memo(({ product, imageUrl, formattedPrice, onAddToCart
   return (
     prevProps.product.productId === nextProps.product.productId &&
     prevProps.imageUrl === nextProps.imageUrl &&
-    prevProps.formattedPrice === nextProps.formattedPrice
+    prevProps.formattedPrice === nextProps.formattedPrice &&
+    prevProps.addToCartText === nextProps.addToCartText
   );
 });
 
@@ -83,8 +88,7 @@ export default function HomePage() {
       try {
         setLoading(true);
         const response = await baseApi.get(`/Products/GetProductsPaged?page=1&pageSize=8`);
-        
-        const productsList = response?.products;
+        const productsList = response.products;
         setProducts(Array.isArray(productsList) ? productsList : []);
       } catch (error) {
         console.error("Lỗi khi lấy sản phẩm mới:", error);
@@ -107,25 +111,23 @@ export default function HomePage() {
       imageUrl: getProductImageUrl(product),
       formattedPrice: product.price 
         ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)
-        : 'Liên hệ'
+        : t("homepage.contact")
     }));
-  }, [products]);
+  }, [products, t]);
 
   const handleAddToCart = async (product) => {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      showError("Vui lòng đăng nhập", "Vui lòng đăng nhập trước khi mua hàng");
+      showError(t("homepage.addToCart.loginRequired.title"), t("homepage.addToCart.loginRequired.description"));
       setTimeout(() => navigate("/login"), 1500);
       return;
     }
 
     try {
-      // Find first available variant (since we don't have size selection on listing pages)
       let variantId = null;
       if (product.Variants && product.Variants.length > 0) {
         variantId = product.Variants[0].variantId;
       } else {
-        // If no variants, navigate to product detail page to select size
         navigate(`/product/${product.productId}`);
         return;
       }
@@ -141,12 +143,11 @@ export default function HomePage() {
         t("homepage.addToCart.success.description", { productName: product.productName })
       );
 
-      // Refresh cart in header
       window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error("Lỗi khi thêm vào giỏ hàng:", error);
-      const errorMsg = error.response?.data?.message || "Thêm sản phẩm vào giỏ hàng thất bại";
-      showError("Lỗi", errorMsg);
+      const errorMsg = error.response?.data?.message || t("homepage.addToCart.error.description");
+      showError(t("homepage.addToCart.error.title"), errorMsg);
     }
   };
 
@@ -178,6 +179,7 @@ export default function HomePage() {
                       formattedPrice={product.formattedPrice}
                       onAddToCart={handleAddToCart}
                       onViewProduct={handleViewProduct}
+                      addToCartText={t("homepage.addToCart.button")}
                     />
                   </Col>
                 ))}

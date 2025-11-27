@@ -277,6 +277,11 @@ export default function OrderHistory() {
                                                                 src={imageUrl} 
                                                                 alt={productName}
                                                                 preview={false}
+                                                                fallback="/assets/logo2.png"
+                                                                onError={(e) => {
+                                                                    e.target.onerror = null;
+                                                                    e.target.src = '/assets/logo2.png';
+                                                                }}
                                                             />
                                                         )}
                                                         <span>{productName}</span>

@@ -9,13 +9,15 @@ import {
     Typography,
     Space,
     List,
-    Image
+    Image,
+    FloatButton
 } from "antd";
 import {
     SearchOutlined,
     EnvironmentOutlined,
     PhoneOutlined,
-    ClockCircleOutlined
+    ClockCircleOutlined,
+    ArrowUpOutlined
 } from "@ant-design/icons";
 import { FaFacebook, FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
@@ -152,6 +154,20 @@ export default function Footer() {
                     {t("footer.copyright")}
                 </Paragraph>
             </div>
+            <FloatButton.BackTop 
+                icon={<ArrowUpOutlined style={{ color: '#000', fontSize: '18px', fontWeight: 'bold' }} />}
+                shape="square"
+                type="default"
+                style={{ 
+                    right: 30, 
+                    bottom: 30,
+                    width: 45,
+                    height: 45,
+                    borderRadius: 12,
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    border: '1px solid #f0f0f0'
+                }} 
+            />
         </footer>
     );
 }

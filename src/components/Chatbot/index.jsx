@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import baseApi from "../../api/baseApi";
+// Sử dụng icon Ant Design để đồng bộ với dự án
+import { MessageOutlined, CloseOutlined, SendOutlined, RobotOutlined } from '@ant-design/icons';
 import './style.css';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
-      text: 'Chào bạn! Tôi là trợ lý ảo của shop. Tôi có thể giúp gì cho bạn?',
+      text: 'Chào bạn! Tôi là trợ lý ảo của BPFashion. Tôi có thể giúp gì cho bạn?',
       isUser: false,
       timestamp: new Date(),
       quickReplies: ["Xem sản phẩm mới", "Tư vấn size", "Chính sách đổi trả"]
@@ -22,35 +24,43 @@ const Chatbot = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isOpen]);
 
   const handleSendMessage = async (textToSend) => {
-    if (!textToSend.trim() || isLoading) return;
+    if (!textToSend || !textToSend.trim() || isLoading) return;
 
+    // 1. Thêm tin nhắn của User
     const userMessage = { text: textToSend, isUser: true, timestamp: new Date() };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => {
+      // Xóa quick replies của tin nhắn cũ để giao diện sạch hơn
+      const cleanedMessages = prev.map(msg => ({ ...msg, quickReplies: [] }));
+      return [...cleanedMessages, userMessage];
+    });
+    
     setInput('');
     setIsLoading(true);
-    setMessages(prev => prev.map(msg => ({ ...msg, quickReplies: [] })));
 
     try {
+      // 2. Gọi API
       const response = await baseApi.post('/Chatbot/process', {
         text: textToSend,
       });
 
-      const botResponse = response;
+      // Kiểm tra dữ liệu trả về (response có thể là data trực tiếp hoặc response.data tùy axios config)
+      const botResponse = response.data || response;
 
+      // 3. Thêm tin nhắn của Bot
       const botMessage = {
-        text: botResponse.response,
+        text: botResponse.response || "Xin lỗi, tôi không nhận được phản hồi.",
         isUser: false,
         timestamp: new Date(),
         quickReplies: botResponse.quickReplies || []
       };
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
-      console.error('Lỗi khi gọi chatbot API:', error);
+      console.error('Lỗi chatbot:', error);
       const errorMessage = {
-        text: 'Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau.',
+        text: 'Xin lỗi, tôi đang gặp sự cố kết nối. Vui lòng thử lại sau.',
         isUser: false,
         timestamp: new Date()
       };
@@ -71,28 +81,29 @@ const Chatbot = () => {
   };
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    return new Date(date).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
   };
 
   return (
     <div className="chatbot-container">
+      {/* Nút mở Chatbot */}
       {!isOpen && (
         <button 
           className="chatbot-toggle-btn" 
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsOpen(true)}
           aria-label="Mở chatbot"
-          aria-expanded={isOpen}
         >
-          <i className="fas fa-comment-dots"></i>
+          <MessageOutlined style={{ fontSize: '24px' }} />
         </button>
       )}
 
+      {/* Cửa sổ Chatbot */}
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
-            <h3>Trợ lý BP Fashion</h3>
-            <button className="close-btn" onClick={() => setIsOpen(false)} aria-label="Đóng chatbot">
-              <i className="fas fa-times"></i>
+            <h3><RobotOutlined style={{ marginRight: 8 }} /> Trợ lý BP Fashion</h3>
+            <button className="close-btn" onClick={() => setIsOpen(false)}>
+              <CloseOutlined />
             </button>
           </div>
 
@@ -100,13 +111,15 @@ const Chatbot = () => {
             {messages.map((msg, index) => (
               <div key={index} className={`message ${msg.isUser ? 'user-message' : 'bot-message'}`}>
                 <div className="message-content">
-                  {!msg.isUser && <div className="bot-avatar">AI</div>}
+                  {!msg.isUser && <div className="bot-avatar"><RobotOutlined /></div>}
                   <div className="message-bubble">
                     <p>{msg.text}</p>
                     <span className="message-time">{formatTime(msg.timestamp)}</span>
                   </div>
                 </div>
-                {msg.quickReplies && msg.quickReplies.length > 0 && (
+                
+                {/* Quick Replies */}
+                {!msg.isUser && msg.quickReplies && msg.quickReplies.length > 0 && (
                   <div className="quick-replies-container">
                     {msg.quickReplies.map((reply, i) => (
                       <button key={i} className="quick-reply-btn" onClick={() => handleQuickReplyClick(reply)}>
@@ -117,10 +130,11 @@ const Chatbot = () => {
                 )}
               </div>
             ))}
+            
             {isLoading && (
               <div className="message bot-message">
                 <div className="message-content">
-                  <div className="bot-avatar">AI</div>
+                  <div className="bot-avatar"><RobotOutlined /></div>
                   <div className="message-bubble">
                     <div className="typing-indicator">
                       <span></span><span></span><span></span>
@@ -144,9 +158,8 @@ const Chatbot = () => {
             <button 
               onClick={() => handleSendMessage(input)} 
               disabled={isLoading || !input.trim()}
-              aria-label="Gửi tin nhắn"
             >
-              <i className="fas fa-paper-plane"></i>
+              <SendOutlined />
             </button>
           </div>
         </div>

@@ -16,21 +16,9 @@ export const useCart = () => {
         try {
             const res = await baseApi.get(`/Cart/${userId}`);
             
-            const cartData = Array.isArray(res) ? res : res?.data || res || [];
-            const mappedCartItems = cartData.map(item => ({
-                cartItemId: item.cartItemId,
-                variantId: item.variantId,
-                quantity: item.quantity,
-                product: {
-                    productName: item.ProductVariant?.productName || item.ProductVariant?.Product?.productName || 'Tên sản phẩm',
-                    imageUrl: item.ProductVariant?.imageUrl || item.ProductVariant?.Product?.imageUrl || '',
-                    price: item.ProductVariant?.price || 0,
-                    color: item.ProductVariant?.Color || item.ProductVariant?.colorName || '',
-                    size: item.ProductVariant?.Size || item.ProductVariant?.sizeName || '',
-                }
-            }));
-            
-            setCartItems(mappedCartItems);
+            const cartData = Array.isArray(res) ? res : [];
+            setCartItems(cartData); 
+
         } catch (error) {
             console.log("Lỗi khi lấy giỏ hàng: ", error);
             setCartItems([]);
@@ -38,6 +26,23 @@ export const useCart = () => {
             setLoading(false);
         }
     }, []);
+
+    const removeItem = useCallback(async (cartItemId) => {
+        try {
+            await baseApi.delete(`/Cart/DeleteItem/${cartItemId}`);
+            
+            setCartItems((prev) =>
+                prev.filter((item) => item.cartItemId !== cartItemId)
+            );
+            const userId = localStorage.getItem("userId");
+            if (userId) fetchCart(userId);
+
+        } catch (error) {
+            console.error("Lỗi khi xóa sản phẩm:", error);
+            const errorMsg = error.response?.data?.message || "Không thể xóa sản phẩm";
+            showError("Lỗi", errorMsg);
+        }
+    }, [fetchCart]);
 
     const updateQuantity = useCallback(async (cartItemId, newQuantity) => {
         if (newQuantity < 1) {
@@ -47,7 +52,6 @@ export const useCart = () => {
         
         try {
             await baseApi.put(`/Cart/UpdateCart/${cartItemId}`, newQuantity);
-            
             setCartItems((prev) =>
                 prev.map((item) =>
                     item.cartItemId === cartItemId
@@ -56,45 +60,14 @@ export const useCart = () => {
                 )
             );
             
-            const userId = localStorage.getItem("userId");
-            if (userId) {
-                fetchCart(userId);
-            }
         } catch (error) {
             console.error("Lỗi khi cập nhật số lượng:", error);
             const errorMsg = error.response?.data?.message || "Không thể cập nhật số lượng";
             showError("Lỗi", errorMsg);
-            
             const userId = localStorage.getItem("userId");
-            if (userId) {
-                fetchCart(userId);
-            }
+            if (userId) fetchCart(userId);
         }
-    }, [fetchCart]);
-
-    const removeItem = useCallback(async (cartItemId) => {
-        try {
-            await baseApi.delete(`/Cart/DeleteItem/${cartItemId}`);
-            
-            setCartItems((prev) =>
-                prev.filter((item) => item.cartItemId !== cartItemId)
-            );
-            
-            const userId = localStorage.getItem("userId");
-            if (userId) {
-                fetchCart(userId);
-            }
-        } catch (error) {
-            console.error("Lỗi khi xóa sản phẩm:", error);
-            const errorMsg = error.response?.data?.message || "Không thể xóa sản phẩm";
-            showError("Lỗi", errorMsg);
-            
-            const userId = localStorage.getItem("userId");
-            if (userId) {
-                fetchCart(userId);
-            }
-        }
-    }, [fetchCart]);
+    }, [fetchCart, removeItem]);
 
     useEffect(() => {
         const userId = localStorage.getItem("userId");
@@ -105,11 +78,9 @@ export const useCart = () => {
         }
 
         const handleCartUpdate = () => {
-            const userId = localStorage.getItem("userId");
-            if (userId) {
-                fetchCart(userId);
-            } else {
-                setCartItems([]);
+            const currentUserId = localStorage.getItem("userId");
+            if (currentUserId) {
+                fetchCart(currentUserId);
             }
         };
         
@@ -118,6 +89,13 @@ export const useCart = () => {
         return () => {
             window.removeEventListener('cartUpdated', handleCartUpdate);
         };
+    }, [fetchCart]);
+
+    const refetchCart = useCallback(() => {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            fetchCart(userId);
+        }
     }, [fetchCart]);
 
     const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -132,9 +110,9 @@ export const useCart = () => {
         totalQuantity,
         totalPrice,
         fetchCart,
+        refetchCart,
         updateQuantity,
         removeItem,
         clearCart: () => setCartItems([])
     };
 };
-

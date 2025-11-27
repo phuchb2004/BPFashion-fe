@@ -10,12 +10,14 @@ import {
   ProductOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  HomeOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ProductManagement from './product';
 import OrderManagement from './order';
 import UserManagement from './user';
 import './style.css';
+import { useTranslation } from 'react-i18next';
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,6 +25,7 @@ export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [isDisplay, setIsDisplay] = useState('user');
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -30,17 +33,32 @@ export default function Dashboard() {
     navigate('/login');
   };
 
+  const handleDropdown = ({  key }) => {
+    const paths = {
+      profile: () => navigate('/profile'),
+      homepage: () => navigate('/'),
+      logout: () => handleLogout(),
+    };
+    if (paths[key]) {
+      paths[key]();
+    }
+  }
+
   const userMenuItems = [
     {
       key: 'profile',
       icon: <UserOutlined />,
-      label: 'Profile',
+      label: t("dashboard.dropdown.profile"),
+    },
+    {
+      key: 'homepage',
+      icon: <HomeOutlined />,
+      label: t("dashboard.dropdown.homepage"),
     },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Logout',
-      onClick: handleLogout,
+      label: t("dashboard.dropdown.logout"),
     },
   ];
 
@@ -93,7 +111,7 @@ export default function Dashboard() {
             }}
           />
           <Dropdown
-            menu={{ items: userMenuItems }}
+            menu={{ items: userMenuItems, onClick: handleDropdown }}
             placement="bottomRight"
             arrow
           >

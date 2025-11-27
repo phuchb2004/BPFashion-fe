@@ -14,6 +14,7 @@ import {
   MinusOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
 
@@ -26,11 +27,15 @@ export default function Cart({
   onUpdateQuantity,
   onRemoveItem,
 }) {
+  const { t } = useTranslation();
+  console.log("Dữ liệu giỏ hàng:", cartItems);
+  
   return (
     <Drawer
-      title="Giỏ hàng"
+      title={t("cart.title")}
       onClose={onClose}
       open={open}
+      visible={open}
       width={400}
       footer={
         cartItems.length > 0 && (
@@ -42,7 +47,7 @@ export default function Cart({
                 marginBottom: 12,
               }}
             >
-              <Text strong>TỔNG TIỀN:</Text>
+              <Text strong>{t("cart.total")}:</Text>
               <Text strong type="danger" style={{ fontSize: 16 }}>
                 {totalPrice.toLocaleString()} ₫
               </Text>
@@ -54,14 +59,14 @@ export default function Cart({
               style={{ background: "#e53935", border: "none" }}
               onClick={onCheckout}
             >
-              THANH TOÁN
+              {t("cart.checkout")}
             </Button>
           </div>
         )
       }
     >
       {cartItems.length === 0 ? (
-        <Empty description="Chưa có sản phẩm nào trong giỏ hàng" />
+        <Empty description={t("cart.empty")} />
       ) : (
         <List
           itemLayout="horizontal"
@@ -88,10 +93,10 @@ export default function Cart({
                 </Space>,
                 <Popconfirm
                   key="delete"
-                  title="Xóa sản phẩm?"
+                  title={t("cart.remove.title")}
                   onConfirm={() => onRemoveItem(item.cartItemId)}
-                  okText="Xóa"
-                  cancelText="Hủy"
+                  okText={t("cart.remove.ok")}
+                  cancelText={t("cart.remove.cancel")}
                 >
                   <Button
                     type="text"
@@ -107,8 +112,12 @@ export default function Cart({
                   <Avatar
                     shape="square"
                     size={64}
-                    src={item.product.imageUrl}
+                    src={item.product.imageUrl || '/assets/logo2.png'}
                     style={{ borderRadius: 8 }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/assets/logo2.png';
+                    }}
                   />
                 }
                 title={

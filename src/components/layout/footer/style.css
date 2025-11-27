@@ -95,6 +95,13 @@
 .facebook-btn,
 .instagram-btn,
 .x-btn {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
     transition: all var(--transition);
     box-shadow: var(--shadow-sm);
 }
@@ -188,6 +195,19 @@
     background: white;
     transition: all var(--transition);
     box-shadow: var(--shadow-sm);
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 5px !important;
+    width: 60px !important;
+    height: 40px !important;
+    overflow: hidden;
+}
+
+.payment-methods .ant-image-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
 }
 
 .payment-methods .ant-image:hover {
@@ -236,6 +256,10 @@
 
 .footer-bottom:hover .ant-typography {
     color: white;
+}
+
+.payment-icon {
+    cursor: pointer;
 }
 
 @media (max-width: 992px) {
