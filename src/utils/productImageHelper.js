@@ -37,7 +37,7 @@ if (typeof product === 'string') {
       basePath += 'jeans/';
       const color = getColorFromProduct(product);
       basePath += `${color}.jpg`;
-    } else if (productName.includes('short') || productName.includes('soóc')) {
+    } else if (productName.includes('short') || productName.includes('đùi') || productName.includes('đùi')) {
       basePath += 'short/';
       const color = getColorFromProduct(product);
       basePath += `${color}.jpg`;
@@ -138,4 +138,3 @@ const getColorFromProduct = (product) => {
 };
 
 export default getProductImageUrl;
-

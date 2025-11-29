@@ -25,7 +25,7 @@ export const filterPants = (products, activeTab) => {
       case "quan-tay":
         return name.includes('tây') || name.includes('trouser') || name.includes('kaki');
       case "quan-short":
-        return name.includes('short') || name.includes('soóc');
+        return name.includes('short') || name.includes('soóc') || name.includes('đùi');
       case "quan-jeans":
         return name.includes('jean') || name.includes('bò');
       default:
