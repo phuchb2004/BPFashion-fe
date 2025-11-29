@@ -26,7 +26,6 @@ export default function ProfileInfo() {
         try {
             setLoading(true);
             const res = await baseApi.get(`/Users/GetUserInfo/${id}`);
-            // Xử lý nhiều format response
             if (res) {
                 setUser(res.data || res.user || res);
             } else {

@@ -15,7 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Header from "../layout/header";
 import Footer from "../layout/footer";
-import { showSuccess, showError, showFormNotification } from '../../utils/notification';
+import { showError, showFormNotification } from '../../utils/notification';
 import './style.css';
 import cities from '../../data/cities.json';
 
@@ -45,18 +45,15 @@ export default function Checkout() {
     const fetchCartItems = async (currentUserId) => {
         try {
             setLoading(true);
-            // THAY ĐỔI: Cập nhật đường dẫn API để khớp với controller của bạn
             const response = await fetch(`/cart/${currentUserId}`);
             if (!response.ok) {
                 throw new Error('Không thể lấy dữ liệu giỏ hàng.');
             }
             const itemsFromApi = await response.json();
-            
-            // THAY ĐỔI: Sử dụng 'productName' thay vì 'name' và các trường khác
             const formattedItems = itemsFromApi.map(item => ({
                 cartitemid: item.cartItemId,
                 productid: item.product.productId,
-                name: item.product.productName, // Đổi từ 'name'
+                name: item.product.productName,
                 price: item.product.price,
                 quantity: item.quantity,
                 image: item.product.imageUrl
@@ -117,8 +114,6 @@ export default function Checkout() {
             setLoading(false);
         }
     };
-    
-    // ... Phần JSX còn lại không có gì thay đổi
 
     const steps = [
         { title: 'Thông tin giao hàng', icon: <UserOutlined /> },

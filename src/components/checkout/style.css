@@ -268,7 +268,7 @@ body {
 }
 
 
-/* Responsive Styles */
+/* Responsive */
 @media (max-width: 992px) {
   .checkout-content {
     flex-direction: column-reverse;

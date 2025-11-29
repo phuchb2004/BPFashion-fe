@@ -21,7 +21,7 @@ import Header from "../layout/header";
 import Footer from "../layout/footer";
 import { showSuccess, showError, showCartNotification } from "../../utils/notification";
 import getProductImageUrl from "../../utils/productImageHelper";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import "./style.css";
 
 const { Title, Text, Paragraph } = Typography;
@@ -34,22 +34,18 @@ export default function ProductDetail() {
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
     const [relatedProducts, setRelatedProducts] = useState([]);
-    
-    // State quản lý lựa chọn
     const [quantity, setQuantity] = useState(1);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedVariant, setSelectedVariant] = useState(null);
-    
-    // State hiển thị
     const [displayPrice, setDisplayPrice] = useState(0);
     const [displayStock, setDisplayStock] = useState(0);
     const [availableColors, setAvailableColors] = useState([]);
     const [availableSizes, setAvailableSizes] = useState([]);
-
+    const [currentImage, setCurrentImage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [addingToCart, setAddingToCart] = useState(false);
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
 
     useEffect(() => {
         setProduct(null);
@@ -62,8 +58,9 @@ export default function ProductDetail() {
         fetchRelatedProducts();
         
         window.scrollTo(0, 0);
-    }, [id]);
+    }, [fetchProductDetails, fetchRelatedProducts, id]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchProductDetails = async () => {
         try {
             setLoading(true);
@@ -71,16 +68,13 @@ export default function ProductDetail() {
             const productData = response?.data || response;
 
             if (productData) {
-                // --- SỬA: Dùng 'variants' (chữ thường) ---
                 if (productData.variants && productData.variants.length > 0) {
-                    // --- SỬA: Dùng 'colorName' và 'sizeName' (chữ thường) ---
                     const allColors = [...new Set(productData.variants.map(v => v.colorName).filter(Boolean))];
                     const allSizes = [...new Set(productData.variants.map(v => v.sizeName).filter(Boolean))];
                     
                     setAvailableColors(allColors);
                     setAvailableSizes(allSizes);
 
-                    // --- SỬA: Dùng 'price' và 'stockQuantity' (chữ thường) ---
                     const minPrice = productData.price || Math.min(...productData.variants.map(v => v.price));
                     const totalStock = productData.totalStock || productData.variants.reduce((sum, v) => sum + (v.stockQuantity || 0), 0);
                     
@@ -90,7 +84,7 @@ export default function ProductDetail() {
                     setDisplayPrice(minPrice);
                     setDisplayStock(totalStock);
                 }
-
+                setCurrentImage(productData.imageUrl);
                 setProduct(productData);
             }
         } catch (err) {
@@ -101,9 +95,9 @@ export default function ProductDetail() {
         }
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchRelatedProducts = async () => {
         try {
-            // API GetAllProducts giờ đã có trong Backend
             const response = await baseApi.get("/Products/GetAllProducts");
             const allProducts = response?.data || response?.products || response || [];
             
@@ -118,7 +112,6 @@ export default function ProductDetail() {
 
     const updateVariantSelection = (color, size) => {
         if (color && size) {
-            // --- SỬA: Dùng 'variants', 'colorName', 'sizeName' (chữ thường) ---
             const variant = product.variants?.find(v => v.colorName === color && v.sizeName === size);
             if (variant) {
                 setSelectedVariant(variant);
@@ -136,6 +129,12 @@ export default function ProductDetail() {
 
     const handleColorChange = (color) => {
         setSelectedColor(color);
+        const variantWithColor = product.variants?.find(v => v.colorName === color);
+        if (variantWithColor && variantWithColor.imageUrl) {
+            setCurrentImage(variantWithColor.imageUrl);
+        } else {
+            setCurrentImage(product.imageUrl); 
+        }
         updateVariantSelection(color, selectedSize);
     };
 
@@ -220,7 +219,14 @@ export default function ProductDetail() {
             <Row gutter={[32, 32]}>
                 <Col xs={24} md={12}>
                     <Card 
-                        cover={<Image src={getProductImageUrl(product)} alt={product.productName} style={{ width: '100%', height: '400px', objectFit: 'cover' }} fallback="/assets/logo2.png" />}
+                        cover={
+                            <Image 
+                                src={currentImage || getProductImageUrl(product)}
+                                alt={product.productName} 
+                                style={{ width: '100%', height: '400px', objectFit: 'cover' }} 
+                                fallback="/assets/logo2.png"
+                            />
+                        }
                         actions={[<EyeOutlined key="view" />, <HeartOutlined key="like" />, <ShareAltOutlined key="share" onClick={handleShareProduct} />]}
                     >
                         <Meta title={product.productName} description={<Text type="secondary">Mã: {product.productId} | {product.CategoryName}</Text>} />
@@ -263,7 +269,7 @@ export default function ProductDetail() {
                             )}
                         </div>
 
-                        {/* Chọn Màu */}
+                        {/* PICKING COLOR */}
                         {availableColors.length > 0 && (
                             <div>
                                 <Text strong>Màu sắc: </Text>
@@ -280,7 +286,7 @@ export default function ProductDetail() {
                             </div>
                         )}
 
-                        {/* Chọn Size */}
+                        {/* PICKING SIZE */}
                         {availableSizes.length > 0 && (
                             <div>
                                 <Text strong>Kích thước (Size): </Text>

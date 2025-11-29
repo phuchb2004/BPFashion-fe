@@ -25,7 +25,7 @@
   margin-top: 30px;
 }
 
-/* Responsive design */
+/* Responsive */
 @media (max-width: 768px) {
   .policy-container {
     padding: 20px 10px;
@@ -40,7 +40,6 @@
   }
 }
 
-/* Custom styling for antd components */
 .ant-typography h2 {
   color: #333;
   margin-top: 24px !important;

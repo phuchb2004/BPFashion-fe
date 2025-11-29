@@ -17,13 +17,6 @@ import "../category-products/style.css";
 const { Text } = Typography;
 const { Meta } = Card;
 
-/**
- * Reusable component for displaying products by category
- * @param {number} categoryId - The category ID (1: Shirts, 2: Pants, 3: Accessories)
- * @param {string} categoryName - Display name for the category
- * @param {Array} tabs - Array of tab objects: { key, label }
- * @param {Function} filterProducts - Optional function to filter products by tab
- */
 export default function CategoryProductsPage({ 
   categoryId, 
   categoryName, 
@@ -38,8 +31,9 @@ export default function CategoryProductsPage({
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId]);
+  }, [categoryId, fetchProducts]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -89,12 +83,10 @@ export default function CategoryProductsPage({
     }
 
     try {
-      // Find first available variant (since we don't have size selection on listing pages)
       let variantId = null;
       if (product.Variants && product.Variants.length > 0) {
         variantId = product.Variants[0].variantId;
       } else {
-        // If no variants, navigate to product detail page to select size
         navigate(`/product/${product.productId}`);
         return;
       }
@@ -104,10 +96,7 @@ export default function CategoryProductsPage({
         variantId: variantId,
         quantity: 1
       });
-
       showCartNotification(t("category.addToCart.success"), t("category.addToCart.successDesc", { productName: product.productName }));
-      
-      // Refresh cart in header
       window.dispatchEvent(new Event('cartUpdated'));
     } catch (error) {
       console.error("Lỗi khi thêm vào giỏ hàng:", error);

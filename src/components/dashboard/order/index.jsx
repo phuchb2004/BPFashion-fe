@@ -36,16 +36,11 @@ const OrderManagement = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      // Cập nhật trạng thái trong dữ liệu mẫu
       const updatedOrders = orders.map(order => 
         order.orderId === orderId ? { ...order, status: newStatus } : order
       );
       setOrders(updatedOrders);
-      
       message.success('Order status updated successfully');
-      
-      // Nếu muốn gọi API thật, bỏ comment dòng dưới
-      // await baseApi.put(`/Orders/UpdateOrderStatus/${orderId}`, { status: newStatus });
     } catch (error) {
       message.error('Failed to update order status');
       console.error(error);

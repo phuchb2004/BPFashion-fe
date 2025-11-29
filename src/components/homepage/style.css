@@ -148,7 +148,6 @@ body {
   animation: fadeInUp 0.6s var(--transition-smooth) forwards;
 }
 
-/* Stagger animation for product cards */
 .five-products-row .ant-col:nth-child(1) .product-card {
   animation-delay: 0.1s;
 }
@@ -323,7 +322,6 @@ body {
   background-color: var(--primary-color);
 }
 
-/* Smooth transitions for all interactive elements */
 .product-card,
 .product-image,
 .add-to-cart-btn,
@@ -331,7 +329,6 @@ body {
   will-change: transform;
 }
 
-/* Improve empty state */
 .ant-empty {
   animation: fadeIn 0.6s ease-out;
 }

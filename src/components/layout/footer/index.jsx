@@ -1,16 +1,8 @@
 import React from "react";
 import "./style.css";
 import {
-    Button,
-    Input,
-    Row,
-    Col,
-    Divider,
-    Typography,
-    Space,
-    List,
-    Image,
-    FloatButton
+    Button, Input, Row, Col, Divider, Typography,
+    Space, List, Image, FloatButton
 } from "antd";
 import {
     SearchOutlined,

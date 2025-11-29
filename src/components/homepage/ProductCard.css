@@ -13,7 +13,7 @@
 
 .product-image-container {
     width: 100%;
-    padding-top: 125%; /* Aspect ratio 4:5 */
+    padding-top: 125%;
     position: relative;
     overflow: hidden;
 }

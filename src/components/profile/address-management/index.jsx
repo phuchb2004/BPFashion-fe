@@ -30,7 +30,6 @@ import {
 import { showSuccess, showError, showFormNotification } from '../../../utils/notification';
 const { Option } = Select;
 
-// Sample cities data - replace with actual API or import from cities.json
 const cities = [
     'Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ',
     'An Giang', 'Bà Rịa - Vũng Tàu', 'Bắc Giang', 'Bắc Kạn', 'Bạc Liêu',
@@ -48,8 +47,9 @@ export default function AddressManagement() {
 
     useEffect(() => {
         fetchAddresses();
-    }, []);
+    }, [fetchAddresses]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchAddresses = async () => {
         const userId = localStorage.getItem("userId");
         if (!userId) {
@@ -60,7 +60,6 @@ export default function AddressManagement() {
 
         setLoading(true);
         try {
-            // Thử lấy từ endpoint riêng cho addresses trước
             try {
                 const addressRes = await baseApi.get(`/Addresses/GetByUser/${userId}`);
                 const addressList = addressRes?.data || addressRes?.addresses || addressRes || [];
@@ -69,17 +68,13 @@ export default function AddressManagement() {
                     return;
                 }
             } catch (addressError) {
-                console.log('Không tìm thấy endpoint addresses riêng, thử lấy từ user info');
+                console.log('Không tìm thấy endpoint addresses riêng, thử lấy từ user info', addressError);
             }
-
-            // Fallback: Lấy từ UserInfo nếu có field addresses
             const res = await baseApi.get(`/Users/GetUserInfo/${userId}`);
             if (res) {
-                // Kiểm tra nếu có mảng addresses
                 if (res.addresses && Array.isArray(res.addresses)) {
                     setAddresses(res.addresses);
                 } 
-                // Nếu có địa chỉ đơn giản (string) thì tạo một địa chỉ mặc định
                 else if (res.address && typeof res.address === 'string') {
                     setAddresses([{
                         id: 1,
@@ -126,25 +121,22 @@ export default function AddressManagement() {
 
     const handleDelete = async (id) => {
         try {
-            // TODO: Gọi API xóa địa chỉ
-            // await baseApi.delete(`/Addresses/${id}`);
             setAddresses(prev => prev.filter(addr => addr.id !== id));
             showSuccess('Xóa địa chỉ thành công!');
         } catch (error) {
-            showError('Xóa địa chỉ thất bại!');
+            showError('Xóa địa chỉ thất bại!', error);
         }
     };
 
     const handleSetDefault = async (id) => {
         try {
-            // TODO: Gọi API set default address
             setAddresses(prev => prev.map(addr => ({
                 ...addr,
                 isDefault: addr.id === id
             })));
             showSuccess('Đặt địa chỉ mặc định thành công!');
         } catch (error) {
-            showError('Đặt địa chỉ mặc định thất bại!');
+            showError('Đặt địa chỉ mặc định thất bại!', error);
         }
     };
 
@@ -158,15 +150,11 @@ export default function AddressManagement() {
             };
 
             if (editingAddress) {
-                // TODO: Gọi API update address
-                // await baseApi.put(`/Addresses/${editingAddress.id}`, addressData);
                 setAddresses(prev => prev.map(addr => 
                     addr.id === editingAddress.id ? { ...addr, ...addressData } : addr
                 ));
                 showFormNotification('success', 'Cập nhật địa chỉ thành công!');
             } else {
-                // TODO: Gọi API create address
-                // const res = await baseApi.post('/Addresses', addressData);
                 const newAddress = { id: Date.now(), ...addressData };
                 setAddresses(prev => [...prev, newAddress]);
                 showFormNotification('success', 'Thêm địa chỉ thành công!');

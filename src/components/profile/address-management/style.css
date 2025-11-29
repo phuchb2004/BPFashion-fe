@@ -84,7 +84,6 @@
     }
 }
 
-/* Đảm bảo các nút trong Popconfirm có cùng chiều cao */
 .ant-popconfirm-buttons {
     display: flex;
     align-items: center;

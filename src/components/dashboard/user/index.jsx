@@ -45,8 +45,6 @@ const UserManagement = () => {
     setIsModalVisible(true);
   };
 
-  // keep modal-based edit available for "Add" only; inline edit handles row editing
-
   const handleDelete = async (id) => {
     try {
       await baseApi.delete(`/Users/DeleteUser/${id}`);

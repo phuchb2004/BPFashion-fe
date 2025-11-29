@@ -48,9 +48,7 @@ export default function OrderHistory() {
 
         setLoading(true);
         try {
-            // Gọi API lấy đơn hàng theo userId
             const res = await baseApi.get(`/Orders/GetOrdersByUser/${userId}`);
-            // Xử lý nhiều format response
             const ordersList = res?.data || res?.orders || res || [];
             setOrders(Array.isArray(ordersList) ? ordersList : []);
         } catch (error) {

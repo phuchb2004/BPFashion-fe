@@ -133,7 +133,6 @@
     border-radius: 2px;
 }
 
-/* Form styling */
 .ant-form-item-label > label {
     color: var(--text-dark);
     font-weight: 500;
