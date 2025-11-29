@@ -150,20 +150,6 @@
     border-radius: 8px 8px 0 0;
 }
 
-/* Breadcrumb */
-.ant-breadcrumb {
-    margin-bottom: 24px;
-}
-
-.ant-breadcrumb a {
-    color: var(--primary-color);
-    transition: color 0.3s;
-}
-
-.ant-breadcrumb a:hover {
-    color: #40a9ff;
-}
-
 /* Divider */
 .ant-divider {
     margin: 32px 0;

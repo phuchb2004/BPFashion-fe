@@ -4,9 +4,10 @@ import Header from "../layout/header";
 import Footer from "../layout/footer";
 import {
   Row, Col, Card, Spin, Empty, Typography, Tabs,
-  Button, Breadcrumb
+  Button
 } from "antd";
 import { HomeOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import Breadcrumb from "../breadcrumb";
 import baseApi from "../../api/baseApi";
 import getProductImageUrl from "../../utils/productImageHelper";
 import { showError, showCartNotification } from "../../utils/notification";
@@ -140,7 +141,6 @@ export default function CategoryProductsPage({
                 { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
                 { title: categoryName },
               ]}
-              style={{ cursor: "pointer"}}
             />
         </div>
       </div>

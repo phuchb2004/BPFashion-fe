@@ -1,0 +1,76 @@
+.custom-breadcrumb-wrapper {
+  margin-bottom: 20px;
+}
+
+.custom-breadcrumb {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Styling cho breadcrumb items */
+.custom-breadcrumb .ant-breadcrumb-link {
+  color: #1890ff;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.custom-breadcrumb .ant-breadcrumb-link:hover {
+  color: #40a9ff;
+  text-decoration: none;
+}
+
+.custom-breadcrumb .ant-breadcrumb-separator {
+  margin: 0 8px;
+  color: #d9d9d9;
+}
+
+/* Item cuối cùng (không có link) */
+.custom-breadcrumb .ant-breadcrumb-item:last-child .ant-breadcrumb-link {
+  color: rgba(0, 0, 0, 0.85);
+  cursor: default;
+  font-weight: 500;
+}
+
+.custom-breadcrumb .ant-breadcrumb-item:last-child .ant-breadcrumb-link:hover {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* Icon Home */
+.custom-breadcrumb .ant-breadcrumb-link .anticon {
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .custom-breadcrumb-wrapper {
+    margin-bottom: 16px;
+  }
+
+  .custom-breadcrumb {
+    font-size: 13px;
+  }
+
+  .custom-breadcrumb .ant-breadcrumb-separator {
+    margin: 0 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-breadcrumb-wrapper {
+    margin-bottom: 12px;
+  }
+
+  .custom-breadcrumb {
+    font-size: 12px;
+  }
+
+  .custom-breadcrumb .ant-breadcrumb-separator {
+    margin: 0 4px;
+  }
+}
+

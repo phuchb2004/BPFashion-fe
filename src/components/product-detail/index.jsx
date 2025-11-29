@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-    Button, Spin, Select, Breadcrumb, Divider, Tabs, Card, Row, Col,
+    Button, Spin, Select, Divider, Tabs, Card, Row, Col,
     InputNumber, Space, Tag, Image, Typography, Statistic,
     Badge, Alert
 } from "antd";
@@ -15,6 +15,7 @@ import {
     RocketOutlined,
     CheckCircleOutlined
 } from "@ant-design/icons";
+import Breadcrumb from "../breadcrumb";
 import baseApi from "../../api/baseApi";
 import Header from "../layout/header";
 import Footer from "../layout/footer";
@@ -210,11 +211,10 @@ export default function ProductDetail() {
         <div className="product-detail-container">
             <Breadcrumb 
                 items={[
-                    { title: <HomeOutlined />, href: "/" }, 
-                    { title: product.categoryName, href: '/product' }, 
+                    { title: <HomeOutlined />, href: "/homepage" }, 
+                    { title: product.categoryName || product.CategoryName, href: '/homepage' }, 
                     { title: product.productName }
                 ]} 
-                style={{ marginBottom: 20 }} 
             />
 
             <Row gutter={[32, 32]}>
