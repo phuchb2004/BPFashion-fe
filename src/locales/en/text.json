@@ -58,6 +58,7 @@
         }
     },
     "logout": {
+
     },
     "dashboard": {
         "dropdown": {
@@ -219,10 +220,10 @@
             "order": "Orders",
             "login": "Login",
             "logout": "Logout",
-          "register": "Register",
-          "language": "Language",
-          "language_vi": "Vietnamese",
-          "language_en": "English"
+            "register": "Register",
+            "language": "Language",
+            "language_vi": "Vietnamese",
+            "language_en": "English"
         }
     },
     "profile": {

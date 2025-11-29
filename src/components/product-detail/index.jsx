@@ -202,12 +202,20 @@ export default function ProductDetail() {
     const originalPrice = displayPrice;
     const discount = product.discount || 0; 
     const finalPrice = discount > 0 ? originalPrice * (100 - discount) / 100 : originalPrice;
+    console.log("Product Data:", product);
 
     return (
         <>
         <Header />
         <div className="product-detail-container">
-            <Breadcrumb items={[{ title: <HomeOutlined />, href: "/" }, { title: 'Sản phẩm', href: '/products' }, { title: product.productName }]} style={{ marginBottom: 20 }} />
+            <Breadcrumb 
+                items={[
+                    { title: <HomeOutlined />, href: "/" }, 
+                    { title: product.categoryName, href: '/product' }, 
+                    { title: product.productName }
+                ]} 
+                style={{ marginBottom: 20 }} 
+            />
 
             <Row gutter={[32, 32]}>
                 <Col xs={24} md={12}>

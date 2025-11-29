@@ -195,7 +195,7 @@ export default function Login() {
                   <Form.Item className="login-button-item">
                     <Button
                       type="primary"
-                      htmlType="submit"
+                      onClick={() => form.submit()}
                       className="login-form-button"
                       loading={loading}
                       block

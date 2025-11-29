@@ -140,7 +140,6 @@
     box-shadow: var(--shadow-md);
 }
 
-/* Support list */
 .ant-list-item {
     transition: all var(--transition);
     border-radius: 4px;
@@ -181,7 +180,6 @@
     font-weight: 500;
 }
 
-/* Payment icons */
 .payment-methods {
     display: flex;
     gap: 12px;
@@ -216,7 +214,6 @@
     box-shadow: var(--shadow-md);
 }
 
-/* Divider */
 .ant-divider {
     margin: 24px 0;
     border-top-color: var(--border-color);

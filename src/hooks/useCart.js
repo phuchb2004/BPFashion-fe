@@ -81,6 +81,8 @@ export const useCart = () => {
             const currentUserId = localStorage.getItem("userId");
             if (currentUserId) {
                 fetchCart(currentUserId);
+            } else {
+                setCartItems([]);
             }
         };
         
@@ -95,6 +97,8 @@ export const useCart = () => {
         const userId = localStorage.getItem("userId");
         if (userId) {
             fetchCart(userId);
+        } else {
+            setCartItems([]);
         }
     }, [fetchCart]);
 

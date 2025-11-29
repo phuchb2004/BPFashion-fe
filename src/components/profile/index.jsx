@@ -89,7 +89,9 @@ export default function Profile() {
                 </aside>
 
                 <main className="profile-content">
-                    {renderContent()}
+                    <div className="content-card">
+                        {renderContent()}
+                    </div>
                 </main>
             </div>
             <Footer />

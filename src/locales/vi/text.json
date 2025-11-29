@@ -221,10 +221,10 @@
             "order": "Đơn hàng",
             "login": "Đăng nhập",
             "logout": "Đăng xuất",
-          "register": "Đăng ký",
-          "language": "Ngôn ngữ",
-          "language_vi": "Tiếng Việt",
-          "language_en": "English"
+            "register": "Đăng ký",
+            "language": "Ngôn ngữ",
+            "language_vi": "Tiếng Việt",
+            "language_en": "Tiếng Anh"
         }
     },
     "profile": {

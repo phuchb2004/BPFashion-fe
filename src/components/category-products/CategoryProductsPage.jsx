@@ -134,13 +134,15 @@ export default function CategoryProductsPage({
     <div className="category-page">
       <Header />
       <div className="page-header">
-        <Breadcrumb
-          items={[
-            { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
-            { title: categoryName },
-          ]}
-          style={{ cursor: "pointer"}}
-        />
+        <div className="page-header-inner">
+            <Breadcrumb
+              items={[
+                { title: <HomeOutlined />, onClick: () => navigate("/homepage") },
+                { title: categoryName },
+              ]}
+              style={{ cursor: "pointer"}}
+            />
+        </div>
       </div>
 
       <div className="page-content">

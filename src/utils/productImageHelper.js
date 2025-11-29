@@ -1,11 +1,9 @@
 const getProductImageUrl = (product) => {
-  // Handle case where product.imageUrl is a string (incorrect usage)
-  if (typeof product === 'string') {
-    return product.startsWith('http') ? product : '/assets/logo2.png';
+if (typeof product === 'string') {
+    return product.startsWith('http') || product.startsWith('/') ? product : '/assets/logo2.png';
   }
-
-  // If product has a valid http(s) imageUrl, use it
-  if (product.imageUrl && typeof product.imageUrl === 'string' && product.imageUrl.startsWith('http')) {
+  
+  if (product.imageUrl && typeof product.imageUrl === 'string' && product.imageUrl.trim() !== '') {
     return product.imageUrl;
   }
 
@@ -83,7 +81,6 @@ const getProductImageUrl = (product) => {
     }
     
   } else {
-    // Return logo as placeholder if category doesn't match
     return '/assets/logo2.png';
   }
   

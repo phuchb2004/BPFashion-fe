@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import baseApi from "../../api/baseApi";
-// Sử dụng icon Ant Design để đồng bộ với dự án
 import { MessageOutlined, CloseOutlined, SendOutlined, RobotOutlined } from '@ant-design/icons';
 import './style.css';
 
@@ -17,6 +16,7 @@ const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const chatbotRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,13 +26,35 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && chatbotRef.current && !chatbotRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleEscapeKey = (event) => {
+      if (isOpen && event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isOpen]);
+
   const handleSendMessage = async (textToSend) => {
     if (!textToSend || !textToSend.trim() || isLoading) return;
 
-    // 1. Thêm tin nhắn của User
     const userMessage = { text: textToSend, isUser: true, timestamp: new Date() };
     setMessages(prev => {
-      // Xóa quick replies của tin nhắn cũ để giao diện sạch hơn
       const cleanedMessages = prev.map(msg => ({ ...msg, quickReplies: [] }));
       return [...cleanedMessages, userMessage];
     });
@@ -41,15 +63,10 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // 2. Gọi API
       const response = await baseApi.post('/Chatbot/process', {
         text: textToSend,
       });
-
-      // Kiểm tra dữ liệu trả về (response có thể là data trực tiếp hoặc response.data tùy axios config)
-      const botResponse = response.data || response;
-
-      // 3. Thêm tin nhắn của Bot
+      const botResponse = response;
       const botMessage = {
         text: botResponse.response || "Xin lỗi, tôi không nhận được phản hồi.",
         isUser: false,
@@ -85,8 +102,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="chatbot-container">
-      {/* Nút mở Chatbot */}
+    <div className="chatbot-container" ref={chatbotRef}>
       {!isOpen && (
         <button 
           className="chatbot-toggle-btn" 
@@ -96,8 +112,6 @@ const Chatbot = () => {
           <MessageOutlined style={{ fontSize: '24px' }} />
         </button>
       )}
-
-      {/* Cửa sổ Chatbot */}
       {isOpen && (
         <div className="chatbot-window">
           <div className="chatbot-header">
@@ -117,8 +131,6 @@ const Chatbot = () => {
                     <span className="message-time">{formatTime(msg.timestamp)}</span>
                   </div>
                 </div>
-                
-                {/* Quick Replies */}
                 {!msg.isUser && msg.quickReplies && msg.quickReplies.length > 0 && (
                   <div className="quick-replies-container">
                     {msg.quickReplies.map((reply, i) => (
