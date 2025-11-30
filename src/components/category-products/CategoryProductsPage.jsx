@@ -31,7 +31,7 @@ export default function CategoryProductsPage({
 
   useEffect(() => {
     fetchProducts();
-  }, [categoryId, fetchProducts]);
+  }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchProducts = async () => {
@@ -169,15 +169,6 @@ export default function CategoryProductsPage({
                           e.target.src = '/assets/logo2.png';
                         }}
                       />
-                      <div className="product-overlay">
-                        <Button 
-                          type="primary" 
-                          icon={<ShoppingCartOutlined />}
-                          onClick={(e) => handleAddToCart(product, e)}
-                        >
-                          {t("homepage.addToCart.button")}
-                        </Button>
-                      </div>
                     </div>
                   }
                 >

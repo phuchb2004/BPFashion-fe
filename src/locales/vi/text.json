@@ -1,406 +1,422 @@
 {
-    "login": {
-        "overlay": {
-            "name": "BP Fashion",
-            "slogan": "Khám phá thế giới thời trang đẳng cấp"
-        },
-        "title": "Đăng nhập",
-        "text": {
-            "ifNoAccount": "Nếu chưa có tài khoản,",
-            "registerNow": "đăng ký ngay",
-            "orDivider": "Hoặc",
-            "forgotPass": "Quên mật khẩu"
-        },
-        "email": {
-            "label": "Email",
-            "placeholder": "Email",
-            "required": "Vui lòng nhập email",
-            "invalid": "Email không hợp lệ"
-        },
-        "password": {
-            "label": "Mật khẩu",
-            "placeholder": "Mật khẩu",
-            "required": "Vui lòng nhập mật khẩu"
-        },
-        "button": {
-            "login": "Đăng nhập",
-            "google": "Đăng nhập với google"
-        }
-        
+  "login": {
+    "overlay": {
+      "name": "BP Fashion",
+      "slogan": "Khám phá thế giới thời trang đẳng cấp"
     },
-    "register": {
-        "title": "Đăng ký",
-        "button": {
-            "register": "Đăng ký",
-            "google": "Đăng ký với Google"
-        },
-        "text": {
-            "ifHaveAccount": "Đã có tài khoản?",
-            "loginNow": "Đăng nhập ngay",
-            "orDivider": "Hoặc đăng nhập với"
-        },
-        "email": {
-            "label": "Email",
-            "placeholder": "Email",
-            "required": "Vui lòng nhập email",
-            "invalid": "Email không hợp lệ"
-        },
-        "password": {
-            "label": "Mật khẩu",
-            "placeholder": "Mật khẩu",
-            "required": "Vui lòng nhập mật khẩu",
-            "invalid": "Mật khẩu không hợp lệ"
-        },
-        "confirmPassword": {
-            "label": "Xác nhận mật khẩu",
-            "placeholder": "Xác nhận mật khẩu",
-            "required": "Vui lòng xác nhận mật khẩu",
-            "invalid": "Xác nhận mật khẩu không hợp lệ"
-        }
+    "title": "Đăng nhập",
+    "text": {
+      "ifNoAccount": "Nếu chưa có tài khoản,",
+      "registerNow": "đăng ký ngay",
+      "orDivider": "Hoặc",
+      "forgotPass": "Quên mật khẩu"
     },
-    "logout": {
-
+    "email": {
+      "label": "Email",
+      "placeholder": "Email",
+      "required": "Vui lòng nhập email",
+      "invalid": "Email không hợp lệ"
     },
-    "dashboard": {
-        "dropdown": {
-            "profile": "Hồ sơ",
-            "homepage": "Trang chủ",
-            "logout": "Đăng xuất"
-        },
-        "user": {
-            "title": "Danh sách người dùng",
-            "button": {
-                "add": "Thêm người dùng"
-            },
-            "notFound": "Không tìm thấy người dùng nào...",
-            "table": {
-                "id": "ID",
-                "fullName": "Họ và tên",
-                "email": "Email",
-                "dob": "Ngày sinh",
-                "gender": "Giới tính",
-                "phone": "Số điện thoại",
-                "address": "Địa chỉ",
-                "role": "Chức vụ",
-                "createAt": "Ngày tạo",
-                "action": "Hành động"
-            },
-            "delete": {
-                "title": "Xóa nhân viên",
-                "confirm": "Bạn có chắc chắn muốn xóa người dùng này?",
-                "ok": "Có",
-                "cancel": "Không",
-                "success": "Xóa thành công!",
-                "error": "Xóa thất bại"
-            }
-        },
-        "product": {
-            "title": "Quản lý Sản phẩm",
-            "add": "Thêm sản phẩm",
-            "table": {
-                "id": "ID",
-                "image": "Ảnh",
-                "name": "Tên sản phẩm",
-                "price": "Giá",
-                "stock": "Tồn kho",
-                "category": "Danh mục",
-                "action": "Hành động"
-            },
-            "delete": {
-                "title": "Xóa sản phẩm",
-                "confirm": "Bạn có chắc chắn muốn xóa sản phẩm này?",
-                "ok": "Có",
-                "cancel": "Không",
-                "success": "Xóa thành công!",
-                "successDesc": "Sản phẩm đã được xóa khỏi hệ thống.",
-                "error": "Xóa thất bại",
-                "errorDesc": "Không thể xóa sản phẩm này."
-            },
-            "form": {
-                "add": "Thêm sản phẩm mới",
-                "edit": "Chỉnh sửa sản phẩm",
-                "name": "Tên sản phẩm",
-                "namePlaceholder": "Nhập tên sản phẩm",
-                "nameRequired": "Vui lòng nhập tên sản phẩm",
-                "description": "Mô tả",
-                "descriptionPlaceholder": "Nhập mô tả sản phẩm",
-                "category": "Danh mục",
-                "categoryPlaceholder": "Chọn danh mục",
-                "categoryRequired": "Vui lòng chọn danh mục",
-                "price": "Giá (VNĐ)",
-                "pricePlaceholder": "Nhập giá sản phẩm",
-                "priceRequired": "Vui lòng nhập giá sản phẩm",
-                "stock": "Số lượng tồn kho",
-                "stockPlaceholder": "Nhập số lượng",
-                "stockRequired": "Vui lòng nhập số lượng",
-                "material": "Chất liệu",
-                "materialPlaceholder": "Ví dụ: Cotton, Polyester, ...",
-                "size": "Kích thước",
-                "sizePlaceholder": "Ví dụ: S, M, L, XL hoặc 28, 30, 32",
-                "imageUrl": "URL hình ảnh",
-                "imageUrlPlaceholder": "Nhập URL hình ảnh (hoặc để trống để tự động chọn từ assets)",
-                "submit": "Thêm mới",
-                "update": "Cập nhật",
-                "cancel": "Hủy",
-                "addSuccess": "Thêm thành công",
-                "addSuccessDesc": "Sản phẩm mới đã được thêm vào hệ thống.",
-                "updateSuccess": "Cập nhật thành công",
-                "updateSuccessDesc": "Thông tin sản phẩm đã được cập nhật.",
-                "saveError": "Lưu thất bại",
-                "saveErrorDesc": "Không thể lưu thông tin sản phẩm.",
-                "loadError": "Không thể tải danh sách sản phẩm. Vui lòng thử lại sau."
-            }
-        },
-        "order": {
-            "title": "Quản lý Đơn hàng"
-        }
+    "password": {
+      "label": "Mật khẩu",
+      "placeholder": "Mật khẩu",
+      "required": "Vui lòng nhập mật khẩu"
     },
-    "homepage": {
-        "newProducts": {
-            "title": "Sản phẩm mới nhất",
-            "subtitle": "Khám phá những thiết kế thời trang vừa ra mắt",
-            "error": {
-                "title": "Lỗi tải sản phẩm",
-                "description": "Không thể tải danh sách sản phẩm mới. Vui lòng thử lại sau."
-            },
-            "empty": "Hiện chưa có sản phẩm mới"
-        },
-        "addToCart": {
-            "success": {
-                "title": "Thêm thành công!",
-                "description": "Đã thêm sản phẩm \"{productName}\" vào giỏ hàng."
-            },
-            "error": {
-                "title": "Lỗi",
-                "description": "Thêm sản phẩm vào giỏ hàng thất bại"
-            },
-            "button": "Thêm vào giỏ",
-            "loginRequired": {
-                "title": "Vui lòng đăng nhập",
-                "description": "Vui lòng đăng nhập trước khi mua hàng"
-            }
-        },
-        "contact": "Liên hệ"
+    "button": {
+      "login": "Đăng nhập",
+      "google": "Đăng nhập với google"
+    }
+  },
+  "register": {
+    "title": "Đăng ký",
+    "button": {
+      "register": "Đăng ký",
+      "google": "Đăng ký với Google"
     },
-    "cart": {
-        "title": "Giỏ hàng",
-        "total": "TỔNG TIỀN",
-        "checkout": "THANH TOÁN",
-        "empty": "Chưa có sản phẩm nào trong giỏ hàng",
-        "remove": {
-            "title": "Xóa sản phẩm?",
-            "ok": "Xóa",
-            "cancel": "Hủy"
-        }
+    "text": {
+      "ifHaveAccount": "Đã có tài khoản?",
+      "loginNow": "Đăng nhập ngay",
+      "orDivider": "Hoặc đăng nhập với"
     },
-    "header": {
-        "menu": {
-            "home": "Trang chủ",
-            "shirts": "Áo",
-            "pants": "Quần",
-            "accessories": "Phụ kiện",
-            "dropdown": {
-                "somi": "Áo sơ mi",
-                "tshirt": "Áo phông",
-                "jacket": "Áo khoác",
-                "dress-pant": "Quần tây",
-                "short": "Quần short",
-                "jeans": "Quần jeans",
-                "underwear": "Đồ lót",
-                "socks": "Tất",
-                "belt": "Dây lưng",
-                "wallet": "Ví"
-            }
-        },
-        "search": {
-            "placeholder": "Tìm kiếm..."
-        },
-        "dropdown": {
-            "profile": "Tài khoản",
-            "admin": "Quản trị",
-            "order": "Đơn hàng",
-            "login": "Đăng nhập",
-            "logout": "Đăng xuất",
-            "register": "Đăng ký",
-            "language": "Ngôn ngữ",
-            "language_vi": "Tiếng Việt",
-            "language_en": "Tiếng Anh"
-        }
+    "email": {
+      "label": "Email",
+      "placeholder": "Email",
+      "required": "Vui lòng nhập email",
+      "invalid": "Email không hợp lệ"
     },
-    "profile": {
-        "update": {
-            "success": "Cập nhật thông tin thành công!",
-            "error": "Cập nhật thất bại!",
-            "button": "Cập nhật thông tin"
-        },
-        "form": {
-            "userName": {
-                "label": "Tên người dùng",
-                "placeholder": "Nhập tên người dùng",
-                "required": "Tên người dùng không được để trống!"
-            },
-            "fullName": {
-                "label": "Họ và tên",
-                "placeholder": "Nhập họ và tên"
-            },
-            "email": {
-                "label": "E-mail",
-                "required": "Email không được để trống",
-                "invalid": "Vui lòng nhập email đúng định dạng"
-            },
-            "phone": {
-                "label": "Số điện thoại"
-            },
-            "address": {
-                "label": "Địa chỉ",
-                "placeholder": "Nhập địa chỉ"
-            },
-            "dob": {
-                "label": "Ngày sinh",
-                "placeholder": "Chọn ngày sinh"
-            },
-            "gender": {
-                "label": "Giới tính",
-                "placeholder": "Chọn giới tính",
-                "male": "Nam",
-                "female": "Nữ",
-                "other": "Khác"
-            }
-        },
-        "password": {
-            "update": {
-                "title": "Cập nhật mật khẩu",
-                "button": "Đổi mật khẩu",
-                "success": "Cập nhật mật khẩu thành công!",
-                "error": "Cập nhật mật khẩu thất bại!",
-                "cancel": "Hủy",
-                "submit": "Cập nhật mật khẩu"
-            },
-            "form": {
-                "currentPassword": {
-                    "label": "Mật khẩu hiện tại",
-                    "placeholder": "Nhập mật khẩu hiện tại",
-                    "required": "Vui lòng nhập mật khẩu hiện tại"
-                },
-                "newPassword": {
-                    "label": "Mật khẩu mới",
-                    "placeholder": "Nhập mật khẩu mới",
-                    "required": "Vui lòng nhập mật khẩu mới",
-                    "minLength": "Mật khẩu phải có ít nhất 6 ký tự!"
-                },
-                "confirmPassword": {
-                    "label": "Xác nhận mật khẩu mới",
-                    "placeholder": "Nhập lại mật khẩu mới",
-                    "required": "Vui lòng xác nhận mật khẩu mới",
-                    "notMatch": "Mật khẩu xác nhận không khớp!"
-                }
-            }
-        }
+    "password": {
+      "label": "Mật khẩu",
+      "placeholder": "Mật khẩu",
+      "required": "Vui lòng nhập mật khẩu",
+      "invalid": "Mật khẩu không hợp lệ"
     },
-    "footer": {
-        "hotline": "Hotline: 1900 1069",
-        "open-time": "8:30 - 19:00 tất cả các ngày trong tuần",
-        "address": {
-            "north": "Tầng 12 tòa nhà The Nine, số 9 Phạm Văn Đồng, Mai Dịch, Phú Diễn, Hà Nội",
-            "south": "Tầng 6 tòa nhà Landmark 81, Tân Cảng, Bình Thạnh, TP.HCM"
-        },
-        "contact": {
-            "title": "Thông tin liên hệ"
-        },
-        "news": {
-            "title": "Đăng ký nhận tin",
-            "placeholder": "Email của bạn",
-            "button": "Đăng ký"
-        },
-        "support": {
-            "title": "Hỗ trợ",
-            "return": "Chính sách đổi trả",
-            "private": "Chính sách bảo mật",
-            "term": "Điều khoản dịch vụ"
-        },
-        "payment": {
-            "title": "Phương thức thanh toán"
-        },
-        "copyright": "© 2025 BP Fashion. All rights reserved."
+    "confirmPassword": {
+      "label": "Xác nhận mật khẩu",
+      "placeholder": "Xác nhận mật khẩu",
+      "required": "Vui lòng xác nhận mật khẩu",
+      "invalid": "Xác nhận mật khẩu không hợp lệ"
+    }
+  },
+  "logout": {},
+  "dashboard": {
+    "dropdown": {
+      "profile": "Hồ sơ",
+      "homepage": "Trang chủ",
+      "logout": "Đăng xuất"
     },
-    "category": {
-        "empty": "Không có sản phẩm nào",
-        "error": {
-            "title": "Lỗi",
-            "description": "Không thể tải danh sách {categoryName}. Vui lòng thử lại sau."
-        },
-        "addToCart": {
-            "success": "Thành công",
-            "successDesc": "Đã thêm {productName} vào giỏ hàng",
-            "error": "Lỗi",
-            "errorDesc": "Thêm sản phẩm vào giỏ hàng thất bại"
-        },
-        "material": "Chất liệu"
+    "user": {
+      "title": "Danh sách người dùng",
+      "button": {
+        "add": "Thêm người dùng"
+      },
+      "notFound": "Không tìm thấy người dùng nào...",
+      "table": {
+        "id": "ID",
+        "fullName": "Họ và tên",
+        "email": "Email",
+        "dob": "Ngày sinh",
+        "gender": "Giới tính",
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ",
+        "role": "Chức vụ",
+        "createAt": "Ngày tạo",
+        "action": "Hành động"
+      },
+      "delete": {
+        "title": "Xóa nhân viên",
+        "confirm": "Bạn có chắc chắn muốn xóa người dùng này?",
+        "ok": "Có",
+        "cancel": "Không",
+        "success": "Xóa thành công!",
+        "error": "Xóa thất bại"
+      }
     },
     "product": {
-        "notFound": "Không tìm thấy sản phẩm",
-        "backHome": "Quay lại trang chủ",
-        "products": "Sản phẩm",
-        "category": "Danh mục",
-        "productName": "Tên sản phẩm",
-        "productId": "Mã sản phẩm",
+      "title": "Quản lý Sản phẩm",
+      "add": "Thêm sản phẩm",
+      "table": {
+        "id": "ID",
+        "image": "Ảnh",
+        "name": "Tên sản phẩm",
         "price": "Giá",
-        "salePrice": "Giá khuyến mãi",
-        "status": "Trạng thái",
-        "inStock": "Còn hàng ({quantity} sản phẩm)",
-        "outOfStock": "Hết hàng",
+        "stock": "Tồn kho",
+        "category": "Danh mục",
+        "action": "Hành động"
+      },
+      "delete": {
+        "title": "Xóa sản phẩm",
+        "confirm": "Bạn có chắc chắn muốn xóa sản phẩm này?",
+        "ok": "Có",
+        "cancel": "Không",
+        "success": "Xóa thành công!",
+        "successDesc": "Sản phẩm đã được xóa khỏi hệ thống.",
+        "error": "Xóa thất bại",
+        "errorDesc": "Không thể xóa sản phẩm này."
+      },
+      "form": {
+        "add": "Thêm sản phẩm mới",
+        "edit": "Chỉnh sửa sản phẩm",
+        "name": "Tên sản phẩm",
+        "namePlaceholder": "Nhập tên sản phẩm",
+        "nameRequired": "Vui lòng nhập tên sản phẩm",
+        "description": "Mô tả",
+        "descriptionPlaceholder": "Nhập mô tả sản phẩm",
+        "category": "Danh mục",
+        "categoryPlaceholder": "Chọn danh mục",
+        "categoryRequired": "Vui lòng chọn danh mục",
+        "price": "Giá (VNĐ)",
+        "pricePlaceholder": "Nhập giá sản phẩm",
+        "priceRequired": "Vui lòng nhập giá sản phẩm",
+        "stock": "Số lượng tồn kho",
+        "stockPlaceholder": "Nhập số lượng",
+        "stockRequired": "Vui lòng nhập số lượng",
+        "material": "Chất liệu",
+        "materialPlaceholder": "Ví dụ: Cotton, Polyester, ...",
         "size": "Kích thước",
-        "quantity": "Số lượng",
-        "addToCart": "Thêm vào giỏ",
-        "buyNow": "Mua ngay",
-        "description": "Mô tả sản phẩm",
-        "additionalInfo": "Thông tin bổ sung",
-        "reviews": "Đánh giá ({count})",
-        "noReviews": "Chưa có đánh giá nào",
-        "noReviewsDesc": "Hãy là người đầu tiên đánh giá sản phẩm này",
-        "writeReview": "Viết đánh giá",
-        "related": "Sản phẩm liên quan",
-        "shippingInfo": "Thông tin giao hàng",
-        "freeShipping": "Miễn phí vận chuyển cho đơn hàng trên 500.000₫",
-        "shippingTime": "Giao hàng toàn quốc trong 2-5 ngày",
-        "warranty": "Bảo hành",
-        "warrantyDesc": "Đổi trả trong 30 ngày",
-        "shipping": "Vận chuyển",
-        "shippingDesc": "Giao hàng nhanh",
-        "error": {
-            "title": "Lỗi",
-            "loadError": "Không thể tải thông tin sản phẩm",
-            "variantError": "Không tìm thấy biến thể sản phẩm. Vui lòng chọn kích thước.",
-            "addToCartError": "Thêm sản phẩm vào giỏ hàng thất bại",
-            "checkoutError": "Không thể thực hiện mua hàng",
-            "success": "Thành công",
-            "addToCartSuccess": "Đã thêm sản phẩm vào giỏ hàng",
-            "shareSuccess": "Đã sao chép liên kết vào clipboard"
-        },
-        "info": {
-            "productId": "Mã sản phẩm",
-            "category": "Danh mục",
-            "material": "Chất liệu",
-            "size": "Kích thước",
-            "na": "N/A"
-        }
-    },
-    "common": {
-        "yes": "Có",
-        "no": "Không",
-        "contact": "Liên hệ",
-        "error": "Lỗi",
-        "success": "Thành công",
-        "loading": "Đang tải...",
-        "save": "Lưu",
-        "cancel": "Hủy",
-        "delete": "Xóa",
-        "edit": "Chỉnh sửa",
-        "add": "Thêm",
+        "sizePlaceholder": "Ví dụ: S, M, L, XL hoặc 28, 30, 32",
+        "imageUrl": "URL hình ảnh",
+        "imageUrlPlaceholder": "Nhập URL hình ảnh (hoặc để trống để tự động chọn từ assets)",
+        "submit": "Thêm mới",
         "update": "Cập nhật",
-        "loginRequired": {
-            "title": "Vui lòng đăng nhập",
-            "description": "Vui lòng đăng nhập trước khi mua hàng"
-        }
+        "cancel": "Hủy",
+        "addSuccess": "Thêm thành công",
+        "addSuccessDesc": "Sản phẩm mới đã được thêm vào hệ thống.",
+        "updateSuccess": "Cập nhật thành công",
+        "updateSuccessDesc": "Thông tin sản phẩm đã được cập nhật.",
+        "saveError": "Lưu thất bại",
+        "saveErrorDesc": "Không thể lưu thông tin sản phẩm.",
+        "loadError": "Không thể tải danh sách sản phẩm. Vui lòng thử lại sau."
+      }
+    },
+    "order": {
+      "title": "Quản lý Đơn hàng"
     }
+  },
+  "homepage": {
+    "newProducts": {
+      "title": "Sản phẩm mới nhất",
+      "subtitle": "Khám phá những thiết kế thời trang vừa ra mắt",
+      "error": {
+        "title": "Lỗi tải sản phẩm",
+        "description": "Không thể tải danh sách sản phẩm mới. Vui lòng thử lại sau."
+      },
+      "empty": "Hiện chưa có sản phẩm mới"
+    },
+    "category": {
+      "title": {
+        "shirts": "Tất cả áo",
+        "pants": "Tất cả quần",
+        "accessories": "Tất cả phụ kiện"
+      },
+      "childName": {
+        "somi": "Áo sơ mi",
+        "tshirt": "Áo phông",
+        "jacket": "Áo khoác",
+        "dress-pant": "Quần tây",
+        "shorts": "Quần short",
+        "jeans": "Quần jeans",
+        "underwear": "Đồ lót",
+        "socks": "Tất",
+        "belt": "Dây lưng",
+        "wallet": "Ví"
+      }
+    },
+    "addToCart": {
+      "success": {
+        "title": "Thêm thành công!",
+        "description": "Đã thêm sản phẩm \"{productName}\" vào giỏ hàng."
+      },
+      "error": {
+        "title": "Lỗi",
+        "description": "Thêm sản phẩm vào giỏ hàng thất bại"
+      },
+      "button": "Thêm vào giỏ",
+      "loginRequired": {
+        "title": "Vui lòng đăng nhập",
+        "description": "Vui lòng đăng nhập trước khi mua hàng"
+      }
+    },
+    "contact": "Liên hệ"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "total": "TỔNG TIỀN",
+    "checkout": "THANH TOÁN",
+    "empty": "Chưa có sản phẩm nào trong giỏ hàng",
+    "remove": {
+      "title": "Xóa sản phẩm?",
+      "ok": "Xóa",
+      "cancel": "Hủy"
+    }
+  },
+  "header": {
+    "menu": {
+      "home": "Trang chủ",
+      "shirts": "Áo",
+      "pants": "Quần",
+      "accessories": "Phụ kiện",
+      "dropdown": {
+        "somi": "Áo sơ mi",
+        "tshirt": "Áo phông",
+        "jacket": "Áo khoác",
+        "dress-pant": "Quần tây",
+        "short": "Quần short",
+        "jeans": "Quần jeans",
+        "underwear": "Đồ lót",
+        "socks": "Tất",
+        "belt": "Dây lưng",
+        "wallet": "Ví"
+      }
+    },
+    "search": {
+      "placeholder": "Tìm kiếm..."
+    },
+    "dropdown": {
+      "profile": "Tài khoản",
+      "admin": "Quản trị",
+      "order": "Đơn hàng",
+      "login": "Đăng nhập",
+      "logout": "Đăng xuất",
+      "register": "Đăng ký",
+      "language": "Ngôn ngữ",
+      "language_vi": "Tiếng Việt",
+      "language_en": "Tiếng Anh"
+    }
+  },
+  "profile": {
+    "update": {
+      "success": "Cập nhật thông tin thành công!",
+      "error": "Cập nhật thất bại!",
+      "button": "Cập nhật"
+    },
+    "form": {
+      "userName": {
+        "label": "Tên người dùng",
+        "placeholder": "Nhập tên người dùng",
+        "required": "Tên người dùng không được để trống!"
+      },
+      "fullName": {
+        "label": "Họ và tên",
+        "placeholder": "Nhập họ và tên"
+      },
+      "email": {
+        "label": "E-mail",
+        "required": "Email không được để trống",
+        "invalid": "Vui lòng nhập email đúng định dạng"
+      },
+      "phone": {
+        "label": "Số điện thoại"
+      },
+      "address": {
+        "label": "Địa chỉ",
+        "placeholder": "Nhập địa chỉ"
+      },
+      "dob": {
+        "label": "Ngày sinh",
+        "placeholder": "Chọn ngày sinh"
+      },
+      "gender": {
+        "label": "Giới tính",
+        "placeholder": "Chọn giới tính",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác"
+      }
+    },
+    "password": {
+      "update": {
+        "title": "Cập nhật mật khẩu",
+        "button": "Đổi mật khẩu",
+        "success": "Cập nhật mật khẩu thành công!",
+        "error": "Cập nhật mật khẩu thất bại!",
+        "cancel": "Hủy",
+        "submit": "Cập nhật"
+      },
+      "form": {
+        "currentPassword": {
+          "label": "Mật khẩu hiện tại",
+          "placeholder": "Nhập mật khẩu hiện tại",
+          "required": "Vui lòng nhập mật khẩu hiện tại"
+        },
+        "newPassword": {
+          "label": "Mật khẩu mới",
+          "placeholder": "Nhập mật khẩu mới",
+          "required": "Vui lòng nhập mật khẩu mới",
+          "minLength": "Mật khẩu phải có ít nhất 6 ký tự!"
+        },
+        "confirmPassword": {
+          "label": "Xác nhận mật khẩu mới",
+          "placeholder": "Nhập lại mật khẩu mới",
+          "required": "Vui lòng xác nhận mật khẩu mới",
+          "notMatch": "Mật khẩu xác nhận không khớp!"
+        }
+      }
+    }
+  },
+  "footer": {
+    "hotline": "Hotline: 1900 1069",
+    "open-time": "8:30 - 19:00 tất cả các ngày trong tuần",
+    "address": {
+      "north": "Tầng 12 tòa nhà The Nine, số 9 Phạm Văn Đồng, Mai Dịch, Phú Diễn, Hà Nội",
+      "south": "Tầng 6 tòa nhà Landmark 81, Tân Cảng, Bình Thạnh, TP.HCM"
+    },
+    "contact": {
+      "title": "Thông tin liên hệ"
+    },
+    "news": {
+      "title": "Đăng ký nhận tin",
+      "placeholder": "Email của bạn",
+      "button": "Đăng ký"
+    },
+    "support": {
+      "title": "Hỗ trợ",
+      "return": "Chính sách đổi trả",
+      "private": "Chính sách bảo mật",
+      "term": "Điều khoản dịch vụ"
+    },
+    "payment": {
+      "title": "Phương thức thanh toán"
+    },
+    "copyright": "© 2025 BP Fashion. All rights reserved."
+  },
+  "category": {
+    "empty": "Không có sản phẩm nào",
+    "error": {
+      "title": "Lỗi",
+      "description": "Không thể tải danh sách {categoryName}. Vui lòng thử lại sau."
+    },
+    "addToCart": {
+      "success": "Thành công",
+      "successDesc": "Đã thêm {productName} vào giỏ hàng",
+      "error": "Lỗi",
+      "errorDesc": "Thêm sản phẩm vào giỏ hàng thất bại"
+    },
+    "material": "Chất liệu"
+  },
+  "product": {
+    "notFound": "Không tìm thấy sản phẩm",
+    "backHome": "Quay lại trang chủ",
+    "products": "Sản phẩm",
+    "category": "Danh mục",
+    "productName": "Tên sản phẩm",
+    "productId": "Mã sản phẩm",
+    "price": "Giá",
+    "salePrice": "Giá khuyến mãi",
+    "status": "Trạng thái",
+    "inStock": "Còn hàng ({quantity} sản phẩm)",
+    "outOfStock": "Hết hàng",
+    "size": "Kích thước",
+    "quantity": "Số lượng",
+    "addToCart": "Thêm vào giỏ",
+    "buyNow": "Mua ngay",
+    "description": "Mô tả sản phẩm",
+    "additionalInfo": "Thông tin bổ sung",
+    "reviews": "Đánh giá ({count})",
+    "noReviews": "Chưa có đánh giá nào",
+    "noReviewsDesc": "Hãy là người đầu tiên đánh giá sản phẩm này",
+    "writeReview": "Viết đánh giá",
+    "related": "Sản phẩm liên quan",
+    "shippingInfo": "Thông tin giao hàng",
+    "freeShipping": "Miễn phí vận chuyển cho đơn hàng trên 500.000₫",
+    "shippingTime": "Giao hàng toàn quốc trong 2-5 ngày",
+    "warranty": "Bảo hành",
+    "warrantyDesc": "Đổi trả trong 30 ngày",
+    "shipping": "Vận chuyển",
+    "shippingDesc": "Giao hàng nhanh",
+    "error": {
+      "title": "Lỗi",
+      "loadError": "Không thể tải thông tin sản phẩm",
+      "variantError": "Không tìm thấy biến thể sản phẩm. Vui lòng chọn kích thước.",
+      "addToCartError": "Thêm sản phẩm vào giỏ hàng thất bại",
+      "checkoutError": "Không thể thực hiện mua hàng",
+      "success": "Thành công",
+      "addToCartSuccess": "Đã thêm sản phẩm vào giỏ hàng",
+      "shareSuccess": "Đã sao chép liên kết vào clipboard"
+    },
+    "info": {
+      "productId": "Mã sản phẩm",
+      "category": "Danh mục",
+      "material": "Chất liệu",
+      "size": "Kích thước",
+      "na": "N/A"
+    }
+  },
+  "common": {
+    "yes": "Có",
+    "no": "Không",
+    "contact": "Liên hệ",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "loading": "Đang tải...",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "add": "Thêm",
+    "update": "Cập nhật",
+    "loginRequired": {
+      "title": "Vui lòng đăng nhập",
+      "description": "Vui lòng đăng nhập trước khi mua hàng"
+    }
+  }
 }

@@ -125,18 +125,21 @@ export default function HomePage() {
 
     try {
       let variantId = null;
-      if (product.Variants && product.Variants.length > 0) {
-        variantId = product.Variants[0].variantId;
+      if (product.variants && product.variants.length > 0) {
+        variantId = product.variants[0].variantId;
       } else {
+        console.log("Sản phẩm chưa có thông tin Variant, chuyển hướng đến chi tiết:", product.productName);
         navigate(`/product/${product.productId}`);
         return;
       }
 
-      await baseApi.post("/Cart/AddToCart", {
+      const payload = {
         userId: parseInt(userId),
         variantId: variantId,
         quantity: 1
-      });
+      };
+
+      await baseApi.post("/Cart/AddToCart", payload);
 
       showCartNotification(
         t("homepage.addToCart.success.title"),

@@ -112,6 +112,7 @@ export default function Dashboard() {
           />
           <Dropdown
             menu={{ items: userMenuItems, onClick: handleDropdown }}
+            trigger={"click"}
             placement="bottomRight"
             arrow
           >

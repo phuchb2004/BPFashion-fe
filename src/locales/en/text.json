@@ -57,9 +57,7 @@
             "invalid": "Invalid password confirmation"
         }
     },
-    "logout": {
-
-    },
+    "logout": {},
     "dashboard": {
         "dropdown": {
             "profile": "Profile",
@@ -164,6 +162,25 @@
             },
             "empty": "No new products available"
         },
+        "category": {
+            "title": {
+                "shirts": "All Shirts",
+                "pants": "All Pants",
+                "accessories": "All Accessories"
+            },
+            "childName": {
+                "somi": "Dress Shirts",
+                "tshirt": "T-shirts",
+                "jacket": "Jackets",
+                "dress-pant": "Dress Pants",
+                "shorts": "Shorts",
+                "jeans": "Jeans",
+                "underwear": "Underwear",
+                "socks": "Socks",
+                "belt": "Belts",
+                "wallet": "Wallets"
+            }
+        },
         "addToCart": {
             "success": {
                 "title": "Added successfully!",
@@ -199,16 +216,16 @@
             "pants": "Pants",
             "accessories": "Accessories",
             "dropdown": {
-                "somi": "Dress shirt",
-                "tshirt": "T-shirt",
-                "jacket": "Jacket",
-                "dress-pant": "Dress pants",
+                "somi": "Dress Shirts",
+                "tshirt": "T-shirts",
+                "jacket": "Jackets",
+                "dress-pant": "Dress Pants",
                 "short": "Shorts",
                 "jeans": "Jeans",
                 "underwear": "Underwear",
                 "socks": "Socks",
-                "belt": "Belt",
-                "wallet": "Wallet"
+                "belt": "Belts",
+                "wallet": "Wallets"
             }
         },
         "search": {

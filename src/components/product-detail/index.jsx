@@ -58,7 +58,7 @@ export default function ProductDetail() {
         fetchRelatedProducts();
         
         window.scrollTo(0, 0);
-    }, [fetchProductDetails, fetchRelatedProducts, id]);
+    }, [id]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchProductDetails = async () => {

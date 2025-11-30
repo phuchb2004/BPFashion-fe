@@ -80,6 +80,7 @@ export default function Profile() {
             <div className="profile-page">
                 <aside className="profile-sidebar">
                     <Menu
+                        className="profile-menu"
                         onClick={(e) => setSelectedKey(e.key)}
                         style={{ width: 256, height: '100%' }}
                         selectedKeys={[selectedKey]}

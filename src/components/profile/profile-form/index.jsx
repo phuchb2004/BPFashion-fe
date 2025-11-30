@@ -12,7 +12,8 @@ import {
 import { LockOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { showFormNotification } from '../../../utils/notification';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import './style.css';
 
 const formItemLayout = {
     labelCol: { xs: { span: 24 }, sm: { span: 6 } },
@@ -35,7 +36,7 @@ export default function ProfileForm({ user, fetchUsers }) {
         if (user) {
             form.setFieldsValue({
                 ...user,
-                dob: user.dob ? moment(user.dob) : null,
+                dob: user.dob ? dayjs(user.dob) : null,
             });
         }
     }, [user, form]);
@@ -139,7 +140,7 @@ export default function ProfileForm({ user, fetchUsers }) {
 
             <Form.Item name="dob" label={t("profile.form.dob.label")}>
                 <DatePicker 
-                    style={{ width: '100%' }} 
+                    style={{ width: '100%'}} 
                     placeholder={t("profile.form.dob.placeholder")}
                 />
             </Form.Item>
@@ -156,17 +157,23 @@ export default function ProfileForm({ user, fetchUsers }) {
             </Form.Item>
 
             <Form.Item {...tailFormItemLayout}>
-                <Space>
-                    <Button type="primary" htmlType="submit" loading={updating}>
+                <div className="button-group">
+                    <Button 
+                        type="primary"
+                        htmlType="submit"
+                        className="action-button"
+                        loading={updating}
+                    >
                         {t("profile.update.button")}
                     </Button>
                     <Button 
                         icon={<LockOutlined />}
                         onClick={() => setPasswordModalVisible(true)}
+                        className="action-button"
                     >
                         {t("profile.password.update.button")}
                     </Button>
-                </Space>
+                </div>
             </Form.Item>
         </Form>
 
@@ -226,17 +233,22 @@ export default function ProfileForm({ user, fetchUsers }) {
                 </Form.Item>
 
                 <Form.Item>
-                    <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+                    <div className="modal-footer-buttons">
                         <Button onClick={() => {
                             setPasswordModalVisible(false);
                             passwordForm.resetFields();
-                        }}>
+                            }}
+                        >
                             {t("profile.password.update.cancel")}
                         </Button>
-                        <Button type="primary" htmlType="submit" loading={updatingPassword}>
+                        <Button 
+                            type="primary"
+                            htmlType="submit"
+                            loading={updatingPassword}
+                        >
                             {t("profile.password.update.submit")}
                         </Button>
-                    </Space>
+                    </div>
                 </Form.Item>
             </Form>
         </Modal>

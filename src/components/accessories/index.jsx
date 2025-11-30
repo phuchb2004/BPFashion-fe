@@ -1,16 +1,19 @@
 import React from "react";
 import CategoryProductsPage from "../category-products/CategoryProductsPage";
 import { filterAccessories } from "../category-products/filterHelpers";
-
-const accessoryTabs = [
-  { key: "all", label: "Tất cả phụ kiện" },
-  { key: "do-lot", label: "Đồ lót" },
-  { key: "tat", label: "Tất" },
-  { key: "day-lung", label: "Dây lưng" },
-  { key: "vi-da", label: "Ví da" },
-];
+import { useTranslation } from "react-i18next";
 
 export default function AccessoriesPage() {
+  const { t } = useTranslation();
+
+  const accessoryTabs = [
+    { key: "all", label: t("homepage.category.title.accessories") },
+    { key: "do-lot", label: t("homepage.category.childName.underwear") },
+    { key: "tat", label: t("homepage.category.childName.socks") },
+    { key: "day-lung", label: t("homepage.category.childName.belt") },
+    { key: "vi-da", label: t("homepage.category.childName.wallet") },
+  ];
+
   return (
     <CategoryProductsPage
       categoryId={3}
